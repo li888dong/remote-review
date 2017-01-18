@@ -1,0 +1,28 @@
+<view>
+
+<view>
+    <text class="content-title">{{content.title}}</text>
+</view>
+
+<view class="content-info">
+    <text>{{content.time}}</text>
+    <text>{{content.author}}</text>
+    <text>{{content.copyfrom}}</text>
+</view>
+
+<view class="content-content" wx:for="{{content.content}}">
+    <view wx:if="{{item.type == 'text'}}">
+        <text>{{item.value}}</text>
+    </view>
+    <view wx:elif="{{item.type == 'image'}}">
+        <image wx:if="{{item.value != ''}}" style="width: 200px; height: 200px; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
+
+    </view>
+    <view wx:elif="{{item.type == 'video'}}">
+        <video  wx:if="{{item.value != ''}}" objectFit="contain" src="{{item.value}}"></video>
+    </view>
+</view>
+
+
+
+</view>

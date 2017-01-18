@@ -1,0 +1,70 @@
+.center-page {
+    width:100%;
+    background: #f6f6f6;
+    padding-top:30rpx;
+    box-sizing: border-box;
+    height:100vh;
+}
+.userinfo {
+    width:100%;
+    height:160rpx;
+    box-sizing: border-box;
+    border-top: 1rpx solid #E5E5E5;
+    border-bottom: 1rpx solid #E5E5E5;
+    background: #ffffff;
+    padding:0 30rpx;
+    position: relative;
+}
+.userinfo-avatar {
+    width:114rpx;
+    height:114rpx;
+    border-radius: 16rpx;
+    position: absolute;
+    left:30rpx;
+    top: 23rpx;
+}
+.userinfo view {
+    display: inline-block;
+    line-height: 160rpx;
+
+}
+.name {
+    color: #000;
+    font-size: 36rpx;
+    margin-left: 154rpx;
+}
+.role {
+    color: #999999;
+    font-size: 26rpx;
+    margin-left: 20rpx;
+}
+.link-area {
+    margin-top: 30rpx;
+}
+.link {
+    height:100rpx;
+    width:100%;
+    background: #ffffff;
+    padding:0 30rpx;
+    line-height:100rpx;
+    font-size: 36rpx;
+    position: relative;
+    border-top: 1rpx solid #E5E5E5;
+    border-bottom: 1rpx solid #E5E5E5;
+}
+.link:first-child {
+    border-bottom: none;
+}
+
+.picker {
+    height:100rpx;
+    width:100%;
+    background: #ffffff;
+    padding:0 30rpx;
+    line-height:100rpx;
+    font-size: 36rpx;
+    position: relative;
+    border-top: 1rpx solid #E5E5E5;
+    border-bottom: 1rpx solid #E5E5E5;
+    margin-top: 30rpx;
+}

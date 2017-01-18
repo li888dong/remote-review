@@ -1,0 +1,28 @@
+<!--pages/center/center.wxml-->
+<view class="center-page">
+<view class="userinfo">
+<image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+<view class="name">{{xjuser.username}}</view>
+<view class="role">{{xjuser.rolename}}</view>
+</view>
+
+
+<view class="link-area">
+<navigator url="../list/list" class="link">
+    我的发稿
+
+</navigator>
+<navigator url="../content/content?id=111" class="link">
+    已删除稿件
+</navigator>
+<navigator url="../new/new" class="link">
+    新建稿件
+</navigator>
+</view>
+
+<picker bindchange="bindPickerChange" value="{{index}}" range-key="rolename" range="{{roles}}">
+    <view class="picker">
+      切换身份：{{roles[index].rolename}}
+    </view>
+  </picker>
+</view>

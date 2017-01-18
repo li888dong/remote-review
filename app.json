@@ -1,0 +1,23 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/list/list",
+    "pages/content/content",
+    "pages/logs/logs",
+    "pages/new/new",
+    "pages/edit/edit",
+    "pages/center/center",
+    "pages/ckcon/ckcon",
+    "pages/elist/elist",
+    "pages/search/search",
+    "pages/trash/trash",
+    "pages/vcon/vcon",
+    "pages/login/login"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  }
+}

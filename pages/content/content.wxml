@@ -1,0 +1,57 @@
+<view>
+    <view class="content-reason" wx:if="{{content.reject_reason != ''}}">
+          <view wx:for="{{content.reject_reason}}" class="reason-item">
+                <view class="reason-content">
+                    {{item.reason}}
+                </view>
+                <view class="reason-info">
+                    <text class="reason-name">{{item.name}}</text>
+                    <text class="reason-time">{{item.time}}</text>
+                </view>
+          </view>
+    </view>
+
+    <view class="content-area">
+        <view>
+            <text class="content-title">{{content.title}}</text>
+        </view>
+
+        <view class="content-info">
+            <text>{{content.time}}</text>
+            <text>{{content.author}}</text>
+            <text class="info-copyfrom">{{content.copyfrom}}</text>
+        </view>
+        <view class="content-content">
+            <view wx:for="{{content.content}}">
+                <view wx:if="{{item.type == 'text'}}">
+                    <text>{{item.value}}</text>
+                </view>
+                <view wx:elif="{{item.type == 'image'}}">
+                    <image wx:if="{{item.value != ''}}" style="width: 200px; height: 200px; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
+                </view>
+                <view wx:elif="{{item.type == 'video'}}">
+                    <video  wx:if="{{item.value != ''}}" objectFit="contain" src="{{item.value}}"></video>
+                </view>
+            </view>
+        </view>
+    </view>
+<view class="padding">
+    <view class="flow">
+    <view class="line-left" style="height:{{lineLength}}rpx"></view>
+         <view class="{{index == workflow.length-1 ? 'workflow-item last-item' : 'workflow-item'}}" wx:for="{{workflow}}" >
+                        <view class="workflow-action">{{item.action}}</view>
+                        <view class="workflow-time">{{item.time}}</view>
+                    </view>
+    </view>
+</view>
+    <view class="bottom-area">
+        <view class="edit" bindtap="editNews">
+            <view class="icon icon-edit"></view>
+            编辑
+        </view>
+        <view class="del" bindtap="delNews">
+            <view class="icon icon-del"></view>
+            删除
+        </view>
+    </view>
+</view>
