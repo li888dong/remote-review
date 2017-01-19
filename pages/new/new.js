@@ -4,7 +4,10 @@ Page({
     data: {
         content: {
             title: '',
-            content:[],
+            content:[{
+                "type":"text",
+                "value":""
+            }],
             copyfrom: ''
         }
     },
