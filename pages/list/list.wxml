@@ -31,4 +31,18 @@
 </view>
 </view>
 </view>
+
+<view class="bottom-area">
+          <navigator url="../new/new" >
+              <view class="r-btn new-btn"></view>
+              新建稿件
+          </navigator>
+          <navigator url="../center/center">
+              <view class="r-btn center-btn"></view>
+              个人中心
+          </navigator>
+      </view>
+
+
+
 </view>

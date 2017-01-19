@@ -1,9 +1,9 @@
 <view class="list-page">
 <view class="tabbar">
-<view  class="{{tab == 2 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="1" bindtap="changeTab">审核中</view>
-<view  class="{{tab == 3 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="2" bindtap="changeTab">已审核</view>
+<view  class="{{tab == 2 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="2" bindtap="changeTab">审核中</view>
+<view  class="{{tab == 3 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="3" bindtap="changeTab">已审核</view>
 </view>
-<view class="list" wx:if="{{tab == '1'}}">
+<view class="list" wx:if="{{tab == '2'}}">
 <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{shenhezhong}}" bindtap="viewNews" data-forbid="{{item.forbidden}}" data-newsid="{{item.id}}">
 <text class="news-title">{{item.title}}</text>
 <view class="news-info">
@@ -12,7 +12,7 @@
 </view>
 </view>
 </view>
-<view class="list" wx:elif="{{tab == '2'}}">
+<view class="list" wx:elif="{{tab == '3'}}">
 <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-forbid="{{item.forbidden}}" data-newsid="{{item.id}}">
 <text class="news-title">{{item.title}}</text>
 <view class="news-info">
@@ -21,4 +21,14 @@
 </view>
 </view>
 </view>
+
+
+<view class="bottom-area">
+          <navigator url="../center/center">
+              <view class="r-btn center-btn"></view>
+              个人中心
+          </navigator>
+      </view>
+
+
 </view>

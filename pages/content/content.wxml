@@ -46,11 +46,11 @@
 </view>
     <view class="bottom-area">
         <view class="edit" bindtap="editNews">
-            <view class="icon icon-edit"></view>
+            <view class="r-btn edit-btn"></view>
             编辑
         </view>
         <view class="del" bindtap="delNews">
-            <view class="icon icon-del"></view>
+            <view class="r-btn del-btn"></view>
             删除
         </view>
     </view>

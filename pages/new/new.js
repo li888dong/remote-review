@@ -4,7 +4,7 @@ Page({
     data: {
         content: {
             title: '',
-            content: [{"type": "text", "value": ""}],
+            content:[],
             copyfrom: ''
         }
     },
@@ -25,8 +25,9 @@ Page({
     },
     uploadImg: function (e) {
         console.log(e.target.dataset.cidx);
-        var cidx = e.target.dataset.cidx;
+        var cidx = e.target.dataset.cidx ;
         var that = this;
+        var tempArr = this.data.content.content;
         wx.chooseImage({
             count: 1, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -37,10 +38,38 @@ Page({
                 console.log(this);
                 console.log(that);
                 console.log(that.data);
-                var data = {};
-                data['content.content[' + cidx + '].value'] = tempFilePaths[0] // key 可以是任何字符串
-                that.setData(data);
-
+                wx.showToast({
+                    title: '图片上传中',
+                    icon: 'loading',
+                    duration: 10000,
+                    mask:true
+                });
+                wx.uploadFile({
+                    url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=photo', //仅为示例，非真实的接口地址
+                    filePath: tempFilePaths[0],
+                    name: 'files',
+                    formData:{
+                        'user': 'test'
+                    },
+                    success: function(res){
+                        console.log(res);
+                        var data = JSON.parse(res.data);
+                        if (data.status == 1) {
+                            console.log(data);
+                            var imagedata = {
+                                "type":"image",
+                                "value":data.url,
+                                "title":""
+                            };
+                            wx.hideToast();
+                            tempArr.splice(cidx,0,imagedata); // key 可以是任何字符串
+                            console.log(imagedata);
+                            that.setData({
+                                "content.content":tempArr
+                            });
+                        }
+                    }
+                });
 
             }
         })
@@ -49,6 +78,7 @@ Page({
         console.log(e.target.dataset.cidx);
         var cidx = e.target.dataset.cidx;
         var that = this;
+        var tempArr = this.data.content.content;
         wx.chooseVideo({
             sourceType: ['album', 'camera'], // album 从相册选视频，camera 使用相机拍摄
             maxDuration: 60, // 拍摄视频最长拍摄时间，单位秒。最长支持60秒
@@ -59,7 +89,12 @@ Page({
                 console.log(this);
                 console.log(that);
                 console.log(that.data);
-
+                wx.showToast({
+                    title: '视频上传中',
+                    icon: 'loading',
+                    duration: 10000,
+                    mask:true
+                });
                 wx.uploadFile({
                     url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=video', //仅为示例，非真实的接口地址
                     filePath: tempFilePath,
@@ -71,15 +106,20 @@ Page({
                         var data = JSON.parse(res.data);
                         if (data.status == 1) {
                             console.log(data.data);
-                            var videodata = {};
-                            videodata['content.content[' + cidx + '].value'] = data.data.filepath; // key 可以是任何字符串
+                            var videodata = {
+                                "type":"video",
+                                "value":data.data.filepath,
+                                "title":""
+                            };
+                            wx.hideToast();
+                            tempArr.splice(cidx,0,videodata); // key 可以是任何字符串
                             console.log(videodata);
-                            that.setData(videodata);
+                            that.setData({
+                                "content.content":tempArr
+                            });
                         }
                     }
                 });
-
-
             },
             fail: function () {
                 // fail
@@ -89,22 +129,15 @@ Page({
             }
         })
     },
-    addElement: function () {
-        var tempItem = [{
-            "type": "image",
-            "value": ""
-        }, {
-            "type": "video",
-            "value": ""
-        }];
-        var tempArray = this.data.content.content.concat(tempItem);
-        this.setData({
-            "content.content": tempArray
-        })
-    },
     getContent: function () {
         console.log(this.data.content);
 
+        var tempArr = [];
+        for (var i = 0;i<this.data.content.content.length;i++) {
+            if (this.data.content.content[i].type != 'add') {
+                tempArr.push(this.data.content.content[i])
+            }
+        }
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=add',
             method: 'post',
@@ -112,7 +145,7 @@ Page({
             data: {
                 title:this.data.content.title,
                 copyfrom:this.data.content.copyfrom,
-                content: JSON.stringify(this.data.content.content),
+                content: JSON.stringify(tempArr),
                 way:'zancun',
                 sessid: wx.getStorageSync('sessid')
             },
@@ -125,20 +158,34 @@ Page({
     setText: function (e) {
         var cidx = e.target.dataset.cidx;
         var data = {};
-        data['content.content[' + cidx + '].value'] = e.detail.value // key 可以是任何字符串
+        data['content.content[' + cidx + '].value'] = e.detail.value; // key 可以是任何字符串
+        this.setData(data);
+        console.log(e);
+    },
+    setTitle: function (e) {
+        var cidx = e.target.dataset.cidx;
+        var data = {};
+        data['content.content[' + cidx + '].title'] = e.detail.value; // key 可以是任何字符串
+        this.setData(data);
+        console.log(e);
+    },
+    showFuns: function (e) {
+        var cidx = e.target.dataset.cidx;
+        var data = {};
+        data['content.content[' + cidx + '].show'] = true; // key 可以是任何字符串
         this.setData(data);
         console.log(e);
     },
     setProp: function (e) {
         var prop = e.target.dataset.prop;
         var data = {};
-        data['content.' + prop] = e.detail.value // key 可以是任何字符串
+        data['content.' + prop] = e.detail.value; // key 可以是任何字符串
         this.setData(data);
     },
     clrMedia: function (e) {
         var cidx = e.target.dataset.cidx;
         var data = {};
-        data['content.content[' + cidx + '].value'] = "" // key 可以是任何字符串
+        data['content.content[' + cidx + '].value'] = ""; // key 可以是任何字符串
         this.setData(data);
     },
     delMedia: function (e) {
@@ -152,8 +199,6 @@ Page({
                 tempArr.splice(cidx, 1);
             }
         }
-
-
         this.setData({
             "content.content": tempArr
         })
@@ -169,11 +214,8 @@ Page({
                 "type": "text",
                 "value": tempArr[i]
             }, {
-                "type": "image",
-                "value": ""
-            }, {
-                "type": "video",
-                "value": ""
+                "type": "add",
+                "show": false
             }];
             dataArr = dataArr.concat(tempObj);
         }

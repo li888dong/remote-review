@@ -1,6 +1,6 @@
 {
-  "navigationBarBackgroundColor": "white",
-  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#0E69B0",
+  "navigationBarTextStyle": "white",
   "navigationBarTitleText": "编辑稿件",
   "backgroundColor": "#eeeeee",
   "backgroundTextStyle": "light"

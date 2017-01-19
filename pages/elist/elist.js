@@ -1,7 +1,7 @@
 // pages/elist/elist.js
 Page({
     data: {
-        tab: '1',
+        tab: '2',
         shenhezhong: [],
         yishenhe: [],
         caogaoxiang: []

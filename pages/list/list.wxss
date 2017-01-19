@@ -2,6 +2,7 @@ page {
     display: block;
     min-height: 100%;
     background-color: #f6f6f6;
+    padding-bottom: 120rpx;
 }
 .tabbar {
     display: flex;
@@ -50,4 +51,39 @@ page {
 }
 .news-author {
     margin-left:30rpx;
+}
+.bottom-area {
+    position: fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background: #F8F8FA;
+    height:106rpx;
+    border-top: 1rpx solid rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.bottom-area navigator {
+    font-size: 24rpx;
+    text-align: center;
+    flex: 1;
+    height:100%;
+    padding-top: 15rpx;
+    color: #7F8389;
+    box-sizing: border-box;
+}
+.new-btn {
+    flex:auto;
+    background: url("https://www.hnsjb.cn/static/img/wx/new.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+    margin:auto;
+    margin-bottom: 7rpx;
+}
+.center-btn {
+    flex: auto;
+    background: url("https://www.hnsjb.cn/static/img/wx/center.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+    margin: auto;
+    margin-bottom: 7rpx;
 }

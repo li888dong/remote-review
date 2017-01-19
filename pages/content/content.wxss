@@ -161,16 +161,29 @@ page {
     width:100%;
     background: #F8F8FA;
     height:106rpx;
-    border-top: 1rpx solid #000000;
+    border-top: 1rpx solid rgba(0,0,0,0.2);
     display: flex;
     align-items: center;
     justify-content: space-around;
 }
 .bottom-area view {
-    flex: 1;
     font-size: 24rpx;
     height:100%;
 }
 .edit {
-
+    color: #3098E5;
+}
+.edit-btn {
+    flex:auto;
+    background: url("https://www.hnsjb.cn/static/img/wx/edit.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+    margin:auto;
+    margin-bottom: 7rpx;
+}
+.del-btn {
+    flex:auto;
+    background: url("https://www.hnsjb.cn/static/img/wx/del.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+    margin:auto;
+    margin-bottom: 7rpx;
 }

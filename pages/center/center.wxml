@@ -8,15 +8,14 @@
 
 
 <view class="link-area">
-<navigator url="../list/list" class="link">
+<navigator wx:if="{{xjuser.roleid == '37'}}" url="../list/list" class="link">
     我的发稿
-
+</navigator>
+<navigator wx:elif="{{xjuser.roleid != '37'}}" url="../elist/elist" class="link">
+    稿件列表
 </navigator>
 <navigator url="../content/content?id=111" class="link">
     已删除稿件
-</navigator>
-<navigator url="../new/new" class="link">
-    新建稿件
 </navigator>
 </view>
 
