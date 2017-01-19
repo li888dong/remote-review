@@ -1,2 +1,9 @@
-<!--pages/search/search.wxml-->
-<text>pages/search/search.wxml</text>
+<view class="input-container">
+    <input placeholder="请输入搜索内容" bindconfirm="search" bindblur="search" auto-focus/>
+    <view class="back" bindtap="backCenter">取消</view>
+</view>
+<view class="list" >
+<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{result}}" bindtap="gotoNews" data-status="{{item.forbidden}}" data-newsid="{{item.id}}">
+<text class="news-title">{{item.title}}</text>
+</view>
+</view>

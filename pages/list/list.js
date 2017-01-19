@@ -80,5 +80,14 @@ Page({
             }
         });
 
+    },
+    onShow:function() {
+        var roleid = wx.getStorageSync('xjuser').roleid;
+
+        if (roleid != '37') {
+            wx.redirectTo({
+                url: '../elist/elist'
+            })
+        }
     }
 });

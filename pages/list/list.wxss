@@ -28,7 +28,7 @@ page {
 }
 
 .news-item {
-    padding:30rpx 32rpx 0;
+    padding:0 32rpx;
 }
 .news-item-hover {
     background: #E3E3E3;
@@ -38,16 +38,29 @@ page {
     font-size: 40rpx;
     line-height: 1.4;
 }
+.news-inner {
+    padding-top: 30rpx;
+
+    border-bottom: 1rpx solid #E3E3E3;
+}
+.reject.news-item .news-inner {
+    padding-left: 80rpx;
+    background: url("https://www.hnsjb.cn/static/img/wx/warn.png") left center no-repeat;
+    background-size: 50rpx 50rpx;
+}
+.forward.news-item .news-inner {
+    padding-left: 80rpx;
+    background: url("https://www.hnsjb.cn/static/img/wx/trans.png") left center no-repeat;
+    background-size: 50rpx 50rpx;
+}
 .news-info {
     color: #B9B9B9;
     font-size: 28rpx;
     margin-top: 26rpx;
-    border-bottom: 1rpx solid #E3E3E3;
     padding-bottom: 30rpx;
 }
 .news-time,.news-author {
     display: inline-block;
-
 }
 .news-author {
     margin-left:30rpx;

@@ -1,34 +1,63 @@
 <view class="list-page">
-<view class="tabbar">
-<view  class="{{tab == 2 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="2" bindtap="changeTab">审核中</view>
-<view  class="{{tab == 3 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="3" bindtap="changeTab">已审核</view>
-</view>
-<view class="list" wx:if="{{tab == '2'}}">
-<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{shenhezhong}}" bindtap="ckNews" data-forbid="{{item.forbidden}}" data-newsid="{{item.id}}">
-<text class="news-title">{{item.title}}</text>
-<view class="news-info">
-<view class="news-time">{{item.time}}</view>
-<view class="news-author">{{item.author}}</view>
-</view>
-</view>
-</view>
-<view class="list" wx:elif="{{tab == '3'}}">
-<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-newsid="{{item.id}}">
-<text class="news-title">{{item.title}}</text>
-<view class="news-info">
-<view class="news-time">{{item.time}}</view>
-<view class="news-author">{{item.author}}</view>
-</view>
-</view>
-</view>
+  <view class="tabbar">
+    <view class="{{tab == 2 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="2" bindtap="changeTab">审核中</view>
+    <view class="{{tab == 3 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="3" bindtap="changeTab">已审核</view>
+  </view>
+  <view class="list" wx:if="{{tab == '2'}}">
+      <block wx:for="{{shenhezhong}}">
 
+      <block wx:if="{{item.typefrom == 'tosucheck'}}">
+      <view class="forward news-item" hover="true" hover-class="news-item-hover" bindtap="viewNews" data-newsid="{{item.id}}">
+              <view class="news-inner">
+              <text class="news-title">{{item.title}}</text>
+              <view class="news-info">
+                <view class="news-time">{{item.time}}</view>
+                <view class="news-author">{{item.author}}</view>
+              </view>
+              </view>
+            </view>
+      </block>
 
-<view class="bottom-area">
-          <navigator url="../center/center">
-              <view class="r-btn center-btn"></view>
-              个人中心
-          </navigator>
+      <block wx:elif="{{item.typefrom == 'rejected'}}">
+            <view class="reject news-item" hover="true" hover-class="news-item-hover" bindtap="viewNews" data-newsid="{{item.id}}">
+                    <view class="news-inner">
+                    <text class="news-title">{{item.title}}</text>
+                    <view class="news-info">
+                      <view class="news-time">{{item.time}}</view>
+                      <view class="news-author">{{item.author}}</view>
+                    </view>
+                    </view>
+                  </view>
+            </block>
+
+            <block wx:else>
+                        <view class="reject news-item" hover="true" hover-class="news-item-hover" bindtap="ckNews" data-newsid="{{item.id}}">
+                                <view class="news-inner">
+                                <text class="news-title">{{item.title}}</text>
+                                <view class="news-info">
+                                  <view class="news-time">{{item.time}}</view>
+                                  <view class="news-author">{{item.author}}</view>
+                                </view>
+                                </view>
+                              </view>
+                        </block>
+      </block>
+    </view>
+    <view class="list" wx:elif="{{tab == '3'}}">
+      <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-newsid="{{item.id}}">
+        <view class="news-inner">
+        <text class="news-title">{{item.title}}</text>
+        <view class="news-info">
+          <view class="news-time">{{item.time}}</view>
+          <view class="news-author">{{item.author}}</view>
+        </view>
+        </view>
       </view>
-
-
+    </view>
+  <view class="bottom-area">
+    <navigator url="../center/center">
+      <view class="r-btn center-btn"></view>
+      个人中心
+    </navigator>
+  </view>
 </view>

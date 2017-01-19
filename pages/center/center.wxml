@@ -6,22 +6,47 @@
 <view class="role">{{xjuser.rolename}}</view>
 </view>
 
+<view class="search-area" >
+    <navigator class="search" url="../search/search">搜索</navigator>
+</view>
 
-<view class="link-area">
-<navigator wx:if="{{xjuser.roleid == '37'}}" url="../list/list" class="link">
-    我的发稿
-</navigator>
-<navigator wx:elif="{{xjuser.roleid != '37'}}" url="../elist/elist" class="link">
-    稿件列表
-</navigator>
-<navigator url="../content/content?id=111" class="link">
+<view class="user-stat" wx:if="{{xjuser.roleid == '37'}}">
+      <view class="section-title">我的发稿</view>
+<view class="user-figure">
+    总发稿：<text>{{stats.total_post}}</text> 条
+</view>
+<view class="user-figure">
+    已审核：<text>{{stats.checked}}</text> 条
+</view>
+<view class="user-figure">
+    草稿箱：<text>{{stats.raw}}</text> 条
+</view>
+</view>
+
+<view class="user-stat" wx:elif="{{xjuser.roleid != '37'}}">
+      <view class="section-title">我的审稿</view>
+<view class="user-figure">
+    已审核：{{stats.passed}} 条
+</view>
+<view class="user-figure">
+    已驳回：{{stats.rejected}} 条
+</view>
+</view>
+
+
+<view class="link-area" wx:if="{{xjuser.roleid == '37'}}">
+<navigator url="../trash/trash" class="link" >
     已删除稿件
 </navigator>
 </view>
 
-<picker bindchange="bindPickerChange" value="{{index}}" range-key="rolename" range="{{roles}}">
-    <view class="picker">
-      切换身份：{{roles[index].rolename}}
-    </view>
-  </picker>
+
+
+  <radio-group class="radio-group" bindchange="roleChange">
+  <view class="section-title">切换身份</view>
+    <label class="radio" wx:for="{{roles}}">
+      <radio value="{{item.roleid}}" color="#F62B22" checked="{{item.roleid == xjuser.roleid}}"/>{{item.rolename}}
+    </label>
+  </radio-group>
+
 </view>

@@ -24,7 +24,7 @@ Page({
             })
         }
     },
-    viewNews:function() {
+    viewNews:function(e) {
         wx.navigateTo({
             url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
         })
@@ -76,6 +76,13 @@ Page({
     },
     onShow: function () {
         // 页面显示
+        var roleid = wx.getStorageSync('xjuser').roleid;
+
+        if (roleid == '37') {
+            wx.redirectTo({
+                url: '../list/list'
+            })
+        }
     },
     onHide: function () {
         // 页面隐藏

@@ -1,5 +1,4 @@
 // pages/center/center.js
-var util = require('../../utils/util.js');
 
 var app = getApp();
 Page({
@@ -11,7 +10,7 @@ Page({
             {roleid:38,rolename:'编辑'}
         ],
         xjuser:{},
-        index:0
+        stats: {}
     },
     onLoad: function () {
         // 页面初始化 options为页面跳转所带来的参数
@@ -27,10 +26,20 @@ Page({
         this.setData({
             xjuser:wx.getStorageSync("xjuser")
         });
-        this.setData({
-            index:util.getArrayindx(this.data.xjuser.roleid,this.data.roles,'roleid')
+        wx.request({
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=userlist',
+            method:'post',
+            header: {"content-type": "application/x-www-form-urlencoded"},
+            data: {
+                sessid: wx.getStorageSync('sessid')
+            },
+            success:function(response) {
+                that.setData({
+                   stats:response.data
+                });
+                console.log(response);
+            }
         });
-        console.log(util.getArrayindx(this.data.xjuser.roleid,this.data.roles,'roleid'));
     },
     onReady: function () {
         // 页面渲染完成
@@ -44,11 +53,8 @@ Page({
     onUnload: function () {
         // 页面关闭
     },
-    bindPickerChange: function(e) {
+    roleChange: function(e) {
         console.log('picker发送选择改变，携带值为', e.detail.value);
-        this.setData({
-            index: e.detail.value
-        });
         var that = this;
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=choose_role',
@@ -58,19 +64,33 @@ Page({
                 sessid: wx.getStorageSync('sessid'),
                 username:this.data.xjuser.username,
                 userid:this.data.xjuser.userid,
-                roleid:this.data.roles[e.detail.value].roleid
+                roleid:e.detail.value
             },
             success:function(response) {
                 if (response.data.status == 1) {
                     wx.setStorageSync('xjuser', response.data.data);
                     that.setData({
                         'xjuser':response.data.data
-                    })
+                    });
+                    wx.request({
+                        url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=userlist',
+                        method:'post',
+                        header: {"content-type": "application/x-www-form-urlencoded"},
+                        data: {
+                            sessid: wx.getStorageSync('sessid')
+                        },
+                        success:function(response) {
+                            that.setData({
+                                stats:response.data
+                            });
+                            console.log(response);
+                        }
+                    });
                 }
                 console.log(response);
             }
         });
 
-        console.log(this.data.roles[e.detail.value]);
+        // console.log(this.data.roles[e.detail.value]);
     }
 });

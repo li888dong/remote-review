@@ -1,1 +1,7 @@
-{}
+{
+  "navigationBarBackgroundColor": "#0E69B0",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "已删除稿件",
+  "backgroundColor": "#eeeeee",
+  "backgroundTextStyle": "light"
+}
