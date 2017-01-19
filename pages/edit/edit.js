@@ -204,24 +204,98 @@ Page({
         })
     },
     getArray: function () {
-        var dataArr = [];
-        var tempStr = this.data.content.content[0].value;
-        console.log(tempStr);
+        var dataArr = this.data.content.content;
+        console.log('aa');
+        // var tempStr = this.data.content.content[0].value;
+        var addObj = {
+            "type": "add",
+            "show": false
+        };
 
-        var tempArr = tempStr.split('\n\n');
-        for (var i = 0; i < tempArr.length; i++) {
-            var tempObj = [{
-                "type": "text",
-                "value": tempArr[i]
-            }, {
-                "type": "add",
-                "show": false
-            }];
-            dataArr = dataArr.concat(tempObj);
+        var resultArr = [];
+        // console.log(dataArr);
+        for (var i = 0; i < dataArr.length; i++) {
+
+            if ( i+1<dataArr.length ) {
+                if (dataArr[i].type == "text" && dataArr[i+1].type == "add") {
+                    var tempStr = dataArr[i].value;
+                    var tempRarr = [];
+                    var tempArr = tempStr.split('\n\n');
+                    for (var j = 0; j < tempArr.length; j++) {
+                        if (j == tempArr.length) {
+                            var tempObj = [{
+                                "type": "text",
+                                "value": tempArr[j]
+                            }];
+                        } else {
+                            var tempObj = [{
+                                "type": "text",
+                                "value": tempArr[j]
+                            }, {
+                                "type": "add",
+                                "show": false
+                            }];
+                        }
+
+                        tempRarr = tempRarr.concat(tempObj);
+                    }
+                    resultArr = resultArr.concat(tempRarr);
+
+                } else if (dataArr[i].type == "text") {
+                    var tempStr = dataArr[i].value;
+                    var tempRarr = [];
+                    var tempArr = tempStr.split('\n\n');
+                    for (var j = 0; j < tempArr.length; j++) {
+                        var tempObj = [{
+                            "type": "text",
+                            "value": tempArr[j]
+                        }, {
+                            "type": "add",
+                            "show": false
+                        }];
+                        tempRarr = tempRarr.concat(tempObj);
+                    }
+                    resultArr = resultArr.concat(tempRarr);
+                } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
+
+                    if (dataArr[i+1].type == "add") {
+                        var tempRarr = [dataArr[i]];
+                    } else {
+                        var tempRarr = [dataArr[i],addObj];
+
+                    }
+
+                    resultArr = resultArr.concat(tempRarr)
+                }
+            } else {
+                if (dataArr[i].type == "text" ) {
+                    var tempStr = dataArr[i].value;
+                    var tempRarr = [];
+                    var tempArr = tempStr.split('\n\n');
+                    for (var j = 0; j < tempArr.length; j++) {
+                        var tempObj = [{
+                            "type": "text",
+                            "value": tempArr[j]
+                        }, {
+                            "type": "add",
+                            "show": false
+                        }];
+                        tempRarr = tempRarr.concat(tempObj);
+                    }
+                    resultArr = resultArr.concat(tempRarr);
+
+                } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
+                    var tempRarr = [dataArr[i],addObj];
+                    resultArr = resultArr.concat(tempRarr)
+                }
+            }
+
+
         }
-        console.log(dataArr);
+        // console.log(tempStr);
+
         this.setData({
-            "content.content": dataArr
+            "content.content": resultArr
         })
 
     }

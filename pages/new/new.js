@@ -4,9 +4,9 @@ Page({
     data: {
         content: {
             title: '',
-            content:[{
-                "type":"text",
-                "value":""
+            content: [{
+                "type": "text",
+                "value": ""
             }],
             copyfrom: ''
         }
@@ -28,7 +28,7 @@ Page({
     },
     uploadImg: function (e) {
         console.log(e.target.dataset.cidx);
-        var cidx = e.target.dataset.cidx ;
+        var cidx = e.target.dataset.cidx;
         var that = this;
         var tempArr = this.data.content.content;
         wx.chooseImage({
@@ -45,30 +45,30 @@ Page({
                     title: '图片上传中',
                     icon: 'loading',
                     duration: 10000,
-                    mask:true
+                    mask: true
                 });
                 wx.uploadFile({
                     url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=photo', //仅为示例，非真实的接口地址
                     filePath: tempFilePaths[0],
                     name: 'files',
-                    formData:{
+                    formData: {
                         'user': 'test'
                     },
-                    success: function(res){
+                    success: function (res) {
                         console.log(res);
                         var data = JSON.parse(res.data);
                         if (data.status == 1) {
                             console.log(data);
                             var imagedata = {
-                                "type":"image",
-                                "value":data.url,
-                                "title":""
+                                "type": "image",
+                                "value": data.url,
+                                "title": ""
                             };
                             wx.hideToast();
-                            tempArr.splice(cidx,0,imagedata); // key 可以是任何字符串
+                            tempArr.splice(cidx, 0, imagedata); // key 可以是任何字符串
                             console.log(imagedata);
                             that.setData({
-                                "content.content":tempArr
+                                "content.content": tempArr
                             });
                         }
                     }
@@ -96,29 +96,29 @@ Page({
                     title: '视频上传中',
                     icon: 'loading',
                     duration: 10000,
-                    mask:true
+                    mask: true
                 });
                 wx.uploadFile({
                     url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=video', //仅为示例，非真实的接口地址
                     filePath: tempFilePath,
                     name: 'files',
-                    formData:{
+                    formData: {
                         'user': 'test'
                     },
-                    success: function(res){
+                    success: function (res) {
                         var data = JSON.parse(res.data);
                         if (data.status == 1) {
                             console.log(data.data);
                             var videodata = {
-                                "type":"video",
-                                "value":data.data.filepath,
-                                "title":""
+                                "type": "video",
+                                "value": data.data.filepath,
+                                "title": ""
                             };
                             wx.hideToast();
-                            tempArr.splice(cidx,0,videodata); // key 可以是任何字符串
+                            tempArr.splice(cidx, 0, videodata); // key 可以是任何字符串
                             console.log(videodata);
                             that.setData({
-                                "content.content":tempArr
+                                "content.content": tempArr
                             });
                         }
                     }
@@ -136,7 +136,7 @@ Page({
         console.log(this.data.content);
 
         var tempArr = [];
-        for (var i = 0;i<this.data.content.content.length;i++) {
+        for (var i = 0; i < this.data.content.content.length; i++) {
             if (this.data.content.content[i].type != 'add') {
                 tempArr.push(this.data.content.content[i])
             }
@@ -146,10 +146,10 @@ Page({
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
-                title:this.data.content.title,
-                copyfrom:this.data.content.copyfrom,
+                title: this.data.content.title,
+                copyfrom: this.data.content.copyfrom,
                 content: JSON.stringify(tempArr),
-                way:'zancun',
+                way: 'zancun',
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
@@ -207,24 +207,98 @@ Page({
         })
     },
     getArray: function () {
-        var dataArr = [];
-        var tempStr = this.data.content.content[0].value;
-        console.log(tempStr);
+        var dataArr = this.data.content.content;
+        console.log('aa');
+        // var tempStr = this.data.content.content[0].value;
+        var addObj = {
+            "type": "add",
+            "show": false
+        };
 
-        var tempArr = tempStr.split('\n\n');
-        for (var i = 0; i < tempArr.length; i++) {
-            var tempObj = [{
-                "type": "text",
-                "value": tempArr[i]
-            }, {
-                "type": "add",
-                "show": false
-            }];
-            dataArr = dataArr.concat(tempObj);
+        var resultArr = [];
+        // console.log(dataArr);
+        for (var i = 0; i < dataArr.length; i++) {
+
+            if ( i+1<dataArr.length ) {
+                if (dataArr[i].type == "text" && dataArr[i+1].type == "add") {
+                    var tempStr = dataArr[i].value;
+                    var tempRarr = [];
+                    var tempArr = tempStr.split('\n\n');
+                    for (var j = 0; j < tempArr.length; j++) {
+                        if (j == tempArr.length) {
+                            var tempObj = [{
+                                "type": "text",
+                                "value": tempArr[j]
+                            }];
+                        } else {
+                            var tempObj = [{
+                                "type": "text",
+                                "value": tempArr[j]
+                            }, {
+                                "type": "add",
+                                "show": false
+                            }];
+                        }
+
+                        tempRarr = tempRarr.concat(tempObj);
+                    }
+                    resultArr = resultArr.concat(tempRarr);
+
+                } else if (dataArr[i].type == "text") {
+                    var tempStr = dataArr[i].value;
+                    var tempRarr = [];
+                    var tempArr = tempStr.split('\n\n');
+                    for (var j = 0; j < tempArr.length; j++) {
+                        var tempObj = [{
+                            "type": "text",
+                            "value": tempArr[j]
+                        }, {
+                            "type": "add",
+                            "show": false
+                        }];
+                        tempRarr = tempRarr.concat(tempObj);
+                    }
+                    resultArr = resultArr.concat(tempRarr);
+                } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
+
+                    if (dataArr[i+1].type == "add") {
+                        var tempRarr = [dataArr[i]];
+                    } else {
+                        var tempRarr = [dataArr[i],addObj];
+
+                    }
+
+                    resultArr = resultArr.concat(tempRarr)
+                }
+            } else {
+                if (dataArr[i].type == "text" ) {
+                    var tempStr = dataArr[i].value;
+                    var tempRarr = [];
+                    var tempArr = tempStr.split('\n\n');
+                    for (var j = 0; j < tempArr.length; j++) {
+                        var tempObj = [{
+                            "type": "text",
+                            "value": tempArr[j]
+                        }, {
+                            "type": "add",
+                            "show": false
+                        }];
+                        tempRarr = tempRarr.concat(tempObj);
+                    }
+                    resultArr = resultArr.concat(tempRarr);
+
+                } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
+                    var tempRarr = [dataArr[i],addObj];
+                    resultArr = resultArr.concat(tempRarr)
+                }
+            }
+
+
         }
-        console.log(dataArr);
+        // console.log(tempStr);
+
         this.setData({
-            "content.content": dataArr
+            "content.content": resultArr
         })
 
     }

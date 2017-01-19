@@ -1,5 +1,18 @@
 
 <view>
+
+<view class="bottom-area">
+          <view class="insert" bindtap="getArray">
+              <view class="r-btn insert-btn"></view>
+              插入多媒体
+          </view>
+          <view class="submit" bindtap="getContent">
+              <view class="r-btn submit-btn"></view>
+              提交
+          </view>
+      </view>
+
+
   <view class="prop-container">
     <textarea class="input" auto-height placeholder="文章标题" maxlength="-1" data-prop="title" bindblur="setProp" value="{{content.title}}" />
   </view>
@@ -32,14 +45,5 @@
   <view class="prop-container">
     <textarea class="input" auto-height value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindblur="setProp"></textarea>
   </view>
-  <view class="bottom-area">
-          <view class="insert" bindtap="getArray">
-              <view class="r-btn insert-btn"></view>
-              插入多媒体
-          </view>
-          <view class="submit" bindtap="getContent">
-              <view class="r-btn submit-btn"></view>
-              提交
-          </view>
-      </view>
+
 </view>
