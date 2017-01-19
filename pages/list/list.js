@@ -28,6 +28,13 @@ Page({
         })
     },
     onLoad: function () {
+        var roleid = wx.getStorageSync('xjuser').roleid;
+
+        if (roleid != '37') {
+            wx.redirectTo({
+                url: '../elist/elist'
+            })
+        }
         console.log('onLoad');
         var that = this;
         wx.request({

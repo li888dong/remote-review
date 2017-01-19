@@ -12,7 +12,7 @@ Page({
             tab: e.currentTarget.dataset.tabindex
         })
     },
-    viewNews: function (e) {
+    ckNews: function (e) {
 
         if (e.currentTarget.dataset.forbid == '1') {
             wx.navigateTo({
@@ -24,8 +24,22 @@ Page({
             })
         }
     },
+    viewNews:function() {
+        wx.navigateTo({
+            url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
+        })
+    },
     onLoad: function () {
         console.log('onLoad');
+
+        var roleid = wx.getStorageSync('xjuser').roleid;
+
+        if (roleid == '37') {
+            wx.redirectTo({
+                url: '../list/list'
+            })
+        }
+
         var that = this;
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址

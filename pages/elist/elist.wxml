@@ -4,7 +4,7 @@
 <view  class="{{tab == 3 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="3" bindtap="changeTab">已审核</view>
 </view>
 <view class="list" wx:if="{{tab == '2'}}">
-<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{shenhezhong}}" bindtap="viewNews" data-forbid="{{item.forbidden}}" data-newsid="{{item.id}}">
+<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{shenhezhong}}" bindtap="ckNews" data-forbid="{{item.forbidden}}" data-newsid="{{item.id}}">
 <text class="news-title">{{item.title}}</text>
 <view class="news-info">
 <view class="news-time">{{item.time}}</view>
@@ -13,7 +13,7 @@
 </view>
 </view>
 <view class="list" wx:elif="{{tab == '3'}}">
-<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-forbid="{{item.forbidden}}" data-newsid="{{item.id}}">
+<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-newsid="{{item.id}}">
 <text class="news-title">{{item.title}}</text>
 <view class="news-info">
 <view class="news-time">{{item.time}}</view>
