@@ -57,8 +57,11 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
+
+                var tempArr = res.data;
+                tempArr['content'] = JSON.parse(tempArr['content']) ;
                 that.setData({
-                    content: res.data
+                    content: tempArr
                 });
                 // console.log(res.data)
             }

@@ -15,8 +15,8 @@
       <text class="content-title">{{content.title}}</text>
     </view>
     <view class="content-info">
-      <text>{{content.time}}</text>
-      <text>{{content.author}}</text>
+      <text>{{content.inputtime}}</text>
+      <text>{{content.username}}</text>
       <text class="info-copyfrom">{{content.copyfrom}}</text>
     </view>
     <view class="content-content">
