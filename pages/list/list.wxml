@@ -6,7 +6,7 @@
   </view>
   <view class="list" wx:if="{{tab == '1'}}">
   <block wx:for="{{caogaoxiang}}">
-    <view class="{{item.typefrom == 'rejected' ? 'news-item' : 'reject news-item'}}" hover="true" hover-class="news-item-hover"  bindtap="gotoNews" data-newsid="{{item.id}}">
+    <view class="{{item.typefrom == 'rejected' ? 'news-item reject' : 'news-item'}}" hover="true" hover-class="news-item-hover"  bindtap="gotoNews" data-newsid="{{item.id}}">
       <view class="news-inner">
 
       <text class="news-title">{{item.title}}</text>
@@ -20,7 +20,7 @@
   </view>
   <view class="list" wx:elif="{{tab == '2'}}">
     <block wx:for="{{shenhezhong}}">
-    <view class="{{item.typefrom == 'tosucheck' ? 'news-item' : 'forward news-item'}}" hover="true" hover-class="news-item-hover" bindtap="viewNews" data-newsid="{{item.id}}">
+    <view class="{{item.typefrom == 'tosucheck' ? 'forward news-item' : 'news-item'}}" hover="true" hover-class="news-item-hover" bindtap="viewNews" data-newsid="{{item.id}}">
       <view class="news-inner">
       <text class="news-title">{{item.title}}</text>
       <view class="news-info">

@@ -171,7 +171,7 @@ Page({
                 title: this.data.content.title,
                 copyfrom: this.data.content.copyfrom,
                 content: JSON.stringify(tempArr),
-                way: 'add',
+                way: 'tijiao',
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
