@@ -285,6 +285,9 @@ Page({
                             }, {
                                 "type": "add",
                                 "show": false
+                            },{
+                                "type":"text",
+                                "value":""
                             }];
                         }
 
@@ -303,6 +306,9 @@ Page({
                         }, {
                             "type": "add",
                             "show": false
+                        },{
+                            "type":"text",
+                            "value":""
                         }];
                         tempRarr = tempRarr.concat(tempObj);
                     }
@@ -312,7 +318,12 @@ Page({
                     if (dataArr[i+1].type == "add") {
                         var tempRarr = [dataArr[i]];
                     } else {
-                        var tempRarr = [dataArr[i],addObj];
+                        var tempRarr = [
+                            dataArr[i],
+                            addObj,{
+                                "type":"text",
+                                "value":""
+                            }];
 
                     }
 
@@ -330,13 +341,21 @@ Page({
                         }, {
                             "type": "add",
                             "show": false
+                        },{
+                            "type":"text",
+                            "value":""
                         }];
                         tempRarr = tempRarr.concat(tempObj);
                     }
                     resultArr = resultArr.concat(tempRarr);
 
                 } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
-                    var tempRarr = [dataArr[i],addObj];
+                    var tempRarr = [
+                        dataArr[i],
+                        addObj,{
+                            "type":"text",
+                            "value":""
+                        }];
                     resultArr = resultArr.concat(tempRarr)
                 }
             }
