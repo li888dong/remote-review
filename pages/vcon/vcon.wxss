@@ -1,8 +1,6 @@
 /* pages/content/content.wxss */
 page {
-    display: block;
-    min-height: 100%;
-    background-color: #f6f6f6;
+    padding-bottom: 120rpx;
 }
 .content-reason {
     padding: 10rpx 30rpx 20rpx;
