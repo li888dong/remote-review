@@ -40,6 +40,8 @@
         <view class="media-add-area" wx:if="{{item.show}}">
           <view class="img-add" bindtap="uploadImg" data-cidx="{{idx}}"></view>
           <view class="video-add" bindtap="uploadVd" data-cidx="{{idx}}"></view>
+                    <view class="del-btn" bindtap="delMedia" data-cidx="{{idx}}"></view>
+
         </view>
       </view>
     </view>

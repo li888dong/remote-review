@@ -7,7 +7,9 @@ page {
     width: 100%;
     background:#ffffff;
     justify-content: space-around;
-
+    position: fixed;
+    top:0;
+    left:0;
 }
 .tab-btn {
     width:200rpx;
@@ -23,7 +25,9 @@ page {
 .tab-btn.current-tab {
     border-bottom: 7rpx solid #3177B4;
 }
-
+.list {
+    margin-top: 110rpx;
+}
 .news-item {
     padding:0 32rpx;
 }
