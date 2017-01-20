@@ -202,6 +202,10 @@ Page({
     setCate: function (e) {
         var tmp = e.detail.value;
         this.setData({
+            subindex: tmp
+        });
+
+        this.setData({
             currentCate: this.data.selection[tmp].catid
         });
         this.setData({
@@ -210,6 +214,9 @@ Page({
     },
     setSu: function (e) {
         var tmp = e.detail.value;
+        this.setData({
+            suindex: tmp
+        });
         this.setData({
             sucheck: this.data.sucheckers[tmp].userid
         });
@@ -327,6 +334,7 @@ Page({
                                 userid: that.data.sucheck
                             },
                             success: function (res) {
+                                console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
                                         title: '提示',
