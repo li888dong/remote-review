@@ -1,10 +1,9 @@
-//index.js
-//获取应用实例
+
 var app = getApp();
 Page({
     data: {
         motto: '河南手机报远程发稿系统',
-        userInfo: {},
+        userInfo: {}
     },
     //事件处理函数
     bindViewTap: function () {
@@ -14,7 +13,7 @@ Page({
     },
     bindListTap: function () {
         wx.navigateTo({
-            url: '../ckcon/ckcon'
+            url: '../list/list'
         })
     },
     onLoad: function () {

@@ -31,7 +31,7 @@
             </block>
 
             <block wx:else>
-                        <view class="reject news-item" hover="true" hover-class="news-item-hover" bindtap="ckNews" data-newsid="{{item.id}}">
+                        <view class="news-item" hover="true" hover-class="news-item-hover" bindtap="ckNews" data-newsid="{{item.id}}">
                                 <view class="news-inner">
                                 <text class="news-title">{{item.title}}</text>
                                 <view class="news-info">

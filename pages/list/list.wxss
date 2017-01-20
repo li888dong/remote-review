@@ -1,7 +1,4 @@
 page {
-    display: block;
-    min-height: 100%;
-    background-color: #f6f6f6;
     padding-bottom: 120rpx;
 }
 .tabbar {
@@ -10,7 +7,6 @@ page {
     width: 100%;
     background:#ffffff;
     justify-content: space-around;
-
 }
 .tab-btn {
     width:200rpx;
