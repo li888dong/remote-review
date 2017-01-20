@@ -4,7 +4,7 @@ Page({
     data: {
         content: {
             title: '文章标题',
-            content: [{"type": "text", "value": "测试内容"},{"type": "image", "value": "https://www.hnsjb.cn/static/img/2017henanconference/middle-banner.png","title":"大决战"}],
+            content: [],
             copyfrom: '新闻来源'
         }
     },
@@ -147,6 +147,31 @@ Page({
                 copyfrom:this.data.content.copyfrom,
                 content: JSON.stringify(tempArr),
                 way:'zancun',
+                sessid: wx.getStorageSync('sessid')
+            },
+            success: function (res) {
+                console.log(res)
+            }
+        });
+
+    },
+    pushContent: function () {
+        console.log(this.data.content);
+        var tempArr = [];
+        for (var i = 0; i < this.data.content.content.length; i++) {
+            if (this.data.content.content[i].type != 'add') {
+                tempArr.push(this.data.content.content[i])
+            }
+        }
+        wx.request({
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=add',
+            method: 'post',
+            header: {"content-type": "application/x-www-form-urlencoded"},
+            data: {
+                title: this.data.content.title,
+                copyfrom: this.data.content.copyfrom,
+                content: JSON.stringify(tempArr),
+                way: 'add',
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {

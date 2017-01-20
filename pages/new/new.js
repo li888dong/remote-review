@@ -134,7 +134,6 @@ Page({
     },
     getContent: function () {
         console.log(this.data.content);
-
         var tempArr = [];
         for (var i = 0; i < this.data.content.content.length; i++) {
             if (this.data.content.content[i].type != 'add') {
@@ -153,7 +152,56 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                console.log(res)
+                console.log(res);
+                if (res.data.status == '1') {
+                    wx.showModal({
+                        title: '提示',
+                        showCancel: false,
+                        content: '提交成功',
+                        complete: function (res) {
+                            wx.redirectTo({
+                                url: '../list/list'   //todo:change redirect url
+                            })
+                        }
+                    })
+                }
+            }
+        });
+
+    },
+    pushContent: function () {
+        console.log(this.data.content);
+        var tempArr = [];
+        for (var i = 0; i < this.data.content.content.length; i++) {
+            if (this.data.content.content[i].type != 'add') {
+                tempArr.push(this.data.content.content[i])
+            }
+        }
+        wx.request({
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=add',
+            method: 'post',
+            header: {"content-type": "application/x-www-form-urlencoded"},
+            data: {
+                title: this.data.content.title,
+                copyfrom: this.data.content.copyfrom,
+                content: JSON.stringify(tempArr),
+                way: 'add',
+                sessid: wx.getStorageSync('sessid')
+            },
+            success: function (res) {
+                console.log(res);
+                if (res.data.status == '1') {
+                    wx.showModal({
+                        title: '提示',
+                        showCancel: false,
+                        content: '提交成功',
+                        complete: function (res) {
+                            wx.redirectTo({
+                                url: '../list/list'   //todo:change redirect url
+                            })
+                        }
+                    })
+                }
             }
         });
 

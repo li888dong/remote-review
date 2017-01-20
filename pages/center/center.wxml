@@ -49,4 +49,8 @@
     </label>
   </radio-group>
 
+    <view class="padding-area">
+        <button type="warn" plain="true" bindtap="logout">退出登录</button>
+    </view>
+
 </view>

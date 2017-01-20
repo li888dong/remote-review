@@ -1,9 +1,7 @@
 .center-page {
     width:100%;
-    background: #f6f6f6;
     padding-top:30rpx;
-    box-sizing: border-box;
-    height:100vh;
+    padding-bottom: 120rpx;
 }
 .userinfo {
     width:100%;
@@ -106,5 +104,11 @@
     height:100rpx;
     padding-left:30rpx;
     line-height: 100rpx;
+}
+.padding-area {
+    margin-top: 30rpx;
+    padding:0 30rpx;
+    width:100%;
+    box-sizing: border-box;
 }
 

@@ -92,5 +92,20 @@ Page({
         });
 
         // console.log(this.data.roles[e.detail.value]);
+    },
+    logout:function() {
+        wx.request({
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=logout',
+            method:'post',
+            header: {"content-type": "application/x-www-form-urlencoded"},
+            data: {
+                sessid: wx.getStorageSync('sessid')
+            },
+            success:function(response) {
+                wx.redirectTo({
+                  url: '../login/login'
+                })
+            }
+        });
     }
 });
