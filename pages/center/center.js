@@ -6,6 +6,7 @@ Page({
         userInfo: {},
         loading: false,
         roles:[
+            {roleid:36,rolename:'总值班'},
             {roleid:37,rolename:'记者'},
             {roleid:38,rolename:'编辑'}
         ],
