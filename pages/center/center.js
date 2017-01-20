@@ -102,9 +102,11 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success:function(response) {
-                wx.redirectTo({
-                  url: '../login/login'
-                })
+                if (response.data.status == 1) {
+                    wx.redirectTo({
+                        url: '../login/login'
+                    })
+                }
             }
         });
     }
