@@ -28,7 +28,7 @@ Page({
         })
     },
     onLoad: function () {
-        if (wx.getStorageSync('sessid') == '') {
+        if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
             })
@@ -88,7 +88,7 @@ Page({
     },
     onShow:function() {
 
-        if (wx.getStorageSync('sessid') == '') {
+        if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
             })

@@ -121,3 +121,10 @@ page {
     margin:auto;
     margin-bottom: 7rpx;
 }
+.save-btn {
+    flex:auto;
+    background: url("https://www.hnsjb.cn/static/img/wx/save.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+    margin:auto;
+    margin-bottom: 7rpx;
+}

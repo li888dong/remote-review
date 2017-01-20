@@ -168,7 +168,7 @@ page {
 }
 .bottom-area view {
     font-size: 24rpx;
-    height:100%;
+    text-align: center;
 }
 .edit {
     color: #3098E5;

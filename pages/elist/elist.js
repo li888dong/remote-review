@@ -30,7 +30,7 @@ Page({
         })
     },
     onLoad: function () {
-        if (wx.getStorageSync('sessid') == '') {
+        if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
             })
@@ -80,7 +80,7 @@ Page({
         // 页面渲染完成
     },
     onShow: function () {
-        if (wx.getStorageSync('sessid') == '') {
+        if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
             })

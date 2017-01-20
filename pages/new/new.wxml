@@ -4,9 +4,13 @@
 <view class="bottom-area">
           <view class="insert" bindtap="getArray">
               <view class="r-btn insert-btn"></view>
-              插入多媒体
+              插图
           </view>
           <view class="submit" bindtap="getContent">
+                        <view class="r-btn save-btn"></view>
+                        暂存
+                    </view>
+          <view class="submit" bindtap="pushContent">
               <view class="r-btn submit-btn"></view>
               提交
           </view>
@@ -38,6 +42,7 @@
         <view class="media-add-area" wx:if="{{item.show}}">
           <view class="img-add" bindtap="uploadImg" data-cidx="{{idx}}"></view>
           <view class="video-add" bindtap="uploadVd" data-cidx="{{idx}}"></view>
+          <view class="btn-del" bindtap="delMedia" data-cidx="{{idx}}"></view>
         </view>
       </view>
     </view>

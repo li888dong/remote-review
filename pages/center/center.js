@@ -102,7 +102,7 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success:function(response) {
-                wx.removeStorageSync('sessid');
+                wx.removeStorageSync('xjuser');
                 if (response.data.status == 1) {
                     wx.redirectTo({
                         url: '../login/login'
