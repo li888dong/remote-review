@@ -46,12 +46,15 @@
     height:85rpx;
     width:690rpx;
     border-radius: 10rpx;
-    background: #ffffff;
     border:1rpx solid #DBDBDB;
     color: #969696;
-    text-align: center;
     line-height:85rpx;
     font-size: 36rpx;
+    background: url("https://www.hnsjb.cn/static/img/wx/search.png") center center no-repeat,#ffffff;
+    background-size: 37rpx 37rpx;
+    background-position-x: 277rpx;
+    padding-left: 339rpx;
+    box-sizing: border-box;
 }
 
 .user-stat {

@@ -28,6 +28,11 @@ Page({
         })
     },
     onLoad: function () {
+        if (wx.getStorageSync('sessid') == '') {
+            wx.redirectTo({
+                url: '../login/login'
+            })
+        }
         var roleid = wx.getStorageSync('xjuser').roleid;
 
         if (roleid != '37') {
@@ -82,6 +87,13 @@ Page({
 
     },
     onShow:function() {
+
+        if (wx.getStorageSync('sessid') == '') {
+            wx.redirectTo({
+                url: '../login/login'
+            })
+        }
+
         var roleid = wx.getStorageSync('xjuser').roleid;
 
         if (roleid != '37') {

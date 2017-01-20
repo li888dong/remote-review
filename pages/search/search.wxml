@@ -1,5 +1,7 @@
 <view class="input-container">
+<view class="input-area">
     <input placeholder="请输入搜索内容" bindconfirm="search" bindblur="search" auto-focus/>
+</view>
     <view class="back" bindtap="backCenter">取消</view>
 </view>
 <view class="list" >

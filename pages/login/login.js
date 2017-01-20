@@ -69,9 +69,16 @@ Page({
                 console.log(response);
                 if (response.data.status ==1 ) {
                     wx.setStorageSync('xjuser',response.data.data);
-                    wx.navigateTo({
-                      url: '../index/index'
-                    })
+                    if (response.data.data.roleid == '37') {
+                        wx.navigateTo({
+                            url: '../list/list'
+                        })
+                    } else {
+                        wx.navigateTo({
+                            url: '../elist/elist'
+                        })
+                    }
+
                 } else if (response.data.status == 0) {
                     wx.showModal({
                         title: '提示',

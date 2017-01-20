@@ -30,6 +30,11 @@ Page({
         })
     },
     onLoad: function () {
+        if (wx.getStorageSync('sessid') == '') {
+            wx.redirectTo({
+                url: '../login/login'
+            })
+        }
         console.log('onLoad');
 
         var roleid = wx.getStorageSync('xjuser').roleid;
@@ -75,6 +80,11 @@ Page({
         // 页面渲染完成
     },
     onShow: function () {
+        if (wx.getStorageSync('sessid') == '') {
+            wx.redirectTo({
+                url: '../login/login'
+            })
+        }
         // 页面显示
         var roleid = wx.getStorageSync('xjuser').roleid;
 

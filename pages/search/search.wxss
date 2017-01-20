@@ -3,17 +3,26 @@
     padding:0 30rpx;
     display: flex;
     font-size: 36rpx;
+
 }
-.input-container input {
+
+.input-area {
     width:590rpx;
     height:85rpx;
     padding-left: 93rpx;
     line-height:85rpx;
     color: #222222;
-    background: #ffffff;
     border-radius: 10rpx;
     border:1rpx solid #DBDBDB;
     box-sizing: border-box;
+    background: url("https://www.hnsjb.cn/static/img/wx/search.png") left center no-repeat,#ffffff;
+    background-size: 37rpx 37rpx;
+    background-position-x: 30rpx;
+}
+input {
+    width:500rpx;
+    height:85rpx;
+    line-height:85rpx;
 }
 .back {
     text-align: center;
