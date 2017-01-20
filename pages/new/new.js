@@ -211,23 +211,24 @@ Page({
         var data = {};
         data['content.content[' + cidx + '].value'] = e.detail.value; // key 可以是任何字符串
         this.setData(data);
-        console.log(e);
+        // console.log(e);
     },
     setTitle: function (e) {
         var cidx = e.target.dataset.cidx;
         var data = {};
         data['content.content[' + cidx + '].title'] = e.detail.value; // key 可以是任何字符串
         this.setData(data);
-        console.log(e);
+        // console.log(e);
     },
     showFuns: function (e) {
         var cidx = e.target.dataset.cidx;
         var data = {};
         data['content.content[' + cidx + '].show'] = true; // key 可以是任何字符串
         this.setData(data);
-        console.log(e);
+        // console.log(e);
     },
     setProp: function (e) {
+        console.log(e);
         var prop = e.target.dataset.prop;
         var data = {};
         data['content.' + prop] = e.detail.value; // key 可以是任何字符串

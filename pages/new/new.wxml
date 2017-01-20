@@ -18,7 +18,7 @@
 
 
   <view class="prop-container">
-    <textarea class="input" auto-height placeholder="文章标题" maxlength="-1" data-prop="title" bindblur="setProp" value="{{content.title}}" />
+    <textarea class="input" auto-height placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>
   <view class="prop-container content-container">
     <view class="input">正文</view>
@@ -48,7 +48,7 @@
     </view>
   </view>
   <view class="prop-container">
-    <textarea class="input" auto-height value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindblur="setProp"></textarea>
+    <textarea class="input" auto-height value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
   </view>
 
 </view>
