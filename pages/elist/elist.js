@@ -1,4 +1,6 @@
 // pages/elist/elist.js
+let app = getApp();
+
 Page({
     data: {
         tab: '2',
@@ -30,6 +32,7 @@ Page({
         })
     },
     onLoad: function () {
+        new app.WeToast();
         if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
@@ -37,7 +40,7 @@ Page({
         }
         console.log('onLoad');
 
-        var roleid = wx.getStorageSync('xjuser').roleid;
+        let roleid = wx.getStorageSync('xjuser').roleid;
 
         if (roleid == '37') {
             wx.redirectTo({
@@ -45,7 +48,11 @@ Page({
             })
         }
 
-        var that = this;
+        let that = this;
+        that.wetoast.toast({
+            title: '加载中',
+            duration:0
+        });
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
             method: 'post',
@@ -71,6 +78,7 @@ Page({
                 that.setData({
                     yishenhe: res.data
                 });
+                that.wetoast.hide();
                 console.log(res.data)
             }
         });
@@ -81,7 +89,7 @@ Page({
     },
     onPullDownRefresh: function() {
         // Do something when pull down.
-        var that = this;
+        let that = this;
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
             method: 'post',
@@ -119,7 +127,7 @@ Page({
             })
         }
         // 页面显示
-        var roleid = wx.getStorageSync('xjuser').roleid;
+        let roleid = wx.getStorageSync('xjuser').roleid;
 
         if (roleid == '37') {
             wx.redirectTo({
@@ -127,7 +135,7 @@ Page({
             })
         }
 
-        var that = this;
+        let that = this;
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
             method: 'post',

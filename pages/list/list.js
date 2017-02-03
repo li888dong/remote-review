@@ -1,3 +1,4 @@
+let app = getApp();
 Page({
     data: {
         tab: '1',
@@ -24,7 +25,7 @@ Page({
     },
 
     onPullDownRefresh: function() {
-        var that = this;
+        let that = this;
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=newslist&status=caogaoxiang&offset=0&num=100', //仅为示例，并非真实的接口地址
             method:'post',
@@ -72,12 +73,13 @@ Page({
     },
 
     onLoad: function () {
+        new app.WeToast();
         if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
             })
         }
-        var roleid = wx.getStorageSync('xjuser').roleid;
+        let roleid = wx.getStorageSync('xjuser').roleid;
 
         if (roleid != '37') {
             wx.redirectTo({
@@ -85,7 +87,11 @@ Page({
             })
         }
         console.log('onLoad');
-        var that = this;
+        let that = this;
+        that.wetoast.toast({
+            title: '加载中',
+            duration:0
+        });
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=newslist&status=caogaoxiang&offset=0&num=100', //仅为示例，并非真实的接口地址
             method:'post',
@@ -125,6 +131,7 @@ Page({
                 that.setData({
                     yishenhe: res.data
                 });
+                that.wetoast.hide();
                 console.log(res.data)
             }
         });
@@ -138,7 +145,7 @@ Page({
             })
         }
 
-        var roleid = wx.getStorageSync('xjuser').roleid;
+        let roleid = wx.getStorageSync('xjuser').roleid;
 
         if (roleid != '37') {
             wx.redirectTo({

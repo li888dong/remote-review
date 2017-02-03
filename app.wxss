@@ -19,3 +19,10 @@ page {
     height:50rpx;
     border-radius: 50%;
 }
+.empty-item {
+    height:100rpx;
+    width:100%;
+    text-align: center;
+    line-height: 100rpx;
+    color: #9b9b9b;
+}

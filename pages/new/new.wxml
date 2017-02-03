@@ -47,6 +47,8 @@
   <view class="prop-container">
     <textarea class="input" auto-height value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
   </view>
+<import src="../../src/wetoast.wxml"/>
 
+    <template is="wetoast" data="{{...__wetoast__}}"/>
 
 </view>

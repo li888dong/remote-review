@@ -16,6 +16,9 @@
         </view>
       </view>
     </block>
+    <view wx-if="{{caogaoxiang.length == 0}}" class="empty-item">
+            该类别下暂无内容
+        </view>
   </view>
   <view class="list" wx:elif="{{tab == '2'}}">
     <block wx:for="{{shenhezhong}}">
@@ -29,6 +32,9 @@
         </view>
       </view>
     </block>
+    <view wx-if="{{shenhezhong.length == 0}}" class="empty-item">
+            该类别下暂无内容
+        </view>
   </view>
   <view class="list" wx:elif="{{tab == '3'}}">
     <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-newsid="{{item.id}}">
@@ -39,6 +45,9 @@
           <view class="news-author">{{item.author}}</view>
         </view>
       </view>
+    </view>
+    <view wx-if="{{yishenhe.length == 0}}" class="empty-item">
+        该类别下暂无内容
     </view>
   </view>
   <view class="bottom-area">
@@ -51,4 +60,8 @@
       个人中心
     </navigator>
   </view>
+
+  <import src="../../src/wetoast.wxml"/>
+
+      <template is="wetoast" data="{{...__wetoast__}}"/>
 </view>
