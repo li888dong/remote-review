@@ -1,12 +1,11 @@
 <view class="list-page">
-
-<view class="list" >
-<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{trash}}" bindtap="gotoNews" data-newsid="{{item.id}}">
-<text class="news-title">{{item.title}}</text>
-<view class="news-info">
-<view class="news-time">{{item.time}}</view>
-<view class="news-author">{{item.author}}</view>
-</view>
-</view>
-</view>
+  <view class="list">
+    <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{trash}}" bindtap="gotoNews" data-newsid="{{item.id}}">
+      <text class="news-title">{{item.title}}</text>
+      <view class="news-info">
+        <view class="news-time">{{item.time}}</view>
+        <view class="news-author">{{item.username}}</view>
+      </view>
+    </view>
+  </view>
 </view>

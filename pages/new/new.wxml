@@ -1,22 +1,19 @@
-
 <view>
 
-<view class="bottom-area">
-          <view class="insert" bindtap="getArray">
-              <view class="r-btn insert-btn"></view>
-              插图
-          </view>
-          <view class="submit" bindtap="getContent">
-                        <view class="r-btn save-btn"></view>
-                        暂存
-                    </view>
-          <view class="submit" bindtap="pushContent">
-              <view class="r-btn submit-btn"></view>
-              提交
-          </view>
-      </view>
-
-
+  <view class="bottom-area">
+    <view class="insert" bindtap="getArray">
+      <view class="r-btn insert-btn"></view>
+      插图
+    </view>
+    <view class="submit" bindtap="getContent">
+      <view class="r-btn save-btn"></view>
+      暂存
+    </view>
+    <view class="submit" bindtap="pushContent">
+      <view class="r-btn submit-btn"></view>
+      提交
+    </view>
+  </view>
   <view class="prop-container">
     <textarea class="input" auto-height placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>
@@ -24,7 +21,7 @@
     <view class="input">正文</view>
     <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">
       <view wx:if="{{item.type == 'text'}}">
-        <textarea auto-height placeholder="新闻内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindblur="setText" value="{{item.value}}" />
+        <textarea auto-height placeholder="新闻内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindconfirm="setText" bindblur="setText" value="{{item.value}}" />
       </view>
       <view wx:elif="{{item.type == 'image'}}" class="content-media">
         <image style="width: 155rpx; height: 155rpx; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
@@ -50,5 +47,6 @@
   <view class="prop-container">
     <textarea class="input" auto-height value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
   </view>
+
 
 </view>

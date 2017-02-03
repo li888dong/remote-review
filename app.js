@@ -1,13 +1,14 @@
 //app.js
+let {WeToast} = require('src/wetoast.js');
 App({
     onLaunch: function () {
         //调用API从本地缓存中获取数据
-        var logs = wx.getStorageSync('logs') || [];
+        let logs = wx.getStorageSync('logs') || [];
         logs.unshift(Date.now());
         wx.setStorageSync('logs', logs)
     },
     getUserInfo: function (cb) {
-        var that = this;
+        let that = this;
         if (this.globalData.userInfo) {
             typeof cb == "function" && cb(this.globalData.userInfo)
         } else {
@@ -27,7 +28,7 @@ App({
                                 console.log(response);
                                 wx.setStorageSync('sessid', response.data.sessid);
                                 if (response.data.status == 0) {
-                                    wx.navigateTo({
+                                    wx.redirectTo({
                                         url: '../login/login'
                                     })
                                 }
@@ -49,5 +50,6 @@ App({
     },
     globalData: {
         userInfo: null
-    }
+    },
+    WeToast
 });

@@ -1,6 +1,9 @@
 page {
     padding-bottom: 120rpx;
 }
+.list-page {
+    margin-top: 110rpx;
+}
 .tabbar {
     display: flex;
     flex-direction: row;
@@ -25,9 +28,7 @@ page {
 .tab-btn.current-tab {
     border-bottom: 7rpx solid #3177B4;
 }
-.list {
-    margin-top: 110rpx;
-}
+
 .news-item {
     padding:0 32rpx;
 }

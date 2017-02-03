@@ -1,57 +1,63 @@
 .input-container {
-    margin-top: 30rpx;
-    padding:0 30rpx;
-    display: flex;
-    font-size: 36rpx;
-
+  margin-top: 30rpx;
+  padding: 0 30rpx;
+  display: flex;
+  font-size: 36rpx;
 }
 
 .input-area {
-    width:590rpx;
-    height:85rpx;
-    padding-left: 93rpx;
-    line-height:85rpx;
-    color: #222222;
-    border-radius: 10rpx;
-    border:1rpx solid #DBDBDB;
-    box-sizing: border-box;
-    background: url("https://www.hnsjb.cn/static/img/wx/search.png") left center no-repeat,#ffffff;
-    background-size: 37rpx 37rpx;
-    background-position-x: 30rpx;
+  width: 590rpx;
+  height: 85rpx;
+  padding-left: 93rpx;
+  line-height: 85rpx;
+  color: #222;
+  border-radius: 10rpx;
+  border: 1rpx solid #dbdbdb;
+  box-sizing: border-box;
+  background: url("https://www.hnsjb.cn/static/img/wx/search.png") left center no-repeat, #fff;
+  background-size: 37rpx 37rpx;
+  background-position-x: 30rpx;
 }
-input {
-    width:500rpx;
-    height:85rpx;
-    line-height:85rpx;
-}
-.back {
-    text-align: center;
-    color: #F82212;
-    width:100rpx;
-    line-height: 85rpx;
-}
-.news-item {
-    padding:30rpx 32rpx 0;
-}
-.news-item-hover {
-    background: #E3E3E3;
-}
-.news-title {
-    color:#4a4a4a;
-    font-size: 40rpx;
-    line-height: 1.4;
-}
-.news-info {
-    color: #B9B9B9;
-    font-size: 28rpx;
-    margin-top: 26rpx;
-    border-bottom: 1rpx solid #E3E3E3;
-    padding-bottom: 30rpx;
-}
-.news-time,.news-author {
-    display: inline-block;
 
+input {
+  width: 500rpx;
+  height: 85rpx;
+  line-height: 85rpx;
 }
+
+.back {
+  text-align: center;
+  color: #f82212;
+  width: 100rpx;
+  line-height: 85rpx;
+}
+
+.news-item {
+  padding: 30rpx 32rpx 0;
+}
+
+.news-item-hover {
+  background: #e3e3e3;
+}
+
+.news-title {
+  color: #4a4a4a;
+  font-size: 40rpx;
+  line-height: 1.4;
+}
+
+.news-info {
+  color: #b9b9b9;
+  font-size: 28rpx;
+  margin-top: 26rpx;
+  border-bottom: 1rpx solid #e3e3e3;
+  padding-bottom: 30rpx;
+}
+
+.news-time, .news-author {
+  display: inline-block;
+}
+
 .news-author {
-    margin-left:30rpx;
+  margin-left: 30rpx;
 }

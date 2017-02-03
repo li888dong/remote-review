@@ -23,7 +23,7 @@ Page({
         suindex: 0
     },
     onLoad: function (options) {
-        var that = this;
+        let that = this;
         // 页面初始化 options为页面跳转所带来的参数
         console.log(options);
         this.setData({
@@ -44,7 +44,7 @@ Page({
                     workflow: res.data
                 });
                 that.setData({
-                    linelength: (res.data.length - 1) * 40
+                    lineLength: (res.data.length - 1) * 100
                 });
                 console.log(res.data)
             }
@@ -58,7 +58,7 @@ Page({
             },
             success: function (res) {
 
-                var tempArr = res.data;
+                let tempArr = res.data;
                 tempArr['content'] = JSON.parse(tempArr['content']) ;
                 that.setData({
                     content: tempArr
@@ -122,7 +122,7 @@ Page({
         // 页面关闭
     },
     openOp: function (e) {
-        var opid = e.target.dataset.opid;
+        let opid = e.target.dataset.opid;
         this.setData({
             optionopen: opid
         })
@@ -138,7 +138,7 @@ Page({
         })
     },
     rejectNews: function () {
-        var that = this;
+        let that = this;
         if (this.data.rejectreason == '') {
             wx.showModal({
                 title: '提示',
@@ -156,6 +156,8 @@ Page({
                     if (res.confirm) {
                         wx.request({
                             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=reject",
+                            method: 'post',
+                            header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
@@ -163,14 +165,15 @@ Page({
                                 typefrom: that.data.editorauth
                             },
                             success: function (res) {
+                                console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
                                         title: '提示',
                                         showCancel: false,
                                         content: '驳回成功',
                                         complete: function (res) {
-                                            wx.redirectTo({
-                                                url: '../list/list'   //todo:change redirect url
+                                            wx.navigateBack({
+                                                delta: 1
                                             })
                                         }
                                     })
@@ -187,7 +190,7 @@ Page({
 
     },
     changeSelection: function (e) {
-        var tmp = e.detail.value;
+        let tmp = e.detail.value;
         this.setData({
             mainindex: tmp
         });
@@ -200,7 +203,7 @@ Page({
         })
     },
     setCate: function (e) {
-        var tmp = e.detail.value;
+        let tmp = e.detail.value;
         this.setData({
             subindex: tmp
         });
@@ -213,7 +216,7 @@ Page({
         })
     },
     setSu: function (e) {
-        var tmp = e.detail.value;
+        let tmp = e.detail.value;
         this.setData({
             suindex: tmp
         });
@@ -223,7 +226,7 @@ Page({
     },
     confirmNews: function () {
 
-        var that = this;
+        let that = this;
 
         if (this.data.currentCate == '') {
             wx.showModal({
@@ -251,6 +254,8 @@ Page({
                     if (res.confirm) {
                         wx.request({
                             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=pass",
+                            method: 'post',
+                            header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
@@ -258,14 +263,15 @@ Page({
                                 typefrom: that.data.editorauth
                             },
                             success: function (res) {
+                                console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
                                         title: '提示',
                                         showCancel: false,
                                         content: '已通过',
                                         complete: function (res) {
-                                            wx.redirectTo({
-                                                url: '../list/list'   //todo:change redirect url
+                                            wx.navigateBack({
+                                                delta: 1
                                             })
                                         }
                                     })
@@ -284,7 +290,7 @@ Page({
     forwardNews: function () {
         console.log(this.data);
 
-        var that = this;
+        let that = this;
 
         if (this.data.sucheck == '') {
             console.log('t1');
@@ -326,6 +332,8 @@ Page({
                     if (res.confirm) {
                         wx.request({
                             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=transcheck",
+                            method: 'post',
+                            header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
@@ -341,8 +349,8 @@ Page({
                                         showCancel: false,
                                         content: '已转审',
                                         complete: function (res) {
-                                            wx.redirectTo({
-                                                url: '../list/list'   //todo:change redirect url
+                                            wx.navigateBack({
+                                                delta: 1
                                             })
                                         }
                                     })
@@ -366,6 +374,8 @@ Page({
                 if (res.confirm) {
                     wx.request({
                         url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=pass",
+                        method: 'post',
+                        header: {"content-type": "application/x-www-form-urlencoded"},
                         data: {
                             sessid: wx.getStorageSync('sessid'),
                             id: that.data.cid,
@@ -373,14 +383,15 @@ Page({
                             typefrom: that.data.editorauth
                         },
                         success: function (res) {
+                            console.log(res);
                             if (res.data.status == 1) {
                                 wx.showModal({
                                     title: '提示',
                                     showCancel: false,
                                     content: '已通过',
                                     complete: function (res) {
-                                        wx.redirectTo({
-                                            url: '../list/list'   //todo:change redirect url
+                                        wx.navigateBack({
+                                            delta: 1
                                         })
                                     }
                                 })

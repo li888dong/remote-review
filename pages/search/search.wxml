@@ -1,11 +1,11 @@
 <view class="input-container">
-<view class="input-area">
+  <view class="input-area">
     <input placeholder="请输入搜索内容" bindconfirm="search" bindblur="search" auto-focus/>
+  </view>
+  <view class="back" bindtap="backCenter">取消</view>
 </view>
-    <view class="back" bindtap="backCenter">取消</view>
-</view>
-<view class="list" >
-<view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{result}}" bindtap="gotoNews" data-status="{{item.forbidden}}" data-newsid="{{item.id}}">
-<text class="news-title">{{item.title}}</text>
-</view>
+<view class="list">
+  <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{result}}" bindtap="gotoNews" data-status="{{item.forbidden}}" data-newsid="{{item.id}}">
+    <text class="news-title">{{item.title}}</text>
+  </view>
 </view>

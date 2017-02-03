@@ -1,28 +1,26 @@
+
 <!--pages/login/login.wxml-->
-
 <view class="login-page">
-<view class="avatar-container">
-<image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-</view>
-<view class="login-form">
-<form bindsubmit="formSubmit" bindreset="formReset">
-<view class="section">
-<view class="input-label">用户名</view>
-<view class="input">
-  <input name="username" placeholder="请输入用户名" type="text"  />
+  <view class="avatar-container">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
   </view>
-</view>
-<view class="section">
-<view class="input-label">密码</view>
-<view class="input">
-
-  <input name="password" password type="text" placeholder="请输入密码" />
-    </view>
-
-</view>
- <view class="btn-area">
-    <button formType="submit">登录</button>
+  <view class="login-form">
+    <form bindsubmit="formSubmit" bindreset="formReset">
+      <view class="section">
+        <view class="input-label">用户名</view>
+        <view class="input">
+          <input name="username" placeholder="请输入用户名" type="text" />
+        </view>
+      </view>
+      <view class="section">
+        <view class="input-label">密码</view>
+        <view class="input">
+          <input name="password" password type="text" placeholder="请输入密码" />
+        </view>
+      </view>
+      <view class="btn-area">
+        <button formType="submit">登录</button>
+      </view>
+    </form>
   </view>
-</form>
-</view>
 </view>

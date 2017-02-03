@@ -1,103 +1,120 @@
 page {
-    padding-bottom: 120rpx;
+  padding-bottom: 120rpx;
+}
+.list-page {
+    padding-top: 110rpx;
 }
 .tabbar {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    background:#ffffff;
-    justify-content: space-around;
-    position: fixed;
-    top:0;
-    left:0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background: #fff;
+  justify-content: space-around;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
-.tab-btn {
-    width:200rpx;
-    text-align: center;
-    height:100rpx;
-    line-height: 100rpx;
-    color:#353535;
-    font-size:34rpx;
-}
-.tab-btn:last-child {
-    border-right:none;
-}
-.tab-btn.current-tab {
-    border-bottom: 7rpx solid #3177B4;
-}
-.list {
-    margin-top: 110rpx;
-}
-.news-item {
-    padding:0 32rpx;
-}
-.news-item-hover {
-    background: #E3E3E3;
-}
-.news-title {
-    color:#4a4a4a;
-    font-size: 40rpx;
-    line-height: 1.4;
-}
-.news-inner {
-    padding-top: 30rpx;
 
-    border-bottom: 1rpx solid #E3E3E3;
+.tab-btn {
+  width: 200rpx;
+  text-align: center;
+  height: 100rpx;
+  line-height: 100rpx;
+  color: #353535;
+  font-size: 34rpx;
 }
+
+.tab-btn:last-child {
+  border-right: none;
+}
+
+.tab-btn.current-tab {
+  border-bottom: 7rpx solid #3177b4;
+}
+
+
+
+.news-item {
+  padding: 0 32rpx;
+}
+
+.news-item-hover {
+  background: #e3e3e3;
+}
+
+.news-title {
+  color: #4a4a4a;
+  font-size: 40rpx;
+  line-height: 1.4;
+}
+
+.news-inner {
+  padding-top: 30rpx;
+  border-bottom: 1rpx solid #e3e3e3;
+}
+
 .reject.news-item .news-inner {
-    padding-left: 80rpx;
-    background: url("https://www.hnsjb.cn/static/img/wx/warn.png") left center no-repeat;
-    background-size: 50rpx 50rpx;
+  padding-left: 80rpx;
+  background: url("https://www.hnsjb.cn/static/img/wx/warn.png") left center no-repeat;
+  background-size: 50rpx 50rpx;
 }
+
 .forward.news-item .news-inner {
-    padding-left: 80rpx;
-    background: url("https://www.hnsjb.cn/static/img/wx/trans.png") left center no-repeat;
-    background-size: 50rpx 50rpx;
+  padding-left: 80rpx;
+  background: url("https://www.hnsjb.cn/static/img/wx/trans.png") left center no-repeat;
+  background-size: 50rpx 50rpx;
 }
+
 .news-info {
-    color: #B9B9B9;
-    font-size: 28rpx;
-    margin-top: 26rpx;
-    padding-bottom: 30rpx;
+  color: #b9b9b9;
+  font-size: 28rpx;
+  margin-top: 26rpx;
+  padding-bottom: 30rpx;
 }
-.news-time,.news-author {
-    display: inline-block;
+
+.news-time, .news-author {
+  display: inline-block;
 }
+
 .news-author {
-    margin-left:30rpx;
+  margin-left: 30rpx;
 }
+
 .bottom-area {
-    position: fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    background: #F8F8FA;
-    height:106rpx;
-    border-top: 1rpx solid rgba(0,0,0,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #f8f8fa;
+  height: 106rpx;
+  border-top: 1rpx solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
+
 .bottom-area navigator {
-    font-size: 24rpx;
-    text-align: center;
-    flex: 1;
-    height:100%;
-    padding-top: 15rpx;
-    color: #7F8389;
-    box-sizing: border-box;
+  font-size: 24rpx;
+  text-align: center;
+  flex: 1;
+  height: 100%;
+  padding-top: 15rpx;
+  color: #7f8389;
+  box-sizing: border-box;
 }
+
 .new-btn {
-    flex:auto;
-    background: url("https://www.hnsjb.cn/static/img/wx/new.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
-    margin:auto;
-    margin-bottom: 7rpx;
+  flex: auto;
+  background: url("https://www.hnsjb.cn/static/img/wx/new.png") center center no-repeat;
+  background-size: 50rpx 50rpx;
+  margin: auto;
+  margin-bottom: 7rpx;
 }
+
 .center-btn {
-    flex: auto;
-    background: url("https://www.hnsjb.cn/static/img/wx/center.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
-    margin: auto;
-    margin-bottom: 7rpx;
+  flex: auto;
+  background: url("https://www.hnsjb.cn/static/img/wx/center.png") center center no-repeat;
+  background-size: 50rpx 50rpx;
+  margin: auto;
+  margin-bottom: 7rpx;
 }

@@ -25,9 +25,9 @@ Page({
                     workflow: res.data
                 });
                 that.setData({
-                    linelength: (res.data.length - 1) * 40
+                    lineLength: (res.data.length - 1) * 100
                 });
-                // console.log(res.data)
+                console.log(res.data)
             }
         });
         wx.request({
@@ -70,6 +70,7 @@ Page({
         })
     },
     delNews: function () {
+        var that = this;
         wx.showModal({
             title: '确认删除',
             content: '您确定要删除这篇稿件吗？',
@@ -77,9 +78,11 @@ Page({
                 if (res.confirm) {
                     wx.request({
                         url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=delete",
+                        method: 'post',
+                        header: {"content-type": "application/x-www-form-urlencoded"},
                         data: {
                             sessid: wx.getStorageSync('sessid'),
-                            id: this.data.cid
+                            id: that.data.cid
                         },
                         success: function (res) {
                             if (res.data.status == 1) {
@@ -88,8 +91,8 @@ Page({
                                     showCancel: false,
                                     content: '删除成功',
                                     complete: function (res) {
-                                        wx.redirectTo({
-                                            url: '../list/list'
+                                        wx.navigateBack({
+                                            delta: 1
                                         })
                                     }
                                 })

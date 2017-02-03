@@ -6,11 +6,6 @@ Page({
         caogaoxiang: []
     },
     //事件处理函数
-    bindViewTap: function () {
-        wx.navigateTo({
-            url: '../logs/logs'
-        })
-    },
     changeTab: function (e) {
         console.log(e);
         this.setData({
@@ -69,7 +64,7 @@ Page({
                 that.setData({
                     yishenhe: res.data
                 });
-                console.log(res.data)
+                console.log(res.data);
                 wx.stopPullDownRefresh();
             }
         });
