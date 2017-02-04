@@ -7,7 +7,7 @@ Page({
         lineLength: 0
     },
     onLoad: function (options) {
-        var that = this;
+        let that = this;
         // 页面初始化 options为页面跳转所带来的参数
         console.log(options);
         this.setData({
@@ -38,7 +38,7 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                var tempArr = res.data;
+                let tempArr = res.data;
                 tempArr['content'] = JSON.parse(tempArr['content']) ;
                 that.setData({
                     content: tempArr
@@ -70,7 +70,7 @@ Page({
         })
     },
     delNews: function () {
-        var that = this;
+        let that = this;
         wx.showModal({
             title: '确认删除',
             content: '您确定要删除这篇稿件吗？',

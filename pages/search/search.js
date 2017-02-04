@@ -24,9 +24,9 @@ Page({
         })
     },
     search:function(e) {
-        var q = e.detail.value;
+        let q = e.detail.value;
         if (q != '') {
-            var that = this;
+            let that = this;
             wx.request({
                 url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=search&pattern=' + q, //仅为示例，并非真实的接口地址
                 method: 'post',

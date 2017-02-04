@@ -1,6 +1,6 @@
 // pages/center/center.js
 
-var app = getApp();
+let app = getApp();
 Page({
     data: {
         userInfo: {},
@@ -15,7 +15,7 @@ Page({
     },
     onLoad: function () {
         // 页面初始化 options为页面跳转所带来的参数
-        var that = this;
+        let that = this;
         //调用应用实例的方法获取全局数据
         app.getUserInfo(function (userInfo) {
             //更新数据
@@ -56,7 +56,7 @@ Page({
     },
     roleChange: function(e) {
         console.log('picker发送选择改变，携带值为', e.detail.value);
-        var that = this;
+        let that = this;
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=choose_role',
             method:'post',

@@ -320,14 +320,27 @@ Page({
     delMedia: function (e) {
         let cidx = e.target.dataset.cidx;
         let tempArr = this.data.content.content;
-        tempArr.splice(cidx, 1);
         console.log(tempArr);
+        console.log(tempArr.length);
+            tempArr.splice(cidx, 1);
+            console.log(tempArr);
+
+        console.log(tempArr.length);
+
         if (tempArr[cidx] != undefined) {
             if (util.mergeText(tempArr[cidx - 1], tempArr[cidx]) != 'noop') {
                 tempArr[cidx - 1] = util.mergeText(tempArr[cidx - 1], tempArr[cidx]);
                 tempArr.splice(cidx, 1);
             }
         }
+        for (let i = 0;i<tempArr.length;i++) {
+            if (tempArr[i].type == 'add') {
+                tempArr[i].show = false
+            }
+        }
+
+
+        console.log(tempArr);
         this.setData({
             "content.content": tempArr
         })
@@ -352,13 +365,14 @@ Page({
                     let tempRarr = [];
                     let tempArr = tempStr.split('\n');
                     for (let j = 0; j < tempArr.length; j++) {
-                        if (j == tempArr.length) {
-                            let tempObj = [{
+                        let tempObj = [];
+                        if (j == tempArr.length -1) {
+                             tempObj = [{
                                 "type": "text",
                                 "value": tempArr[j]
                             }];
                         } else {
-                            let tempObj = [{
+                             tempObj = [{
                                 "type": "text",
                                 "value": tempArr[j]
                             }, {
@@ -388,32 +402,42 @@ Page({
                     }
                     resultArr = resultArr.concat(tempRarr);
                 } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
-
+                    let tempRarr = [];
                     if (dataArr[i+1].type == "add") {
-                        let tempRarr = [dataArr[i]];
+                         tempRarr = [dataArr[i]];
                     } else {
-                        let tempRarr = [
-                            dataArr[i],
-                            addObj];
+                         tempRarr = [dataArr[i],addObj];
 
                     }
 
                     resultArr = resultArr.concat(tempRarr)
                 }
             } else {
+
+                console.log(i);
+
                 if (dataArr[i].type == "text" ) {
                     let tempStr = dataArr[i].value;
                     tempStr = tempStr.replace(/(\n)+/g,'\n');
                     let tempRarr = [];
                     let tempArr = tempStr.split('\n');
                     for (let j = 0; j < tempArr.length; j++) {
-                        let tempObj = [{
-                            "type": "text",
-                            "value": tempArr[j]
-                        }, {
-                            "type": "add",
-                            "show": false
-                        }];
+                        let tempObj = [];
+                        if (j == tempArr.length - 1) {
+                            tempObj = [{
+                                "type": "text",
+                                "value": tempArr[j]
+                            }];
+                        } else {
+                            tempObj = [{
+                                "type": "text",
+                                "value": tempArr[j]
+                            }, {
+                                "type": "add",
+                                "show": false
+                            }];
+                        }
+
                         tempRarr = tempRarr.concat(tempObj);
                     }
                     resultArr = resultArr.concat(tempRarr);
@@ -434,7 +458,7 @@ Page({
             resultArr = resultArr.concat([{"type":"text","value":""}]);
         }
 
-        // console.log(tempStr);
+        console.log(resultArr);
 
         this.setData({
             "content.content": resultArr

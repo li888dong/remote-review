@@ -18,8 +18,8 @@ Page({
     },
     onLoad: function () {
         console.log('onLoad');
-        var that = this;
-        var roleid = wx.getStorageSync('xjuser').roleid;
+        let that = this;
+        let roleid = wx.getStorageSync('xjuser').roleid;
 
         if (roleid == '37') {
             wx.redirectTo({

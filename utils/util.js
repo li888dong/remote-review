@@ -53,7 +53,7 @@ function mergeArray(arr) {
 
 
 function getArrayindx(key, array, factor) {
-    for (var i = 0; i < array.length; i++) {
+    for (let i = 0; i < array.length; i++) {
         if (key == array[i][factor]) {
             return i;
         } else {
