@@ -188,7 +188,11 @@ page {
   text-align: center;
     flex:1;
 }
-
+.edit {
+    height:100%;
+    padding-top: 25rpx;
+    box-sizing: border-box;
+}
 
 .edit-btn {
   flex: 1;

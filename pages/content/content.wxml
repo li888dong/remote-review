@@ -4,7 +4,7 @@
       <view class="r-btn edit-btn"></view>
       编辑
     </view>
-    <view class="del" hover="true" hover-class="hover-active" bindtap="delNews">
+    <view class="edit" hover="true" hover-class="hover-active" bindtap="delNews">
       <view class="r-btn del-btn"></view>
       删除
     </view>

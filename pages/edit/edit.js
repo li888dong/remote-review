@@ -192,11 +192,27 @@ Page({
             })
         } else {
             console.log(this.data.content);
-
             let tempArr = [];
-            for (let i = 0;i<this.data.content.content.length;i++) {
+            let tempBarr = [];
+
+            for (let i = 0; i < this.data.content.content.length; i++) {
                 if (this.data.content.content[i].type != 'add') {
                     tempArr.push(this.data.content.content[i])
+                }
+            }
+
+
+            for (let i = 0;i<tempArr.length;i++) {
+                if (i < tempArr.length -1 && tempArr[i].type == 'text' && tempArr [i+1].type == 'text') {
+                    tempArr[i+1].value = tempArr[i].value + '\n' + tempArr[i+1].value;
+                    tempArr[i].value = '';
+                }
+
+            }
+
+            for (let i = 0;i<tempArr.length;i++) {
+                if (tempArr[i].value != '') {
+                    tempBarr.push(tempArr[i])
                 }
             }
             wx.request({
@@ -206,7 +222,7 @@ Page({
                 data: {
                     title:this.data.content.title,
                     copyfrom:this.data.content.copyfrom,
-                    content: JSON.stringify(tempArr),
+                    content: JSON.stringify(tempBarr),
                     way:'zancun',
                     id:this.data.content.id,
                     sessid: wx.getStorageSync('sessid')
@@ -256,9 +272,26 @@ Page({
         } else {
             console.log(this.data.content);
             let tempArr = [];
+            let tempBarr = [];
+
             for (let i = 0; i < this.data.content.content.length; i++) {
                 if (this.data.content.content[i].type != 'add') {
                     tempArr.push(this.data.content.content[i])
+                }
+            }
+
+
+            for (let i = 0;i<tempArr.length;i++) {
+                if (i < tempArr.length -1 && tempArr[i].type == 'text' && tempArr [i+1].type == 'text') {
+                    tempArr[i+1].value = tempArr[i].value + '\n' + tempArr[i+1].value;
+                    tempArr[i].value = '';
+                }
+
+            }
+
+            for (let i = 0;i<tempArr.length;i++) {
+                if (tempArr[i].value != '') {
+                    tempBarr.push(tempArr[i])
                 }
             }
             wx.request({
@@ -268,7 +301,7 @@ Page({
                 data: {
                     title: this.data.content.title,
                     copyfrom: this.data.content.copyfrom,
-                    content: JSON.stringify(tempArr),
+                    content: JSON.stringify(tempBarr),
                     way: 'tijiao',
                     id:this.data.content.id,
                     sessid: wx.getStorageSync('sessid')
@@ -298,6 +331,7 @@ Page({
         data['content.content[' + cidx + '].value'] = e.detail.value; // key 可以是任何字符串
         this.setData(data);
         console.log(e);
+        this.sepText(cidx);
     },
     setTitle: function (e) {
         let cidx = e.target.dataset.cidx;
@@ -372,7 +406,12 @@ Page({
 
     },
     getArray: function () {
-        let dataArr = this.data.content.content;
+        let dataArr = [];
+        for (let i=0;i<this.data.content.content.length;i++) {
+            if (this.data.content.content[i].type != 'add') {
+                dataArr.push(this.data.content.content[i])
+            }
+        }
         console.log(dataArr);
         // let tempStr = this.data.content.content[0].value;
         let addObj = {
@@ -491,5 +530,108 @@ Page({
             "content.content": resultArr
         })
 
+    },
+    sepText: function (idx) {
+        console.log(idx);
+        let dataArr = this.data.content.content;
+        if (idx != 0 && idx != dataArr.length) {
+            let tempA = dataArr.slice(0, idx);
+            let tempB = dataArr.slice(idx + 1);
+            let resultArr = [];
+            let tempStr = dataArr[idx].value;
+            tempStr = tempStr.replace(/(\n)+/g, '\n');
+            let tempRarr = [];
+            let tempArr = tempStr.split('\n');
+            for (let j = 0; j < tempArr.length; j++) {
+                let tempObj = [];
+                if (j == tempArr.length - 1 && dataArr[idx + 1].type == 'add') {
+                    tempObj = [{
+                        "type": "text",
+                        "value": tempArr[j]
+                    }];
+                } else {
+                    tempObj = [{
+                        "type": "text",
+                        "value": tempArr[j]
+                    }, {
+                        "type": "add",
+                        "show": false
+                    }];
+                }
+
+                tempRarr = tempRarr.concat(tempObj);
+            }
+            resultArr = tempA.concat(tempRarr);
+            resultArr = resultArr.concat(tempB);
+            this.setData({
+                'content.content': resultArr
+            })
+        } else if (idx == 0) {
+            let tempB = dataArr.slice(idx + 1);
+            console.log(tempB);
+            let resultArr = [];
+            let tempStr = dataArr[idx].value;
+            tempStr = tempStr.replace(/(\n)+/g, '\n');
+            let tempRarr = [];
+            let tempArr = tempStr.split('\n');
+            for (let j = 0; j < tempArr.length; j++) {
+                let tempObj = [];
+                console.log(idx + 1);
+                if (j == tempArr.length - 1 && dataArr.length > 1 && dataArr[idx + 1].type == 'add') {
+                    tempObj = [{
+                        "type": "text",
+                        "value": tempArr[j]
+                    }];
+                } else {
+                    tempObj = [{
+                        "type": "text",
+                        "value": tempArr[j]
+                    }, {
+                        "type": "add",
+                        "show": false
+                    }];
+                }
+
+                tempRarr = tempRarr.concat(tempObj);
+            }
+            resultArr = tempRarr.concat(tempB);
+            console.log(resultArr);
+            this.setData({
+                'content.content': resultArr
+            })
+
+        } else {
+            let tempA = dataArr.slice(0, idx);
+            // let tempB = dataArr.slice(idx+1);
+            let resultArr = [];
+            let tempStr = dataArr[idx].value;
+            tempStr = tempStr.replace(/(\n)+/g, '\n');
+            let tempRarr = [];
+            let tempArr = tempStr.split('\n');
+            for (let j = 0; j < tempArr.length; j++) {
+                let tempObj = [];
+                if (j == tempArr.length - 1) {
+                    tempObj = [{
+                        "type": "text",
+                        "value": tempArr[j]
+                    }];
+                } else {
+                    tempObj = [{
+                        "type": "text",
+                        "value": tempArr[j]
+                    }, {
+                        "type": "add",
+                        "show": false
+                    }];
+                }
+
+                tempRarr = tempRarr.concat(tempObj);
+            }
+            resultArr = tempA.concat(tempRarr);
+            // resultArr = resultArr.concat(tempB);
+            this.setData({
+                'content.content': resultArr
+            })
+        }
     }
 });

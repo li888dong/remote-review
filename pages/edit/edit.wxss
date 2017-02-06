@@ -133,7 +133,11 @@ page {
     flex: 1;
 }
 
-
+.submit {
+    height:100%;
+    padding-top: 25rpx;
+    box-sizing: border-box;
+}
 
 .insert-btn {
     flex: auto;
@@ -168,6 +172,6 @@ page {
     background-size: 50rpx 50rpx;
 }
 .hover-active .save-btn {
-    background: url("https://www.hnsjb.cn/static/img/wx/save-btn.png") center center no-repeat;
+    background: url("https://www.hnsjb.cn/static/img/wx/save-hover.png") center center no-repeat;
     background-size: 50rpx 50rpx;
 }
