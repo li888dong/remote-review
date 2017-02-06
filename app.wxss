@@ -28,5 +28,5 @@ page {
 }
 .bottom-area .hover-active,.hover-active {
     color: #3098e5;
-    background: #e6e6e6;
+    background-color: rgba(0, 0, 0, 0.1);
 }

@@ -1,23 +1,15 @@
 // pages/search/search.js
+let app = getApp();
+
 Page({
     data: {
         results:[]
     },
-    onLoad: function (options) {
-        // 页面初始化 options为页面跳转所带来的参数
+    onLoad:function() {
+        new app.WeToast();
+
     },
-    onReady: function () {
-        // 页面渲染完成
-    },
-    onShow: function () {
-        // 页面显示
-    },
-    onHide: function () {
-        // 页面隐藏
-    },
-    onUnload: function () {
-        // 页面关闭
-    },
+
     backCenter: function () {
         wx.navigateBack({
             delta: 1
@@ -27,6 +19,10 @@ Page({
         let q = e.detail.value;
         if (q != '') {
             let that = this;
+            that.wetoast.toast({
+                title: '搜索中',
+                duration:0
+            });
             wx.request({
                 url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=search&pattern=' + q, //仅为示例，并非真实的接口地址
                 method: 'post',
@@ -38,6 +34,7 @@ Page({
                     that.setData({
                         results: res.data
                     });
+                    that.wetoast.hide();
                     console.log(res.data)
                 }
             });
@@ -45,7 +42,7 @@ Page({
 
     },
     gotoNews:function(e) {
-
+        console.log(e);
         if (e.currentTarget.dataset.status == 1) {
             wx.navigateTo({
                 url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid

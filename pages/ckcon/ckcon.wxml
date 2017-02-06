@@ -1,4 +1,10 @@
 <view>
+<view class="bottom-area">
+    <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
+      <view class="r-btn edit-btn"></view>
+      编辑
+    </view>
+  </view>
   <view class="content-reason" wx:if="{{content.reject_reason != ''}}">
     <view wx:for="{{content.reject_reason}}" class="reason-item">
       <view class="reason-content">
@@ -36,10 +42,10 @@
     </view>
   </view>
   <view class="content-options">
-    <button type="default" bindtap="openOp" data-opid="1">驳回</button>
-    <button type="primary" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="2">通过</button>
+    <button type="default" class="{{'optionopen == 1' ? 'current-btn':''}}" bindtap="openOp" data-opid="1">驳回</button>
+    <button type="primary" class="{{'optionopen == 2' ? 'current-btn':''}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="2">通过</button>
     <button type="primary" bindtap="suNews" wx:elif="{{editorauth == 'tosucheck'}}">通过</button>
-    <button type="default" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="3">转审</button>
+    <button type="default" class="{{'optionopen == 3' ? 'current-btn':''}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="3">转审</button>
   </view>
   <view class="content-option" wx:if="{{optionopen == 1}}">
     <textarea class="reject-reason"  placeholder="驳回理由" maxlength="-1" bindblur="setReject" value="" />

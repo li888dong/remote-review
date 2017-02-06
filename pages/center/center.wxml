@@ -38,6 +38,11 @@
       已删除稿件: <text>{{stats.deleted}}</text>条
     </navigator>
   </view>
+  <view class="link-area">
+      <navigator url="../changepwd/changepwd" class="link">
+        修改密码
+      </navigator>
+    </view>
   <view class="link-area" wx:if="{{stats.username == '李潇' || stats.username == '王皓'}}">
     <navigator url="../test/test" class="link">
         测试页

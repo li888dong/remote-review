@@ -11,12 +11,18 @@
         <view class="news-inner">
         <text class="news-title">{{item.title}}</text>
         <view class="news-info">
-          <view class="news-time">{{item.time}}</view>
+          <view class="news-time">{{item.inputtime}}</view>
           <view class="news-author">{{item.realusername}}</view>
         </view>
         </view>
       </view>
-      <view wx-if="{{results.length == 0}}" class="empty-item">
-              暂无结果
-          </view>
+
     </view>
+    <view wx:if="{{results.length == 0}}" class="empty-item">
+                  暂无结果
+              </view>
+
+
+              <import src="../../src/wetoast.wxml"/>
+
+                  <template is="wetoast" data="{{...__wetoast__}}"/>

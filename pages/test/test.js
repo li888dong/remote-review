@@ -496,7 +496,7 @@ Page({
     sepText: function (idx) {
         console.log(idx);
         let dataArr = this.data.content.content;
-        if (idx != 0 && idx != dataArr.length) {
+        if (idx != 0 && idx != dataArr.length -1 ) {
             let tempA = dataArr.slice(0, idx);
             let tempB = dataArr.slice(idx + 1);
             let resultArr = [];
@@ -571,21 +571,13 @@ Page({
             let tempRarr = [];
             let tempArr = tempStr.split('\n');
             for (let j = 0; j < tempArr.length; j++) {
-                let tempObj = [];
-                if (j == tempArr.length - 1) {
-                    tempObj = [{
-                        "type": "text",
-                        "value": tempArr[j]
-                    }];
-                } else {
-                    tempObj = [{
-                        "type": "text",
-                        "value": tempArr[j]
-                    }, {
-                        "type": "add",
-                        "show": false
-                    }];
-                }
+                let tempObj = [{
+                    "type": "text",
+                    "value": tempArr[j]
+                }, {
+                    "type": "add",
+                    "show": false
+                }];
 
                 tempRarr = tempRarr.concat(tempObj);
             }

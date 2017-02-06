@@ -9,7 +9,7 @@ Page({
                 "type": "text",
                 "value": ""
             }],
-            copyfrom: ''
+            copyfrom: '河南手机报'
         }
     },
     onLoad: function (options) {
@@ -17,18 +17,7 @@ Page({
         new app.WeToast();
         // console.log(this.wetoast);
     },
-    onReady: function () {
-        // 页面渲染完成
-    },
-    onShow: function () {
-        // 页面显示
-    },
-    onHide: function () {
-        // 页面隐藏
-    },
-    onUnload: function () {
-        // 页面关闭
-    },
+
     uploadImg: function (e) {
         console.log(e.target.dataset.cidx);
         let cidx = e.target.dataset.cidx;
@@ -520,7 +509,7 @@ Page({
     sepText: function (idx) {
         console.log(idx);
         let dataArr = this.data.content.content;
-        if (idx != 0 && idx != dataArr.length) {
+        if (idx != 0 && idx != dataArr.length -1) {
             let tempA = dataArr.slice(0, idx);
             let tempB = dataArr.slice(idx + 1);
             let resultArr = [];
@@ -595,21 +584,13 @@ Page({
             let tempRarr = [];
             let tempArr = tempStr.split('\n');
             for (let j = 0; j < tempArr.length; j++) {
-                let tempObj = [];
-                if (j == tempArr.length - 1) {
-                    tempObj = [{
-                        "type": "text",
-                        "value": tempArr[j]
-                    }];
-                } else {
-                    tempObj = [{
-                        "type": "text",
-                        "value": tempArr[j]
-                    }, {
-                        "type": "add",
-                        "show": false
-                    }];
-                }
+                let tempObj = [{
+                    "type": "text",
+                    "value": tempArr[j]
+                }, {
+                    "type": "add",
+                    "show": false
+                }];
 
                 tempRarr = tempRarr.concat(tempObj);
             }

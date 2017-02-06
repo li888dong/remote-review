@@ -74,7 +74,7 @@ Page({
 
     onLoad: function () {
         new app.WeToast();
-        if (wx.getStorageSync('xjuser') == '') {
+        if (wx.getStorageSync('sessid') == '') {
             wx.redirectTo({
                 url: '../login/login'
             })
@@ -87,6 +87,25 @@ Page({
             })
         }
         console.log('onLoad');
+
+    },
+    onShow:function() {
+
+        if (wx.getStorageSync('xjuser') == '') {
+            wx.redirectTo({
+                url: '../login/login'
+            })
+        }
+
+        let roleid = wx.getStorageSync('xjuser').roleid;
+
+        if (roleid != '37') {
+            wx.redirectTo({
+                url: '../elist/elist'
+            })
+        }
+
+
         let that = this;
         that.wetoast.toast({
             title: '加载中',
@@ -135,22 +154,5 @@ Page({
                 console.log(res.data)
             }
         });
-
-    },
-    onShow:function() {
-
-        if (wx.getStorageSync('xjuser') == '') {
-            wx.redirectTo({
-                url: '../login/login'
-            })
-        }
-
-        let roleid = wx.getStorageSync('xjuser').roleid;
-
-        if (roleid != '37') {
-            wx.redirectTo({
-                url: '../elist/elist'
-            })
-        }
     }
 });

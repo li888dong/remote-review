@@ -109,18 +109,7 @@ Page({
             })
         }
     },
-    onReady: function () {
-        // 页面渲染完成
-    },
-    onShow: function () {
-        // 页面显示
-    },
-    onHide: function () {
-        // 页面隐藏
-    },
-    onUnload: function () {
-        // 页面关闭
-    },
+
     openOp: function (e) {
         let opid = e.target.dataset.opid;
         this.setData({
@@ -405,6 +394,11 @@ Page({
                 }
             }
         });
-    }
+    },
+    editNews: function () {
+        wx.navigateTo({
+            url: '../edit/edit?id=' + this.data.cid
+        })
+    },
 
 });

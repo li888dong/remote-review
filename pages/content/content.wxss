@@ -180,7 +180,6 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-around;
-    padding-top: 4rpx;
 }
 
 .bottom-area view {
@@ -190,7 +189,7 @@ page {
 }
 .edit {
     height:100%;
-    padding-top: 25rpx;
+    padding-top: 18rpx;
     box-sizing: border-box;
 }
 

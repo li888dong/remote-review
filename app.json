@@ -12,6 +12,7 @@
     "pages/trash/trash",
     "pages/vcon/vcon",
     "pages/login/login",
+    "pages/changepwd/changepwd",
     "pages/test/test"
 
   ],
