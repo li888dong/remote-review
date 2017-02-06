@@ -88,6 +88,19 @@ view {
     position: relative;
     border-top: 1rpx solid #E5E5E5;
     border-bottom: 1rpx solid #E5E5E5;
+    position: relative;
+}
+
+.link::after {
+    width:16rpx;
+    height:100%;
+    background: url("https://www.hnsjb.cn/static/img/wx/right-arrow.png") center center no-repeat;
+    background-size: 16rpx 25rpx;
+    content: '';
+    display: block;
+    position: absolute;
+    right:30rpx;
+    top:0;
 }
 
 .radio-group {

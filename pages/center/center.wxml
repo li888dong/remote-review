@@ -3,7 +3,7 @@
 <view class="center-page">
   <view class="userinfo">
     <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-    <view class="name">{{xjuser.username}}</view>
+    <view class="name">{{xjuser.realusername}}</view>
     <view class="role">{{xjuser.rolename}}</view>
   </view>
   <view class="search-area">
@@ -27,20 +27,20 @@
   <view class="user-stat" wx:elif="{{xjuser.roleid != '37'}}">
     <view class="section-title">我的审稿</view>
     <view class="user-figure">
-      已审核：{{stats.passed}} 条
+      已审核：<text>{{stats.passed}}</text> 条
     </view>
     <view class="user-figure">
-      已驳回：{{stats.rejected}} 条
+      已驳回：<text>{{stats.rejected}}</text> 条
     </view>
   </view>
   <view class="link-area" wx:if="{{xjuser.roleid == '37'}}">
     <navigator url="../trash/trash" class="link">
-      已删除稿件
+      已删除稿件: <text>{{stats.deleted}}</text>条
     </navigator>
   </view>
-  <view class="link-area" wx:if="{{stats.username == 'wx_lixiao'}}">
-    <navigator url="../logs/logs" class="link">
-      日志
+  <view class="link-area" wx:if="{{stats.username == '李潇' || stats.username == '王皓'}}">
+    <navigator url="../test/test" class="link">
+        测试页
     </navigator>
   </view>
   <radio-group class="radio-group" bindchange="roleChange">

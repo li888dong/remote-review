@@ -1,10 +1,10 @@
 <view>
 <view class="bottom-area">
-    <view class="edit" bindtap="editNews">
+    <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
       <view class="r-btn edit-btn"></view>
       编辑
     </view>
-    <view class="del" bindtap="delNews">
+    <view class="del" hover="true" hover-class="hover-active" bindtap="delNews">
       <view class="r-btn del-btn"></view>
       删除
     </view>

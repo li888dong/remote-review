@@ -1,9 +1,9 @@
 page {
   padding-bottom: 120rpx;
-    padding-top: 110rpx;
 
 }
 .list-page {
+    margin-top: 110rpx;
 }
 .tabbar {
   display: flex;
@@ -23,14 +23,24 @@ page {
   line-height: 100rpx;
   color: #353535;
   font-size: 34rpx;
+    position: relative;
 }
 
 .tab-btn:last-child {
   border-right: none;
 }
 
-.tab-btn.current-tab {
-  border-bottom: 7rpx solid #3177b4;
+.tab-btn.current-tab::after {
+    position: absolute;
+    width:102rpx;
+    height:7rpx;
+    background: #3177B4;
+    content: '';
+    display: block;
+    bottom:0;
+    left:50%;
+    margin-left: -51rpx;
+  /*border-bottom: 7rpx solid #3177b4;*/
 }
 
 .news-item {
@@ -109,6 +119,11 @@ page {
   margin: auto;
   margin-bottom: 7rpx;
 }
+.hover-active .new-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/new-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+}
+
 
 .center-btn {
   flex: auto;
@@ -116,4 +131,9 @@ page {
   background-size: 50rpx 50rpx;
   margin: auto;
   margin-bottom: 7rpx;
+}
+
+.hover-active .center-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/center-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
 }

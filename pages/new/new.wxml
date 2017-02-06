@@ -1,15 +1,15 @@
 <view>
 
   <view class="bottom-area">
-    <view class="insert" bindtap="getArray">
+    <view class="insert" hover="true" hover-class="hover-active" bindtap="getArray">
       <view class="r-btn insert-btn"></view>
       插图
     </view>
-    <view class="submit" bindtap="getContent">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="getContent">
       <view class="r-btn save-btn"></view>
       暂存
     </view>
-    <view class="submit" bindtap="pushContent">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="pushContent">
       <view class="r-btn submit-btn"></view>
       提交
     </view>
@@ -21,7 +21,7 @@
     <view class="input">正文</view>
     <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">
       <view wx:if="{{item.type == 'text'}}">
-        <textarea auto-height placeholder="新闻内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindconfirm="setText" bindblur="setText" value="{{item.value}}" />
+        <textarea auto-height placeholder="输入文字内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindconfirm="setText" bindblur="setText" value="{{item.value}}" />
       </view>
       <view wx:elif="{{item.type == 'image'}}" class="content-media">
         <image style="width: 155rpx; height: 155rpx; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
@@ -34,14 +34,13 @@
         <view class="media-del" bindtap="delMedia" data-cidx="{{idx}}"></view>
       </view>
       <view wx:elif="{{item.type == 'add'}}" class="content-media-add">
-        <view class="add-btn" bindtap="showFuns" data-cidx="{{idx}}">
-        </view>
-        <view class="media-add-area" wx:if="{{item.show}}">
-          <view class="img-add" bindtap="uploadImg" data-cidx="{{idx}}"></view>
-          <view class="video-add" bindtap="uploadVd" data-cidx="{{idx}}"></view>
-          <view class="btn-del" bindtap="delMedia" data-cidx="{{idx}}"></view>
-        </view>
-      </view>
+              <view class="{{item.show ? 'add-btn add-rotate' : 'add-btn' }}" bindtap="showFuns" data-cidx="{{idx}}">
+              </view>
+              <view class="media-add-area" wx:if="{{item.show}}">
+                <view class="img-add" bindtap="uploadImg" data-cidx="{{idx}}"></view>
+                <view class="video-add" bindtap="uploadVd" data-cidx="{{idx}}"></view>
+              </view>
+            </view>
     </view>
   </view>
   <view class="prop-container">

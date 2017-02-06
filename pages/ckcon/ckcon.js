@@ -105,7 +105,7 @@ Page({
             })
         } else if (this.data.xjuser.roleid == '36') {
             this.setData({
-                editorauth: 'tocsuheck'
+                editorauth: 'tosucheck'
             })
         }
     },
@@ -141,8 +141,8 @@ Page({
         let that = this;
         if (this.data.rejectreason == '') {
             wx.showModal({
-                title: '提示',
-                content: '请填写驳回理由',
+                title: '请填写驳回理由',
+                content: '',
                 showCancel: false,
                 complete: function (res) {
                     return false;
@@ -168,9 +168,9 @@ Page({
                                 console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
-                                        title: '提示',
+                                        title: '驳回成功',
                                         showCancel: false,
-                                        content: '驳回成功',
+                                        content: '',
                                         complete: function (res) {
                                             wx.navigateBack({
                                                 delta: 1
@@ -230,8 +230,8 @@ Page({
 
         if (this.data.currentCate == '') {
             wx.showModal({
-                title: '提示',
-                content: '请选择栏目',
+                title: '请选择栏目',
+                content: '',
                 showCancel: false,
                 complete: function (res) {
                     return false;
@@ -239,8 +239,8 @@ Page({
             })
         } else if (this.data.selection.length > 0 && this.data.subcate == '') {
             wx.showModal({
-                title: '提示',
-                content: '请选择子栏目',
+                title: '请选择子栏目',
+                content: '',
                 showCancel: false,
                 complete: function (res) {
                     return false;
@@ -266,9 +266,9 @@ Page({
                                 console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
-                                        title: '提示',
+                                        title: '已通过',
                                         showCancel: false,
-                                        content: '已通过',
+                                        content: '',
                                         complete: function (res) {
                                             wx.navigateBack({
                                                 delta: 1
@@ -295,8 +295,8 @@ Page({
         if (this.data.sucheck == '') {
             console.log('t1');
             wx.showModal({
-                title: '提示',
-                content: '请选择总编辑',
+                title: '请选择总编辑',
+                content: '',
                 showCancel: false,
                 complete: function (res) {
                     return false;
@@ -306,8 +306,8 @@ Page({
             console.log('t2');
 
             wx.showModal({
-                title: '提示',
-                content: '请选择栏目',
+                title: '请选择栏目',
+                content: '',
                 showCancel: false,
                 complete: function (res) {
                     return false;
@@ -317,8 +317,8 @@ Page({
             console.log('t3');
 
             wx.showModal({
-                title: '提示',
-                content: '请选择子栏目',
+                title: '请选择子栏目',
+                content: '',
                 showCancel: false,
                 complete: function (res) {
                     return false;
@@ -345,9 +345,9 @@ Page({
                                 console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
-                                        title: '提示',
+                                        title: '已转审',
                                         showCancel: false,
-                                        content: '已转审',
+                                        content: '',
                                         complete: function (res) {
                                             wx.navigateBack({
                                                 delta: 1
@@ -367,10 +367,12 @@ Page({
 
     },
     suNews: function () {
+        let that = this;
         wx.showModal({
             title: '确认通过',
             content: '您确定要通过这篇稿件吗？',
             success: function (res) {
+                console.log(res);
                 if (res.confirm) {
                     wx.request({
                         url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=pass",
@@ -386,9 +388,9 @@ Page({
                             console.log(res);
                             if (res.data.status == 1) {
                                 wx.showModal({
-                                    title: '提示',
+                                    title: '已通过',
                                     showCancel: false,
-                                    content: '已通过',
+                                    content: '',
                                     complete: function (res) {
                                         wx.navigateBack({
                                             delta: 1

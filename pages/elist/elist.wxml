@@ -7,36 +7,36 @@
       <block wx:for="{{shenhezhong}}">
 
       <block wx:if="{{item.typefrom == 'tosucheck'}}">
-      <view class="forward news-item" hover="true" hover-class="news-item-hover" bindtap="viewNews" data-newsid="{{item.id}}">
+      <view class="forward news-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="ckNews" data-newsid="{{item.id}}">
               <view class="news-inner">
               <text class="news-title">{{item.title}}</text>
               <view class="news-info">
                 <view class="news-time">{{item.time}}</view>
-                <view class="news-author">{{item.username}}</view>
+                <view class="news-author">{{item.realusername}}</view>
               </view>
               </view>
             </view>
       </block>
 
       <block wx:elif="{{item.typefrom == 'rejected'}}">
-            <view class="reject news-item" hover="true" hover-class="news-item-hover" bindtap="viewNews" data-newsid="{{item.id}}">
+            <view class="reject news-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="ckNews" data-newsid="{{item.id}}">
                     <view class="news-inner">
                     <text class="news-title">{{item.title}}</text>
                     <view class="news-info">
                       <view class="news-time">{{item.time}}</view>
-                      <view class="news-author">{{item.username}}</view>
+                      <view class="news-author">{{item.realusername}}</view>
                     </view>
                     </view>
                   </view>
             </block>
 
             <block wx:else>
-                        <view class="news-item" hover="true" hover-class="news-item-hover" bindtap="ckNews" data-newsid="{{item.id}}">
+                        <view class="news-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="ckNews" data-newsid="{{item.id}}">
                                 <view class="news-inner">
                                 <text class="news-title">{{item.title}}</text>
                                 <view class="news-info">
                                   <view class="news-time">{{item.time}}</view>
-                                  <view class="news-author">{{item.username}}</view>
+                                  <view class="news-author">{{item.realusername}}</view>
                                 </view>
                                 </view>
                               </view>
@@ -52,7 +52,7 @@
         <text class="news-title">{{item.title}}</text>
         <view class="news-info">
           <view class="news-time">{{item.time}}</view>
-          <view class="news-author">{{item.author}}</view>
+          <view class="news-author">{{item.realusername}}</view>
         </view>
         </view>
       </view>
@@ -61,7 +61,7 @@
           </view>
     </view>
   <view class="bottom-area">
-    <navigator url="../center/center">
+    <navigator hover-class="hover-active" url="../center/center">
       <view class="r-btn center-btn"></view>
       个人中心
     </navigator>

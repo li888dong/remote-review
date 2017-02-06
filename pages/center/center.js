@@ -65,7 +65,8 @@ Page({
                 sessid: wx.getStorageSync('sessid'),
                 username:this.data.xjuser.username,
                 userid:this.data.xjuser.userid,
-                roleid:e.detail.value
+                roleid:e.detail.value,
+                realusername:this.data.xjuser.realusername
             },
             success:function(response) {
                 if (response.data.status == 1) {
@@ -87,6 +88,16 @@ Page({
                             console.log(response);
                         }
                     });
+                } else if (response.data.status == 6) {
+                    wx.showModal({
+                      title: '您没有总值班权限',
+                      content: '',
+                      showCancel:false,
+                      complete: res=>{
+                          console.log(res);
+                        return false;
+                      }
+                    })
                 }
                 console.log(response);
             }

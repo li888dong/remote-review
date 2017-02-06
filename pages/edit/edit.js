@@ -96,6 +96,10 @@ Page({
                             that.setData({
                                 "content.content":tempArr
                             });
+                            data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
+                            // console.log(data);
+                            that.setData(data);
+                            console.log(that.data.content.content[cidx+1]);
                         }
                     }
                 });
@@ -129,7 +133,7 @@ Page({
                     duration:0
                 });
                 wx.uploadFile({
-                    url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=video', //仅为示例，非真实的接口地址
+                    url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=video',
                     filePath: tempFilePath,
                     name: 'files',
                     formData:{
@@ -151,6 +155,10 @@ Page({
                             that.setData({
                                 "content.content":tempArr
                             });
+                            data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
+                            // console.log(data);
+                            that.setData(data);
+
                         }
                     }
                 });
@@ -166,18 +174,18 @@ Page({
     getContent: function () {
         if (this.data.content.title == '') {
             wx.showModal({
-                title: '提示',
+                title: '标题不得为空',
                 showCancel: false,
-                content: '标题不得为空',
+                content: '',
                 complete: function (res) {
                     return false;
                 }
             })
         } else if (this.data.content.copyfrom == '') {
             wx.showModal({
-                title: '提示',
+                title: '来源不得为空',
                 showCancel: false,
-                content: '来源不得为空',
+                content: '',
                 complete: function (res) {
                     return false;
                 }
@@ -207,12 +215,12 @@ Page({
                     console.log(res);
                     if (res.data.status == '1') {
                         wx.showModal({
-                            title: '提示',
+                            title: '保存成功',
                             showCancel: false,
-                            content: '提交成功',
+                            content: '',
                             complete: function (res) {
-                                wx.redirectTo({
-                                    url: '../list/list'   //todo:change redirect url
+                                wx.navigateBack({
+                                    delta: 2  //todo:change redirect url
                                 })
                             }
                         })
@@ -229,18 +237,18 @@ Page({
 
         if (this.data.content.title == '') {
             wx.showModal({
-                title: '提示',
+                title: '标题不得为空',
                 showCancel: false,
-                content: '标题不得为空',
+                content: '',
                 complete: function (res) {
                     return false;
                 }
             })
         } else if (this.data.content.copyfrom == '') {
             wx.showModal({
-                title: '提示',
+                title: '来源不得为空',
                 showCancel: false,
-                content: '来源不得为空',
+                content: '',
                 complete: function (res) {
                     return false;
                 }
@@ -269,12 +277,12 @@ Page({
                     console.log(res);
                     if (res.data.status == '1') {
                         wx.showModal({
-                            title: '提示',
+                            title: '提交成功',
                             showCancel: false,
-                            content: '提交成功',
+                            content: '',
                             complete: function (res) {
-                                wx.redirectTo({
-                                    url: '../list/list'   //todo:change redirect url
+                                wx.navigateBack({
+                                    delta: 2  //todo:change redirect url
                                 })
                             }
                         })
@@ -301,9 +309,11 @@ Page({
     showFuns: function (e) {
         let cidx = e.target.dataset.cidx;
         let data = {};
-        data['content.content[' + cidx + '].show'] = true; // key 可以是任何字符串
+        // console.log(this.data.content.content[cidx].show);
+        data['content.content[' + cidx + '].show'] = !this.data.content.content[cidx].show; // key 可以是任何字符串
+        // console.log(data);
         this.setData(data);
-        console.log(e);
+        // console.log(e);
     },
     setProp: function (e) {
         let prop = e.target.dataset.prop;
@@ -318,32 +328,48 @@ Page({
         this.setData(data);
     },
     delMedia: function (e) {
-        let cidx = e.target.dataset.cidx;
-        let tempArr = this.data.content.content;
-        console.log(tempArr);
-        console.log(tempArr.length);
-            tempArr.splice(cidx, 1);
-            console.log(tempArr);
 
-        console.log(tempArr.length);
+        let that = this;
+        wx.showModal({
+            title: '确认删除',
+            content: '您确定要删除这块内容吗？',
+            success: function (res) {
+                if (res.confirm) {
+                    let cidx = e.target.dataset.cidx;
+                    let tempArr = that.data.content.content;
+                    console.log(tempArr);
+                    console.log(tempArr.length);
+                    tempArr.splice(cidx, 1);
+                    console.log(tempArr);
 
-        if (tempArr[cidx] != undefined) {
-            if (util.mergeText(tempArr[cidx - 1], tempArr[cidx]) != 'noop') {
-                tempArr[cidx - 1] = util.mergeText(tempArr[cidx - 1], tempArr[cidx]);
-                tempArr.splice(cidx, 1);
+                    console.log(tempArr.length);
+
+                    if (tempArr[cidx] != undefined) {
+                        if (util.mergeText(tempArr[cidx - 1], tempArr[cidx]) != 'noop') {
+                            tempArr[cidx - 1] = util.mergeText(tempArr[cidx - 1], tempArr[cidx]);
+                            tempArr.splice(cidx, 1);
+                        }
+                    }
+                    for (let i = 0;i<tempArr.length;i++) {
+                        if (tempArr[i].type == 'add') {
+                            tempArr[i].show = false
+                        }
+                    }
+
+
+                    console.log(tempArr);
+                    that.setData({
+                        "content.content": tempArr
+                    })
+                } else {
+                    return false;
+                }
             }
-        }
-        for (let i = 0;i<tempArr.length;i++) {
-            if (tempArr[i].type == 'add') {
-                tempArr[i].show = false
-            }
-        }
+        });
 
 
-        console.log(tempArr);
-        this.setData({
-            "content.content": tempArr
-        })
+
+
     },
     getArray: function () {
         let dataArr = this.data.content.content;
@@ -452,8 +478,9 @@ Page({
 
 
         }
-
-        resultArr = [{"type":"text","value":""},{"type":"add","show":false}].concat(resultArr);
+        if (resultArr[0].type != 'add') {
+            resultArr = [{"type":"add","show":false}].concat(resultArr);
+        }
         if (resultArr[resultArr.length -1].type !='text') {
             resultArr = resultArr.concat([{"type":"text","value":""}]);
         }

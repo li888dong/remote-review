@@ -1,6 +1,6 @@
 <view class="list-page">
   <view class="tabbar">
-    <view class="{{tab == 1 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="1" bindtap="changeTab">草稿箱</view>
+    <view class="{{tab == 1 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="1" bindtap="changeTab">草稿箱<view></view></view>
     <view class="{{tab == 2 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="2" bindtap="changeTab">审核中</view>
     <view class="{{tab == 3 ? 'current-tab tab-btn flex-item' : 'tab-btn flex-item'}}" data-tabindex="3" bindtap="changeTab">已审核</view>
   </view>
@@ -11,7 +11,7 @@
           <text class="news-title">{{item.title}}</text>
           <view class="news-info">
             <view class="news-time">{{item.time}}</view>
-            <view class="news-author">{{item.author}}</view>
+            <view class="news-author">{{item.realusername}}</view>
           </view>
         </view>
       </view>
@@ -27,7 +27,7 @@
           <text class="news-title">{{item.title}}</text>
           <view class="news-info">
             <view class="news-time">{{item.time}}</view>
-            <view class="news-author">{{item.author}}</view>
+            <view class="news-author">{{item.realusername}}</view>
           </view>
         </view>
       </view>
@@ -42,7 +42,7 @@
         <text class="news-title">{{item.title}}</text>
         <view class="news-info">
           <view class="news-time">{{item.time}}</view>
-          <view class="news-author">{{item.author}}</view>
+          <view class="news-author">{{item.realusername}}</view>
         </view>
       </view>
     </view>
@@ -51,11 +51,11 @@
     </view>
   </view>
   <view class="bottom-area">
-    <navigator url="../new/new">
+    <navigator hover-class="hover-active" url="../new/new">
       <view class="r-btn new-btn"></view>
       新建稿件
     </navigator>
-    <navigator url="../center/center">
+    <navigator hover-class="hover-active" url="../center/center">
       <view class="r-btn center-btn"></view>
       个人中心
     </navigator>

@@ -1,7 +1,7 @@
 // pages/search/search.js
 Page({
     data: {
-        resulst:[]
+        results:[]
     },
     onLoad: function (options) {
         // 页面初始化 options为页面跳转所带来的参数
@@ -36,7 +36,7 @@ Page({
                 },
                 success: function (res) {
                     that.setData({
-                        resulst: res.data
+                        results: res.data
                     });
                     console.log(res.data)
                 }

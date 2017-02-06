@@ -29,10 +29,11 @@ page {
 }
 
 .content-input {
-    color: #111;
+    color: #000;
     line-height: 55rpx;
     font-size: 34rpx;
     z-index: 1;
+    width:100%;
 }
 
 .content-media {
@@ -76,6 +77,10 @@ page {
     background-size: 35rpx 35rpx;
 }
 
+.add-rotate {
+    -webkit-transform: rotate(45deg);
+}
+
 .media-add-area {
     width: 590rpx;
     height: 75rpx;
@@ -111,7 +116,8 @@ page {
 .bottom-area {
     width: 100%;
     background: #f8f8fa;
-    height: 106rpx;
+    height: 110rpx;
+    padding-top: 4rpx;
     border-bottom: 1rpx solid rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
@@ -122,15 +128,14 @@ page {
 .bottom-area view {
     font-size: 24rpx;
     text-align: center;
+    flex:1;
 }
 
 .bottom-area image {
     flex: 1;
 }
 
-.insert {
-    color: #3098e5;
-}
+
 
 .insert-btn {
     flex: auto;
@@ -154,4 +159,17 @@ page {
     background-size: 50rpx 50rpx;
     margin: auto;
     margin-bottom: 7rpx;
+}
+
+.hover-active .insert-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/insert-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+}
+.hover-active .submit-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/submit-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+}
+.hover-active .save-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/save-btn.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
 }

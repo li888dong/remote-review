@@ -119,7 +119,7 @@ page {
   display: block;
   position: absolute;
   width: 4rpx;
-  left: 14.5rpx;
+  left: 18rpx;
   top: 40rpx;
   background: #e5e5e5;
 }
@@ -137,16 +137,15 @@ page {
 }
 
 .workflow-item::before {
-  left: 0;
+  left: -1rpx;
   content: '';
   display: block;
   position: absolute;
-  width: 25rpx;
-  height: 25rpx;
+  width: 39rpx;
+  height: 39rpx;
   top: 32.5rpx;
-  background: #e5e5e5;
-  border-radius: 25rpx;
-  border: 5rpx solid #f7f7f7;
+  background: url("https://www.hnsjb.cn/static/img/wx/grey-dot.png") center center no-repeat;
+    background-size: 35rpx 35rpx;
 }
 
 .workflow-item.last-item {
@@ -154,31 +153,16 @@ page {
 }
 
 .workflow-item.last-item::before {
-  background: #f43530;
-  border: none;
-  top: 38.8rpx;
-  z-index: 10;
-  left:5.4rpx;
-    width:26rpx;
-    height:26rpx;
-    /*display: none;*/
-    /*box-sizing: border-box;*/
+    left:0;
+    width: 39rpx;
+    height: 39rpx;
+    top: 32.5rpx;
+    background: url("https://www.hnsjb.cn/static/img/wx/red-dot.png") center center no-repeat;
+    background-size: 39rpx 39rpx;
 
 }
 
-.workflow-item.last-item::after {
-  background: #f6cdcc;
-  left: -3rpx;
-  content: '';
-  display: block;
-  position: absolute;
-  width: 37rpx;
-  height: 37rpx;
-  top: 32.5rpx;
-  border-radius: 50%;
-  z-index: 8;
-  border: 2rpx solid #f7f7f7;
-}
+
 
 .workflow-item view {
   display: inline;
@@ -191,24 +175,23 @@ page {
 .bottom-area {
   width: 100%;
   background: #f8f8fa;
-  height: 106rpx;
+  height: 110rpx;
   border-bottom: 1rpx solid rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: space-around;
+    padding-top: 4rpx;
 }
 
 .bottom-area view {
   font-size: 24rpx;
   text-align: center;
+    flex:1;
 }
 
-.edit {
-  color: #3098e5;
-}
 
 .edit-btn {
-  flex: auto;
+  flex: 1;
   background: url("https://www.hnsjb.cn/static/img/wx/edit.png") center center no-repeat;
   background-size: 50rpx 50rpx;
   margin: auto;
@@ -216,9 +199,19 @@ page {
 }
 
 .del-btn {
-  flex: auto;
+  flex: 1;
   background: url("https://www.hnsjb.cn/static/img/wx/del.png") center center no-repeat;
   background-size: 50rpx 50rpx;
   margin: auto;
   margin-bottom: 7rpx;
+}
+
+.hover-active .edit-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/edit-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+}
+
+.hover-active .del-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/del-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
 }

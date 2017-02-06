@@ -87,9 +87,9 @@ Page({
                         success: function (res) {
                             if (res.data.status == 1) {
                                 wx.showModal({
-                                    title: '提示',
+                                    title: '删除成功',
                                     showCancel: false,
-                                    content: '删除成功',
+                                    content: '',
                                     complete: function (res) {
                                         wx.navigateBack({
                                             delta: 1

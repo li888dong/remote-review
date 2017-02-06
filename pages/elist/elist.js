@@ -27,9 +27,13 @@ Page({
         }
     },
     viewNews:function(e) {
-        wx.navigateTo({
-            url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
-        })
+
+            wx.navigateTo({
+                url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
+            })
+
+
+
     },
     onLoad: function () {
         new app.WeToast();

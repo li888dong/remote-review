@@ -39,10 +39,10 @@
     <button type="default" bindtap="openOp" data-opid="1">驳回</button>
     <button type="primary" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="2">通过</button>
     <button type="primary" bindtap="suNews" wx:elif="{{editorauth == 'tosucheck'}}">通过</button>
-    <button type="default" bindtap="openOp" data-opid="3">转审</button>
+    <button type="default" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="3">转审</button>
   </view>
   <view class="content-option" wx:if="{{optionopen == 1}}">
-    <textarea class="reject-reason" auto-height placeholder="驳回理由" maxlength="-1" bindblur="setReject" value="" />
+    <textarea class="reject-reason"  placeholder="驳回理由" maxlength="-1" bindblur="setReject" value="" />
     <view class="btn-container">
       <button type="warn" bindtap="rejectNews">确认驳回</button>
       <button type="default" bindtap="closeOp">取消</button>
@@ -65,9 +65,9 @@
     </view>
   </view>
   <view class="content-option" wx:elif="{{optionopen == 3}}">
-    <picker bindchange="setSu" value="{{suindex}}" range-key="username" range="{{sucheckers}}">
+    <picker bindchange="setSu" value="{{suindex}}" range-key="realname" range="{{sucheckers}}">
       <view class="picker">
-        选择总编辑：{{sucheckers[suindex].username}}
+        选择总编辑：{{sucheckers[suindex].realname}}
       </view>
     </picker>
     <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">

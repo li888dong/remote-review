@@ -34,8 +34,8 @@ Page({
         let tempobj = e.detail.value;
         if (tempobj.username == '') {
             wx.showModal({
-                title: '提示',
-                content: '用户名不得为空',
+                title: '用户名不得为空',
+                content: '',
                 showCancel:false,
                 complete: function(res) {
                     return false;
@@ -44,8 +44,8 @@ Page({
             return false;
         } else if (tempobj.password == '') {
             wx.showModal({
-                title: '提示',
-                content: '密码不得为空',
+                title: '密码不得为空',
+                content: '',
                 showCancel:false,
                 complete: function(res) {
                     return false;
@@ -70,19 +70,19 @@ Page({
                 if (response.data.status ==1 ) {
                     wx.setStorageSync('xjuser',response.data.data);
                     if (response.data.data.roleid == '37') {
-                        wx.navigateTo({
+                        wx.redirectTo({
                             url: '../list/list'
                         })
                     } else {
-                        wx.navigateTo({
+                        wx.redirectTo({
                             url: '../elist/elist'
                         })
                     }
 
                 } else if (response.data.status == 0) {
                     wx.showModal({
-                        title: '提示',
-                        content: '用户名或密码有误，请检查后重新登录',
+                        title: '用户名或密码有误，请检查后重新登录',
+                        content: '',
                         showCancel:false,
                         complete: function(res) {
                             return false;
