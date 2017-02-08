@@ -74,7 +74,7 @@ Page({
 
     onLoad: function () {
         new app.WeToast();
-        if (wx.getStorageSync('sessid') == '') {
+        if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
             })

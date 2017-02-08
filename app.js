@@ -15,6 +15,7 @@ App({
             //调用登录接口
             wx.login({
                 success: function (res) {
+                    console.log(res);
                     if (res.code) {
                         //发起网络请求
                         wx.request({
@@ -22,7 +23,8 @@ App({
                             method:'post',
                             header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
-                                code: res.code
+                                code: res.code,
+                                sessid:wx.getStorageSync('sessid')
                             },
                             success:function(response) {
                                 console.log(response);
@@ -31,10 +33,12 @@ App({
                                     wx.redirectTo({
                                         url: '../login/login'
                                     })
+                                } else {
+                                    wx.setStorageSync('xjuser',response.data.data);
                                 }
                             }
                         });
-                        console.log(res)
+                        // console.log(res)
                     }
 
                     wx.getUserInfo({

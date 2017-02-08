@@ -397,7 +397,7 @@ Page({
     },
     editNews: function () {
         wx.navigateTo({
-            url: '../edit/edit?id=' + this.data.cid
+            url: '../edit/edit?id=' + this.data.cid + '&type=editor'
         })
     },
 

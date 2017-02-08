@@ -9,7 +9,7 @@ Page({
                 "type": "text",
                 "value": ""
             }],
-            copyfrom: ''
+            copyfrom: '河南手机报'
         }
     },
     onLoad: function (options) {
@@ -17,18 +17,7 @@ Page({
         new app.WeToast();
         // console.log(this.wetoast);
     },
-    onReady: function () {
-        // 页面渲染完成
-    },
-    onShow: function () {
-        // 页面显示
-    },
-    onHide: function () {
-        // 页面隐藏
-    },
-    onUnload: function () {
-        // 页面关闭
-    },
+
     uploadImg: function (e) {
         console.log(e.target.dataset.cidx);
         let cidx = e.target.dataset.cidx;
@@ -56,7 +45,7 @@ Page({
                 // });
                 that.wetoast.toast({
                     title: '图片上传中',
-                    duration: 0
+                    duration:0
                 });
                 wx.uploadFile({
                     url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=photo', //仅为示例，非真实的接口地址
@@ -82,7 +71,7 @@ Page({
                             that.setData({
                                 "content.content": tempArr
                             });
-                            data['content.content[' + (cidx + 1) + '].show'] = false; // key 可以是任何字符串
+                            data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
                             // console.log(data);
                             that.setData(data);
                         }
@@ -109,7 +98,7 @@ Page({
                 console.log(that.data);
                 that.wetoast.toast({
                     title: '视频上传中',
-                    duration: 0
+                    duration:0
                 });
                 // wx.showToast({
                 //     title: '视频上传中',
@@ -140,7 +129,7 @@ Page({
                             that.setData({
                                 "content.content": tempArr
                             });
-                            data['content.content[' + (cidx + 1) + '].show'] = false; // key 可以是任何字符串
+                            data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
                             // console.log(data);
                             that.setData(data);
                         }
@@ -229,8 +218,13 @@ Page({
                 }
             });
         }
+
+
+
+
     },
-    pushContent: function () {
+    pushContent: function (e) {
+        console.log(e);
 
         if (this.data.content.title == '') {
             wx.showModal({
@@ -253,9 +247,26 @@ Page({
         } else {
             console.log(this.data.content);
             let tempArr = [];
+            let tempBarr = [];
+
             for (let i = 0; i < this.data.content.content.length; i++) {
                 if (this.data.content.content[i].type != 'add') {
                     tempArr.push(this.data.content.content[i])
+                }
+            }
+
+
+            for (let i = 0;i<tempArr.length;i++) {
+                if (i < tempArr.length -1 && tempArr[i].type == 'text' && tempArr [i+1].type == 'text') {
+                    tempArr[i+1].value = tempArr[i].value + '\n' + tempArr[i+1].value;
+                    tempArr[i].value = '';
+                }
+
+            }
+
+            for (let i = 0;i<tempArr.length;i++) {
+                if (tempArr[i].value != '') {
+                    tempBarr.push(tempArr[i])
                 }
             }
             wx.request({
@@ -265,7 +276,7 @@ Page({
                 data: {
                     title: this.data.content.title,
                     copyfrom: this.data.content.copyfrom,
-                    content: JSON.stringify(tempArr),
+                    content: JSON.stringify(tempBarr),
                     way: 'tijiao',
                     sessid: wx.getStorageSync('sessid')
                 },
@@ -277,8 +288,8 @@ Page({
                             showCancel: false,
                             content: '',
                             complete: function (res) {
-                                wx.redirectTo({
-                                    url: '../list/list'   //todo:change redirect url
+                                wx.navigateBack({
+                                    delta: 1  //todo:change redirect url
                                 })
                             }
                         })
@@ -286,6 +297,9 @@ Page({
                 }
             });
         }
+
+
+
 
 
     },
@@ -349,7 +363,7 @@ Page({
                             tempArr.splice(cidx, 1);
                         }
                     }
-                    for (let i = 0; i < tempArr.length; i++) {
+                    for (let i = 0;i<tempArr.length;i++) {
                         if (tempArr[i].type == 'add') {
                             tempArr[i].show = false
                         }
@@ -384,15 +398,15 @@ Page({
         // console.log(dataArr);
         for (let i = 0; i < dataArr.length; i++) {
 
-            if (i + 1 < dataArr.length) {
-                if (dataArr[i].type == "text" && dataArr[i + 1].type == "add") {
+            if ( i+1<dataArr.length ) {
+                if (dataArr[i].type == "text" && dataArr[i+1].type == "add") {
                     let tempStr = dataArr[i].value;
-                    tempStr = tempStr.replace(/(\n)+/g, '\n');
+                    tempStr = tempStr.replace(/(\n)+/g,'\n');
                     let tempRarr = [];
                     let tempArr = tempStr.split('\n');
                     for (let j = 0; j < tempArr.length; j++) {
                         let tempObj = [];
-                        if (j == tempArr.length - 1) {
+                        if (j == tempArr.length -1) {
                             tempObj = [{
                                 "type": "text",
                                 "value": tempArr[j]
@@ -413,7 +427,7 @@ Page({
 
                 } else if (dataArr[i].type == "text") {
                     let tempStr = dataArr[i].value;
-                    tempStr = tempStr.replace(/(\n)+/g, '\n');
+                    tempStr = tempStr.replace(/(\n)+/g,'\n');
                     let tempRarr = [];
                     let tempArr = tempStr.split('\n');
                     for (let j = 0; j < tempArr.length; j++) {
@@ -429,10 +443,10 @@ Page({
                     resultArr = resultArr.concat(tempRarr);
                 } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
                     let tempRarr = [];
-                    if (dataArr[i + 1].type == "add") {
+                    if (dataArr[i+1].type == "add") {
                         tempRarr = [dataArr[i]];
                     } else {
-                        tempRarr = [dataArr[i], addObj];
+                        tempRarr = [dataArr[i],addObj];
 
                     }
 
@@ -442,9 +456,9 @@ Page({
 
                 console.log(i);
 
-                if (dataArr[i].type == "text") {
+                if (dataArr[i].type == "text" ) {
                     let tempStr = dataArr[i].value;
-                    tempStr = tempStr.replace(/(\n)+/g, '\n');
+                    tempStr = tempStr.replace(/(\n)+/g,'\n');
                     let tempRarr = [];
                     let tempArr = tempStr.split('\n');
                     for (let j = 0; j < tempArr.length; j++) {
@@ -480,10 +494,10 @@ Page({
         }
 
         if (resultArr[0].type != 'add') {
-            resultArr = [{"type": "add", "show": false}].concat(resultArr);
+            resultArr = [{"type":"add","show":false}].concat(resultArr);
         }
-        if (resultArr[resultArr.length - 1].type != 'text') {
-            resultArr = resultArr.concat([{"type": "text", "value": ""}]);
+        if (resultArr[resultArr.length -1].type !='text') {
+            resultArr = resultArr.concat([{"type":"text","value":""}]);
         }
 
         // console.log(resultArr);
@@ -496,7 +510,7 @@ Page({
     sepText: function (idx) {
         console.log(idx);
         let dataArr = this.data.content.content;
-        if (idx != 0 && idx != dataArr.length -1 ) {
+        if (idx != 0 && idx != dataArr.length -1) {
             let tempA = dataArr.slice(0, idx);
             let tempB = dataArr.slice(idx + 1);
             let resultArr = [];

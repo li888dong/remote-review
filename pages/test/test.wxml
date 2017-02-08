@@ -1,27 +1,29 @@
 <view>
 
   <view class="bottom-area">
-    <view class="submit" bindtap="getArray">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="getArray">
       <view class="r-btn insert-btn"></view>
       插图
     </view>
-    <view class="submit" bindtap="getContent">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="getContent">
       <view class="r-btn save-btn"></view>
       暂存
     </view>
-    <view class="submit" bindtap="pushContent">
+    <form bindsubmit="pushContent" report-submit="true">
+    <button class="submit" formType="submit" hover="true" hover-class="hover-active">
       <view class="r-btn submit-btn"></view>
       提交
-    </view>
+    </button>
+    </form>
   </view>
   <view class="prop-container">
-    <textarea class="input"  placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
+    <textarea class="input" placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>
   <view class="prop-container content-container">
     <view class="input">正文</view>
     <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">
       <view wx:if="{{item.type == 'text'}}">
-        <textarea auto-height placeholder="输入文字内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindconfirm="setText" bindblur="setText" value="{{item.value}}" />
+        <textarea auto-height placeholder="输入文字内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindconfirm="setText" value="{{item.value}}" />
       </view>
       <view wx:elif="{{item.type == 'image'}}" class="content-media">
         <image style="width: 155rpx; height: 155rpx; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
@@ -44,7 +46,7 @@
     </view>
   </view>
   <view class="prop-container">
-    <textarea class="input"  value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
+    <textarea class="input" value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
   </view>
 <import src="../../src/wetoast.wxml"/>
 

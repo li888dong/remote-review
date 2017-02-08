@@ -83,6 +83,7 @@ page {
     background: url("https://www.hnsjb.cn/static/img/wx/add.png") center center no-repeat,#cccccc;
     background-size: 35rpx 35rpx;
 }
+
 .add-rotate {
     -webkit-transform: rotate(45deg);
 }
@@ -114,7 +115,11 @@ page {
     flex: 1;
 }
 
-
+.btn-del {
+    background: url("https://www.hnsjb.cn/static/img/wx/delete.png") center center no-repeat;
+    background-size: 30rpx 30rpx;
+    flex: 1;
+}
 
 .bottom-area {
     width: 100%;
@@ -131,17 +136,31 @@ page {
 .bottom-area view {
     font-size: 24rpx;
     text-align: center;
-    flex:1;
+    /*flex:1;*/
 }
 
 .bottom-area image {
     flex: 1;
 }
-
 .submit {
     height:100%;
     padding-top: 18rpx;
     box-sizing: border-box;
+    width:250rpx;
+}
+button.submit {
+    -webkit-appearance: none;
+    border:none;
+    border-radius: 0;
+    padding:0;
+    margin:auto;
+    line-height: 1;
+    font-size: 24rpx;
+
+    
+}
+button.submit::after {
+    display: none;
 }
 
 .insert-btn {
@@ -166,4 +185,17 @@ page {
     background-size: 50rpx 50rpx;
     margin: auto;
     margin-bottom: 7rpx;
+}
+
+.hover-active .insert-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/insert-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+}
+.hover-active .submit-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/submit-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
+}
+.hover-active .save-btn {
+    background: url("https://www.hnsjb.cn/static/img/wx/save-hover.png") center center no-repeat;
+    background-size: 50rpx 50rpx;
 }

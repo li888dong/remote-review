@@ -6,7 +6,8 @@ Page({
         content: {
             title: '',
             content: [],
-            copyfrom: ''
+            copyfrom: '',
+            editor:''
         }
     },
     onLoad: function (options) {
@@ -16,6 +17,9 @@ Page({
         let that = this;
         this.setData({
             'cid':options.id
+        });
+        this.setData({
+           'editor':options.type
         });
 
         wx.request({
@@ -160,7 +164,7 @@ Page({
             }
         })
     },
-    getContent: function () {
+    getContent: function (e) {
         if (this.data.content.title == '') {
             wx.showModal({
                 title: '标题不得为空',

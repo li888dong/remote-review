@@ -23,7 +23,7 @@ Page({
                 userInfo: userInfo
             })
         });
-        console.log(this.data.userInfo);
+        // console.log(this.data.userInfo);
         this.setData({
             xjuser:wx.getStorageSync("xjuser")
         });
@@ -41,6 +41,7 @@ Page({
                 console.log(response);
             }
         });
+        // console.log(this.data)
     },
 
     roleChange: function(e) {

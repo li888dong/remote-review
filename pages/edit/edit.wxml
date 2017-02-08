@@ -8,7 +8,7 @@
       <view class="r-btn save-btn"></view>
       暂存
     </view>
-    <view class="submit"  hover="true" hover-class="hover-active" bindtap="pushContent">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="pushContent">
       <view class="r-btn submit-btn"></view>
       提交
     </view>
