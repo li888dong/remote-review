@@ -11,6 +11,7 @@ Page({
         this.setData({
             tab: e.currentTarget.dataset.tabindex
         })
+        this.updateNews()
     },
     gotoNews: function (e) {
         wx.navigateTo({
@@ -22,7 +23,28 @@ Page({
             url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
         })
     },
-
+    updateNews:function() {
+        let that = this;
+        let change_time = wx.getStorageSync('ruptime') || 0;
+        wx.request({
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=check_change', //仅为示例，并非真实的接口地址
+            method:'post',
+            header: {"content-type": "application/x-www-form-urlencoded"},
+            data: {
+                sessid: wx.getStorageSync('sessid'),
+                change_time:change_time
+            },
+            success: function (res) {
+                console.log(res);
+                // res = JSON.parse(res);
+                if (res.data.status == 1) {
+                    that.getList();
+                    wx.setStorageSync('ruptime', res.data.change_time);
+                    console.log('time changed')
+                }
+            }
+        });
+    },
     onPullDownRefresh: function() {
         let that = this;
         let change_time = wx.getStorageSync('ruptime') || 0;

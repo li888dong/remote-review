@@ -3,6 +3,5 @@
   "navigationBarTextStyle": "white",
   "navigationBarTitleText": "稿件列表",
   "backgroundColor": "#eeeeee",
-  "backgroundTextStyle": "dark",
-  "enablePullDownRefresh":true
+  "backgroundTextStyle": "dark"
 }
