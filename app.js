@@ -5,7 +5,7 @@ App({
         //调用API从本地缓存中获取数据
         let logs = wx.getStorageSync('logs') || [];
         logs.unshift(Date.now());
-        wx.setStorageSync('logs', logs)
+        wx.setStorageSync('logs', logs.slice(0,50))
     },
     getUserInfo: function (cb) {
         let that = this;

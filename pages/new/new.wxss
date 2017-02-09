@@ -136,7 +136,7 @@ page {
 .bottom-area view {
     font-size: 24rpx;
     text-align: center;
-    flex:1;
+    /*flex:1;*/
 }
 
 .bottom-area image {
@@ -147,7 +147,27 @@ page {
     padding-top: 18rpx;
     box-sizing: border-box;
 }
+.submit {
+    height:100%;
+    padding-top: 18rpx;
+    box-sizing: border-box;
+    width:250rpx;
+}
+button.submit {
+    -webkit-appearance: none;
+    border:none;
+    border-radius: 0;
+    padding:0;
+    margin:auto;
+    line-height: 1;
+    font-size: 24rpx;
+    height:110rpx;
+    padding-top: 18rpx;
 
+}
+button.submit::after {
+    display: none;
+}
 
 .insert-btn {
     flex: auto;

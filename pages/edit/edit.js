@@ -7,8 +7,8 @@ Page({
             title: '',
             content: [],
             copyfrom: '',
-            editor:''
-        }
+        },
+        editor:''
     },
     onLoad: function (options) {
         // 页面初始化 options为页面跳转所带来的参数
@@ -32,9 +32,27 @@ Page({
             success: function (res) {
                 let tempArr = res.data;
                 tempArr['content'] = JSON.parse(tempArr['content']) ;
+                let tempTarr = [];
+                for (let i = 0;i<tempArr.content.length;i++) {
+                    if (tempArr.content[i].type == 'text' && tempArr.content[i].value.length > 140) {
+                        tempTarr.push({
+                            'id':i,
+                            'strA':tempArr.content[i].value.substr(0,140),
+                            'strB':tempArr.content[i].value.substr(140,tempArr.content[i].value.length)
+                        })
+                    }
+                }
+
+
                 that.setData({
                     content: tempArr
                 });
+
+                for (let j = 0;j<tempTarr.length;j++) {
+                    let data = {};
+                    data['content.content[' + tempTarr[j].id + '].value'] = tempTarr[j].strA + tempTarr[j].strB; // key 可以是任何字符串
+                    that.setData(data);
+                }
                 // console.log(res.data)
             }
         });
@@ -242,7 +260,9 @@ Page({
 
 
     },
-    pushContent: function () {
+    pushContent: function (e) {
+
+
 
         if (this.data.content.title == '') {
             wx.showModal({
@@ -287,6 +307,13 @@ Page({
                     tempBarr.push(tempArr[i])
                 }
             }
+            let formId;
+            if (this.data.editor == 'reporter') {
+                formId = e.detail.formId
+            } else {
+                formId = ''
+            }
+
             wx.request({
                 url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=edit',
                 method: 'post',
@@ -297,7 +324,8 @@ Page({
                     content: JSON.stringify(tempBarr),
                     way: 'tijiao',
                     id:this.data.content.id,
-                    sessid: wx.getStorageSync('sessid')
+                    sessid: wx.getStorageSync('sessid'),
+                    formId:formId
                 },
                 success: function (res) {
                     console.log(res);

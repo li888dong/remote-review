@@ -1,5 +1,5 @@
 
-var app = getApp();
+let app = getApp();
 Page({
     data: {
         motto: '河南手机报远程发稿系统',
@@ -16,20 +16,21 @@ Page({
             url: '../list/list'
         })
     },
-    onLoad: function () {
+    onLoad: function (options) {
+        console.log(options);
         console.log('onLoad');
         let that = this;
-        let roleid = wx.getStorageSync('xjuser').roleid;
-
-        if (roleid == '37') {
-            wx.redirectTo({
-              url: '../list/list'
-            })
-        } else {
-            wx.redirectTo({
-                url: '../elist/elist'
-            })
-        }
+        // let roleid = wx.getStorageSync('xjuser').roleid;
+        //
+        // if (roleid == '37') {
+        //     wx.redirectTo({
+        //       url: '../list/list'
+        //     })
+        // } else {
+        //     wx.redirectTo({
+        //         url: '../elist/elist'
+        //     })
+        // }
 
         //调用应用实例的方法获取全局数据
         app.getUserInfo(function (userInfo) {

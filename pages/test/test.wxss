@@ -156,7 +156,8 @@ button.submit {
     margin:auto;
     line-height: 1;
     font-size: 24rpx;
-
+    height:110rpx;
+    padding-top: 18rpx;
     
 }
 button.submit::after {

@@ -223,7 +223,7 @@ Page({
 
 
     },
-    pushContent: function () {
+    pushContent: function (e) {
 
         if (this.data.content.title == '') {
             wx.showModal({
@@ -277,7 +277,8 @@ Page({
                     copyfrom: this.data.content.copyfrom,
                     content: JSON.stringify(tempBarr),
                     way: 'tijiao',
-                    sessid: wx.getStorageSync('sessid')
+                    sessid: wx.getStorageSync('sessid'),
+                    formId:e.detail.formId
                 },
                 success: function (res) {
                     console.log(res);
