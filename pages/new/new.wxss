@@ -115,6 +115,18 @@ page {
     flex: 1;
 }
 
+.media-hover.img-add {
+    background: url("https://www.hnsjb.cn/static/img/wx/image.png") center center no-repeat,#cccccc;
+    background-size: 50rpx 42rpx;
+    background-position-x: 190rpx;
+}
+
+.media-hover.video-add {
+    background: url("https://www.hnsjb.cn/static/img/wx/video.png") center center no-repeat,#cccccc;
+    background-size: 50rpx 42rpx;
+    background-position-x: 30rpx;
+}
+
 .btn-del {
     background: url("https://www.hnsjb.cn/static/img/wx/delete.png") center center no-repeat;
     background-size: 30rpx 30rpx;

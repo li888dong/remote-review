@@ -112,10 +112,5 @@ Page({
                 }
             }
         });
-    },
-    switchTab:function() {
-        wx.switchTab({
-            url: '../index/index?id=333'
-        })
     }
 });

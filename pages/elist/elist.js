@@ -148,8 +148,8 @@ Page({
                 url: '../list/list'
             })
         }
-        let shzData = wx.getStorageSync('rshenhezhong') || [];
-        let yshData = wx.getStorageSync('ryishenhe') || [];
+        let shzData = wx.getStorageSync('eshenhezhong') || [];
+        let yshData = wx.getStorageSync('eyishenhe') || [];
         this.setData({
             'shenhezhong': shzData
         });
