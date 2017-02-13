@@ -5,105 +5,148 @@ Page({
     data: {
         userInfo: {},
         loading: false,
-        roles:[
-            {roleid:36,rolename:'总值班'},
-            {roleid:37,rolename:'记者'},
-            {roleid:38,rolename:'编辑'}
+        roles: [
+            {roleid: 36, rolename: '总值班'},
+            {roleid: 37, rolename: '记者'},
+            {roleid: 38, rolename: '编辑'}
         ],
-        xjuser:{},
+        xjuser: {},
         stats: {}
     },
     onLoad: function () {
         // 页面初始化 options为页面跳转所带来的参数
-        let that = this;
         //调用应用实例的方法获取全局数据
-        app.getUserInfo(function (userInfo) {
-            //更新数据
-            that.setData({
-                userInfo: userInfo
-            })
-        });
-        // console.log(this.data.userInfo);
+        let that = this;
+        if (wx.getStorageSync('userInfo') != '') {
+            this.setData({
+                userInfo:wx.getStorageSync('userInfo')
+            });
+        } else {
+            app.getUserInfo(function (userInfo) {
+                //更新数据
+                that.setData({
+                    userInfo: userInfo
+                })
+            });
+        }
         this.setData({
-            xjuser:wx.getStorageSync("xjuser")
+            xjuser: wx.getStorageSync("xjuser")
         });
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=userlist',
-            method:'post',
+            method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
-            success:function(response) {
-                that.setData({
-                   stats:response.data
-                });
-                console.log(response);
+            success: function (response) {
+                if (response.data.status == '1') {
+                    that.setData({
+                        stats: response.data.data
+                    });
+                } else if (response.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
+
+                // that.setData({
+                //     stats: response.data
+                // });
+
             }
         });
-        // console.log(this.data)
     },
 
-    roleChange: function(e) {
-        console.log('picker发送选择改变，携带值为', e.detail.value);
+    roleChange: function (e) {
         let that = this;
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=choose_role',
-            method:'post',
+            method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
                 sessid: wx.getStorageSync('sessid'),
-                username:this.data.xjuser.username,
-                userid:this.data.xjuser.userid,
-                roleid:e.detail.value,
-                realusername:this.data.xjuser.realusername
+                username: this.data.xjuser.username,
+                userid: this.data.xjuser.userid,
+                roleid: e.detail.value,
+                realusername: this.data.xjuser.realusername
             },
-            success:function(response) {
+            success: function (response) {
                 if (response.data.status == 1) {
                     wx.setStorageSync('xjuser', response.data.data);
                     that.setData({
-                        'xjuser':response.data.data
+                        'xjuser': response.data.data
                     });
                     wx.request({
                         url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=userlist',
-                        method:'post',
+                        method: 'post',
                         header: {"content-type": "application/x-www-form-urlencoded"},
                         data: {
                             sessid: wx.getStorageSync('sessid')
                         },
-                        success:function(response) {
-                            that.setData({
-                                stats:response.data
-                            });
-                            console.log(response);
+                        success: function (response) {
+                            if (response.data.status == '1') {
+                                that.setData({
+                                    stats: response.data.data
+                                });
+                            } else if (response.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                                wx.showModal({
+                                    title: '登录过期，请重新登录',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: res => {
+                                        wx.redirectTo({
+                                            url: '../login/login'
+                                        })
+                                    }
+                                })
+
+                            }
                         }
                     });
                 } else if (response.data.status == 6) {
                     wx.showModal({
-                      title: '您没有总值班权限',
-                      content: '',
-                      showCancel:false,
-                      complete: res=>{
-                          console.log(res);
-                        return false;
-                      }
+                        title: '您没有总值班权限',
+                        content: '',
+                        showCancel: false,
+                        complete: res => {
+                            return false;
+                        }
                     })
+                } else if (response.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
                 }
-                console.log(response);
             }
         });
 
-        // console.log(this.data.roles[e.detail.value]);
     },
-    logout:function() {
+    logout: function () {
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=logout',
-            method:'post',
+            method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
-            success:function(response) {
+            success: function (response) {
                 wx.removeStorageSync('xjuser');
                 if (response.data.status == 1) {
                     wx.redirectTo({

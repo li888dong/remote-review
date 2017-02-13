@@ -25,7 +25,6 @@ Page({
     onLoad: function (options) {
         let that = this;
         // 页面初始化 options为页面跳转所带来的参数
-        console.log(options);
         this.setData({
             xjuser: wx.getStorageSync("xjuser")
         });
@@ -40,13 +39,29 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                that.setData({
-                    workflow: res.data
-                });
-                that.setData({
-                    lineLength: (res.data.length - 1) * 100
-                });
-                console.log(res.data)
+
+                if (res.data.status == 1) {
+                    that.setData({
+                        workflow: res.data.data
+                    });
+                    that.setData({
+                        lineLength: (res.data.data.length - 1) * 100
+                    });
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
+
+
             }
         });
         wx.request({
@@ -58,12 +73,27 @@ Page({
             },
             success: function (res) {
 
-                let tempArr = res.data;
-                tempArr['content'] = JSON.parse(tempArr['content']) ;
-                that.setData({
-                    content: tempArr
-                });
-                // console.log(res.data)
+                if (res.data.status == 1) {
+                    let tempArr = res.data.data;
+                    tempArr['content'] = JSON.parse(tempArr['content']) ;
+                    that.setData({
+                        content: tempArr
+                    });
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
+
+
             }
         });
         wx.request({
@@ -74,11 +104,27 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                that.setData({
-                    categories: res.data
-                });
 
-                console.log(res.data)
+                if (res.data.status == 1) {
+                    that.setData({
+                        categories: res.data.data
+                    });
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
+
+
+
             }
         });
         wx.request({
@@ -89,13 +135,26 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                that.setData({
-                    sucheckers: res.data
-                });
-                console.log(res.data)
+                if (res.data.status == 1) {
+                    that.setData({
+                        sucheckers: res.data.data
+                    });
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
+
             }
         });
-        console.log(this.data.workflow.length);
         that.setData({
             lineLength: (this.data.workflow.length - 1) * 100
         });
@@ -150,11 +209,10 @@ Page({
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
-                                reject_reason: that.data.rejectreason,
+                                reject_reason: that.data.rejectreason.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
                                 typefrom: that.data.editorauth
                             },
                             success: function (res) {
-                                console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
                                         title: '驳回成功',
@@ -166,6 +224,18 @@ Page({
                                             })
                                         }
                                     })
+                                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                                    wx.showModal({
+                                        title: '登录过期，请重新登录',
+                                        showCancel: false,
+                                        content: '',
+                                        complete: res => {
+                                            wx.redirectTo({
+                                                url: '../login/login'
+                                            })
+                                        }
+                                    })
+
                                 }
                             }
                         })
@@ -252,7 +322,6 @@ Page({
                                 typefrom: that.data.editorauth
                             },
                             success: function (res) {
-                                console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
                                         title: '已通过',
@@ -264,6 +333,18 @@ Page({
                                             })
                                         }
                                     })
+                                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                                    wx.showModal({
+                                        title: '登录过期，请重新登录',
+                                        showCancel: false,
+                                        content: '',
+                                        complete: res => {
+                                            wx.redirectTo({
+                                                url: '../login/login'
+                                            })
+                                        }
+                                    })
+
                                 }
                             }
                         })
@@ -277,12 +358,10 @@ Page({
 
     },
     forwardNews: function () {
-        console.log(this.data);
 
         let that = this;
 
         if (this.data.sucheck == '') {
-            console.log('t1');
             wx.showModal({
                 title: '请选择总编辑',
                 content: '',
@@ -292,8 +371,6 @@ Page({
                 }
             })
         } else if (this.data.currentCate == '') {
-            console.log('t2');
-
             wx.showModal({
                 title: '请选择栏目',
                 content: '',
@@ -303,8 +380,6 @@ Page({
                 }
             })
         } else if (this.data.selection.length > 0 && this.data.subcate == '') {
-            console.log('t3');
-
             wx.showModal({
                 title: '请选择子栏目',
                 content: '',
@@ -331,7 +406,6 @@ Page({
                                 userid: that.data.sucheck
                             },
                             success: function (res) {
-                                console.log(res);
                                 if (res.data.status == 1) {
                                     wx.showModal({
                                         title: '已转审',
@@ -343,6 +417,18 @@ Page({
                                             })
                                         }
                                     })
+                                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                                    wx.showModal({
+                                        title: '登录过期，请重新登录',
+                                        showCancel: false,
+                                        content: '',
+                                        complete: res => {
+                                            wx.redirectTo({
+                                                url: '../login/login'
+                                            })
+                                        }
+                                    })
+
                                 }
                             }
                         })
@@ -361,7 +447,6 @@ Page({
             title: '确认通过',
             content: '您确定要通过这篇稿件吗？',
             success: function (res) {
-                console.log(res);
                 if (res.confirm) {
                     wx.request({
                         url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=pass",
@@ -374,7 +459,6 @@ Page({
                             typefrom: that.data.editorauth
                         },
                         success: function (res) {
-                            console.log(res);
                             if (res.data.status == 1) {
                                 wx.showModal({
                                     title: '已通过',
@@ -386,6 +470,18 @@ Page({
                                         })
                                     }
                                 })
+                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                                wx.showModal({
+                                    title: '登录过期，请重新登录',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: res => {
+                                        wx.redirectTo({
+                                            url: '../login/login'
+                                        })
+                                    }
+                                })
+
                             }
                         }
                     })

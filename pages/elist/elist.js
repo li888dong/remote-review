@@ -8,10 +8,9 @@ Page({
         caogaoxiang: []
     },
     changeTab: function (e) {
-        console.log(e);
         this.setData({
             tab: e.currentTarget.dataset.tabindex
-        })
+        });
         this.updateNews()
     },
     ckNews: function (e) {
@@ -47,12 +46,9 @@ Page({
                 change_time:change_time
             },
             success: function (res) {
-                console.log(res);
-                // res = JSON.parse(res);
                 if (res.data.status == 1) {
                     that.getList();
                     wx.setStorageSync('euptime', res.data.change_time);
-                    console.log('time changed')
                 }
             }
         });
@@ -63,7 +59,6 @@ Page({
                 url: '../login/login'
             })
         }
-        console.log('onLoad');
 
         let roleid = wx.getStorageSync('xjuser').roleid;
 
@@ -74,10 +69,6 @@ Page({
         }
 
     },
-    onReady: function () {
-        // 页面渲染完成
-    },
-
     onPullDownRefresh: function() {
         // Do something when pull down.
 
@@ -101,11 +92,24 @@ Page({
                             sessid: wx.getStorageSync('sessid')
                         },
                         success: function (res) {
-                            that.setData({
-                                shenhezhong: res.data
-                            });
-                            wx.setStorageSync('eshenhezhong', res.data);
-                            console.log(res.data)
+                            if (res.data.status == 1) {
+                                that.setData({
+                                    shenhezhong: res.data.data
+                                });
+                                wx.setStorageSync('eshenhezhong', res.data.data);
+                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                                wx.showModal({
+                                    title: '登录过期，请重新登录',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: res => {
+                                        wx.redirectTo({
+                                            url: '../login/login'
+                                        })
+                                    }
+                                })
+
+                            }
                         }
                     });
                     wx.request({
@@ -116,16 +120,41 @@ Page({
                             sessid: wx.getStorageSync('sessid')
                         },
                         success: function (res) {
-                            that.setData({
-                                yishenhe: res.data
-                            });
-                            wx.setStorageSync('eyishenhe', res.data);
-                            console.log(res.data);
-                            wx.stopPullDownRefresh();
-                            wx.hideNavigationBarLoading();
+                            if (res.data.status == 1) {
+                                that.setData({
+                                    yishenhe: res.data.data
+                                });
+                                wx.setStorageSync('eyishenhe', res.data.data);
+                                wx.stopPullDownRefresh();
+                                wx.hideNavigationBarLoading();
+                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                                wx.showModal({
+                                    title: '登录过期，请重新登录',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: res => {
+                                        wx.redirectTo({
+                                            url: '../login/login'
+                                        })
+                                    }
+                                })
+
+                            }
                         }
                     });
                     wx.setStorageSync('euptime', res.data.change_time);
+
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
 
                 }
             }
@@ -172,6 +201,18 @@ Page({
                     that.getList();
                     wx.setStorageSync('euptime', res.data.change_time);
 
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
                 }
             }
         });
@@ -189,11 +230,25 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                that.setData({
-                    shenhezhong: res.data
-                });
-                wx.setStorageSync('eshenhezhong', res.data);
-                console.log(res.data);
+
+                if (res.data.status == 1) {
+                    that.setData({
+                        shenhezhong: res.data.data
+                    });
+                    wx.setStorageSync('eshenhezhong', res.data.data);
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
             }
         });
         wx.request({
@@ -204,12 +259,25 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                that.setData({
-                    yishenhe: res.data
-                });
-                wx.setStorageSync('eyishenhe', res.data);
-                console.log(res.data);
-                wx.hideNavigationBarLoading();
+                if (res.data.status == 1) {
+                    that.setData({
+                        yishenhe: res.data.data
+                    });
+                    wx.setStorageSync('eyishenhe', res.data.data);
+                    wx.hideNavigationBarLoading();
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
             }
         });
     }

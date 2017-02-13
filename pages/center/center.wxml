@@ -45,7 +45,7 @@
     </view>
   <view class="link-area" wx:if="{{stats.username == '李潇' || stats.username == '王皓'}}">
     <navigator url="../test/test" class="link">
-        测试页
+        测试页 0.5.6
     </navigator>
   </view>
   <radio-group class="radio-group" bindchange="roleChange">

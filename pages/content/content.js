@@ -9,7 +9,6 @@ Page({
     onLoad: function (options) {
         let that = this;
         // 页面初始化 options为页面跳转所带来的参数
-        console.log(options);
         this.setData({
             cid: options.id
         });
@@ -21,13 +20,29 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                that.setData({
-                    workflow: res.data
-                });
-                that.setData({
-                    lineLength: (res.data.length - 1) * 100
-                });
-                console.log(res.data)
+
+                if (res.data.status == 1) {
+                    that.setData({
+                        workflow: res.data.data
+                    });
+                    that.setData({
+                        lineLength: (res.data.data.length - 1) * 100
+                    });
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
+
+
             }
         });
         wx.request({
@@ -38,19 +53,27 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                let tempArr = res.data;
-                tempArr['content'] = JSON.parse(tempArr['content']) ;
-                that.setData({
-                    content: tempArr
-                });
-                // console.log(res.data)
+                if (res.data.status == 1) {
+                    let tempArr = res.data.data;
+                    tempArr['content'] = JSON.parse(tempArr['content']) ;
+                    that.setData({
+                        content: tempArr
+                    });
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
             }
         });
-        // console.log(this.data.workflow.length);
-        // that.setData({
-        //     lineLength: (this.data.workflow.length - 1) * 100
-        // });
-        //
     },
 
     editNews: function () {
@@ -85,6 +108,18 @@ Page({
                                         })
                                     }
                                 })
+                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                                wx.showModal({
+                                    title: '登录过期，请重新登录',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: res => {
+                                        wx.redirectTo({
+                                            url: '../login/login'
+                                        })
+                                    }
+                                })
+
                             }
                         }
                     })

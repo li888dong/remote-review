@@ -8,17 +8,26 @@ Page({
     onLoad: function () {
         // 页面初始化 options为页面跳转所带来的参数
         let that = this;
+
+        if (wx.getStorageSync('userInfo') != '') {
+            this.setData({
+                userInfo:wx.getStorageSync('userInfo')
+            });
+        } else {
+            app.getUserInfo(function (userInfo) {
+                //更新数据
+                that.setData({
+                    userInfo: userInfo
+                })
+            });
+        }
+
+
+
         //调用应用实例的方法获取全局数据
-        app.getUserInfo(function (userInfo) {
-            //更新数据
-            that.setData({
-                userInfo: userInfo
-            })
-        });
-        console.log(this.data.userInfo);
+
     },
     formSubmit: function(e) {
-        // console.log('form发生了submit事件，携带数据为：', e.detail.value);
         let tempobj = e.detail.value;
         if (tempobj.username == '') {
             wx.showModal({
@@ -54,9 +63,9 @@ Page({
                 password:tempobj.password
             },
             success:function(response) {
-                console.log(response);
                 if (response.data.status ==1 ) {
                     wx.setStorageSync('xjuser',response.data.data);
+                    wx.setStorageSync('wentload','');
                     if (response.data.data.roleid == '37') {
                         wx.redirectTo({
                             url: '../list/list'

@@ -17,8 +17,6 @@ Page({
         })
     },
     onLoad: function (options) {
-        console.log(options);
-        console.log('onLoad');
         let that = this;
         // let roleid = wx.getStorageSync('xjuser').roleid;
         //

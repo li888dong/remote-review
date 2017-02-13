@@ -30,36 +30,61 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-                let tempArr = res.data;
-                tempArr['content'] = JSON.parse(tempArr['content']) ;
-                let tempTarr = [];
-                for (let i = 0;i<tempArr.content.length;i++) {
-                    if (tempArr.content[i].type == 'text' && tempArr.content[i].value.length > 140) {
-                        tempTarr.push({
-                            'id':i,
-                            'strA':tempArr.content[i].value.substr(0,140),
-                            'strB':tempArr.content[i].value.substr(140,tempArr.content[i].value.length)
-                        })
+
+                if (res.data.status == 1) {
+                    let tempArr = res.data.data;
+                    tempArr['content'] = JSON.parse(tempArr['content']) ;
+                    let tempTarr = [];
+                    for (let i = 0;i<tempArr.content.length;i++) {
+                        if (tempArr.content[i].type == 'text' && tempArr.content[i].value.length > 140) {
+                            tempTarr.push({
+                                'id':i,
+                                'strA':tempArr.content[i].value.substr(0,140),
+                                'strB':tempArr.content[i].value.substr(140,tempArr.content[i].value.length)
+                            })
+                        }
                     }
+
+
+                    that.setData({
+                        content: tempArr
+                    });
+
+                    for (let j = 0;j<tempTarr.length;j++) {
+                        let data = {};
+                        data['content.content[' + tempTarr[j].id + '].value'] = tempTarr[j].strA + tempTarr[j].strB; // key 可以是任何字符串
+                        that.setData(data);
+                    }
+                    if (that.data.content.content.length == 0) {
+                        that.setData({
+                            'content.content' : [{
+                                "type":"text",
+                                "value":""
+                            }]
+                        });
+                    }
+
+
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
                 }
 
 
-                that.setData({
-                    content: tempArr
-                });
-
-                for (let j = 0;j<tempTarr.length;j++) {
-                    let data = {};
-                    data['content.content[' + tempTarr[j].id + '].value'] = tempTarr[j].strA + tempTarr[j].strB; // key 可以是任何字符串
-                    that.setData(data);
-                }
-                // console.log(res.data)
             }
         });
     },
 
     uploadImg: function (e) {
-        console.log(e.target.dataset.cidx);
         let cidx = e.target.dataset.cidx ;
         let that = this;
         let tempArr = this.data.content.content;
@@ -70,15 +95,6 @@ Page({
             success: function (res) {
                 // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
                 let tempFilePaths = res.tempFilePaths;
-                console.log(this);
-                console.log(that);
-                console.log(that.data);
-                // wx.showToast({
-                //     title: '图片上传中',
-                //     icon: 'loading',
-                //     duration: 10000,
-                //     mask:true
-                // });
                 that.wetoast.toast({
                     title: '图片上传中',
                     duration:0
@@ -91,10 +107,8 @@ Page({
                         'user': 'test'
                     },
                     success: function(res){
-                        console.log(res);
                         let data = JSON.parse(res.data);
                         if (data.status == 1) {
-                            console.log(data);
                             let imagedata = {
                                 "type":"image",
                                 "value":data.url,
@@ -103,14 +117,11 @@ Page({
                             // wx.hideToast();
                             that.wetoast.hide();
                             tempArr.splice(cidx,0,imagedata); // key 可以是任何字符串
-                            console.log(imagedata);
                             that.setData({
                                 "content.content":tempArr
                             });
                             data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
-                            // console.log(data);
                             that.setData(data);
-                            console.log(that.data.content.content[cidx+1]);
                         }
                     }
                 });
@@ -119,7 +130,6 @@ Page({
         })
     },
     uploadVd: function (e) {
-        console.log(e.target.dataset.cidx);
         let cidx = e.target.dataset.cidx;
         let that = this;
         let tempArr = this.data.content.content;
@@ -130,15 +140,6 @@ Page({
             success: function (res) {
                 // success
                 let tempFilePath = res.tempFilePath;
-                console.log(this);
-                console.log(that);
-                console.log(that.data);
-                // wx.showToast({
-                //     title: '视频上传中',
-                //     icon: 'loading',
-                //     duration: 10000,
-                //     mask:true
-                // });
                 that.wetoast.toast({
                     title: '视频上传中',
                     duration:0
@@ -153,21 +154,17 @@ Page({
                     success: function(res){
                         let data = JSON.parse(res.data);
                         if (data.status == 1) {
-                            console.log(data.data);
                             let videodata = {
                                 "type":"video",
                                 "value":data.data.filepath,
                                 "title":""
                             };
-                            // wx.hideToast();
                             that.wetoast.hide();
                             tempArr.splice(cidx,0,videodata); // key 可以是任何字符串
-                            console.log(videodata);
                             that.setData({
                                 "content.content":tempArr
                             });
                             data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
-                            // console.log(data);
                             that.setData(data);
 
                         }
@@ -183,7 +180,7 @@ Page({
         })
     },
     getContent: function (e) {
-        if (this.data.content.title == '') {
+        if (this.data.content.title.replace(/\s+/g,"") == '') {
             wx.showModal({
                 title: '标题不得为空',
                 showCancel: false,
@@ -192,7 +189,7 @@ Page({
                     return false;
                 }
             })
-        } else if (this.data.content.copyfrom == '') {
+        } else if (this.data.content.copyfrom.replace(/\s+/g,"") == '') {
             wx.showModal({
                 title: '来源不得为空',
                 showCancel: false,
@@ -202,7 +199,6 @@ Page({
                 }
             })
         } else {
-            console.log(this.data.content);
             let tempArr = [];
             let tempBarr = [];
 
@@ -226,20 +222,28 @@ Page({
                     tempBarr.push(tempArr[i])
                 }
             }
+
+            for (let i = 0;i<tempBarr.length;i++) {
+                if (tempBarr[i].type == 'text') {
+                    tempBarr[i].value = tempBarr[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
+                } else {
+                    tempBarr[i].title = tempBarr[i].title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
+                }
+            }
+
             wx.request({
                 url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=edit',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
-                    title:this.data.content.title,
-                    copyfrom:this.data.content.copyfrom,
+                    title:this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
+                    copyfrom:this.data.content.copyfrom.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
                     content: JSON.stringify(tempBarr),
                     way:'zancun',
                     id:this.data.content.id,
                     sessid: wx.getStorageSync('sessid')
                 },
                 success: function (res) {
-                    console.log(res);
                     if (res.data.status == '1') {
                         wx.showModal({
                             title: '保存成功',
@@ -251,6 +255,18 @@ Page({
                                 })
                             }
                         })
+                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                        wx.showModal({
+                            title: '登录过期，请重新登录',
+                            showCancel: false,
+                            content: '',
+                            complete: res => {
+                                wx.redirectTo({
+                                    url: '../login/login'
+                                })
+                            }
+                        })
+
                     }
                 }
             });
@@ -264,7 +280,7 @@ Page({
 
 
 
-        if (this.data.content.title == '') {
+        if (this.data.content.title.replace(/\s+/g,"") == '') {
             wx.showModal({
                 title: '标题不得为空',
                 showCancel: false,
@@ -273,7 +289,7 @@ Page({
                     return false;
                 }
             })
-        } else if (this.data.content.copyfrom == '') {
+        } else if (this.data.content.copyfrom.replace(/\s+/g,"") == '') {
             wx.showModal({
                 title: '来源不得为空',
                 showCancel: false,
@@ -283,7 +299,6 @@ Page({
                 }
             })
         } else {
-            console.log(this.data.content);
             let tempArr = [];
             let tempBarr = [];
 
@@ -307,6 +322,15 @@ Page({
                     tempBarr.push(tempArr[i])
                 }
             }
+
+            for (let i = 0;i<tempBarr.length;i++) {
+                if (tempBarr[i].type == 'text') {
+                    tempBarr[i].value = tempBarr[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
+                } else {
+                    tempBarr[i].title = tempBarr[i].title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
+                }
+            }
+
             let formId;
             if (this.data.editor == 'reporter') {
                 formId = e.detail.formId
@@ -319,8 +343,8 @@ Page({
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
-                    title: this.data.content.title,
-                    copyfrom: this.data.content.copyfrom,
+                    title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
+                    copyfrom: this.data.content.copyfrom.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
                     content: JSON.stringify(tempBarr),
                     way: 'tijiao',
                     id:this.data.content.id,
@@ -328,7 +352,6 @@ Page({
                     formId:formId
                 },
                 success: function (res) {
-                    console.log(res);
                     if (res.data.status == '1') {
                         wx.showModal({
                             title: '提交成功',
@@ -340,6 +363,18 @@ Page({
                                 })
                             }
                         })
+                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                        wx.showModal({
+                            title: '登录过期，请重新登录',
+                            showCancel: false,
+                            content: '',
+                            complete: res => {
+                                wx.redirectTo({
+                                    url: '../login/login'
+                                })
+                            }
+                        })
+
                     }
                 }
             });
@@ -351,7 +386,6 @@ Page({
         let data = {};
         data['content.content[' + cidx + '].value'] = e.detail.value; // key 可以是任何字符串
         this.setData(data);
-        console.log(e);
         this.sepText(cidx);
     },
     setTitle: function (e) {
@@ -359,16 +393,12 @@ Page({
         let data = {};
         data['content.content[' + cidx + '].title'] = e.detail.value; // key 可以是任何字符串
         this.setData(data);
-        console.log(e);
     },
     showFuns: function (e) {
         let cidx = e.target.dataset.cidx;
         let data = {};
-        // console.log(this.data.content.content[cidx].show);
         data['content.content[' + cidx + '].show'] = !this.data.content.content[cidx].show; // key 可以是任何字符串
-        // console.log(data);
         this.setData(data);
-        // console.log(e);
     },
     setProp: function (e) {
         let prop = e.target.dataset.prop;
@@ -392,12 +422,7 @@ Page({
                 if (res.confirm) {
                     let cidx = e.target.dataset.cidx;
                     let tempArr = that.data.content.content;
-                    console.log(tempArr);
-                    console.log(tempArr.length);
                     tempArr.splice(cidx, 1);
-                    console.log(tempArr);
-
-                    console.log(tempArr.length);
 
                     if (tempArr[cidx] != undefined) {
                         if (util.mergeText(tempArr[cidx - 1], tempArr[cidx]) != 'noop') {
@@ -412,7 +437,6 @@ Page({
                     }
 
 
-                    console.log(tempArr);
                     that.setData({
                         "content.content": tempArr
                     })
@@ -433,7 +457,6 @@ Page({
                 dataArr.push(this.data.content.content[i])
             }
         }
-        console.log(dataArr);
         // let tempStr = this.data.content.content[0].value;
         let addObj = {
             "type": "add",
@@ -441,7 +464,6 @@ Page({
         };
 
         let resultArr = [];
-        // console.log(dataArr);
         for (let i = 0; i < dataArr.length; i++) {
 
             if ( i+1<dataArr.length ) {
@@ -500,7 +522,6 @@ Page({
                 }
             } else {
 
-                console.log(i);
 
                 if (dataArr[i].type == "text" ) {
                     let tempStr = dataArr[i].value;
@@ -545,7 +566,6 @@ Page({
             resultArr = resultArr.concat([{"type":"text","value":""}]);
         }
 
-        console.log(resultArr);
 
         this.setData({
             "content.content": resultArr
@@ -553,7 +573,6 @@ Page({
 
     },
     sepText: function (idx) {
-        console.log(idx);
         let dataArr = this.data.content.content;
         if (idx != 0 && idx != dataArr.length - 1) {
             let tempA = dataArr.slice(0, idx);
@@ -589,7 +608,6 @@ Page({
             })
         } else if (idx == 0) {
             let tempB = dataArr.slice(idx + 1);
-            console.log(tempB);
             let resultArr = [];
             let tempStr = dataArr[idx].value;
             tempStr = tempStr.replace(/(\n)+/g, '\n');
@@ -597,7 +615,6 @@ Page({
             let tempArr = tempStr.split('\n');
             for (let j = 0; j < tempArr.length; j++) {
                 let tempObj = [];
-                console.log(idx + 1);
                 if (j == tempArr.length - 1 && dataArr.length > 1 && dataArr[idx + 1].type == 'add') {
                     tempObj = [{
                         "type": "text",
@@ -616,7 +633,6 @@ Page({
                 tempRarr = tempRarr.concat(tempObj);
             }
             resultArr = tempRarr.concat(tempB);
-            console.log(resultArr);
             this.setData({
                 'content.content': resultArr
             })

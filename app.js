@@ -44,6 +44,7 @@ App({
                     wx.getUserInfo({
                         success: function (res) {
                             that.globalData.userInfo = res.userInfo;
+                            wx.setStorageSync('userInfo', res.userInfo);
                             console.log(res);
                             typeof cb == "function" && cb(that.globalData.userInfo)
                         }

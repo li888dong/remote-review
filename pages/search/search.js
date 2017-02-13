@@ -16,7 +16,7 @@ Page({
         })
     },
     search:function(e) {
-        let q = e.detail.value;
+        let q = e.detail.value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
         if (q != '') {
             let that = this;
             that.wetoast.toast({
@@ -31,18 +31,33 @@ Page({
                     sessid: wx.getStorageSync('sessid')
                 },
                 success: function (res) {
-                    that.setData({
-                        results: res.data
-                    });
-                    that.wetoast.hide();
-                    console.log(res.data)
+
+                    if (res.data.status == 1) {
+                        that.setData({
+                            results: res.data.data
+                        });
+                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                        that.wetoast.hide();
+                        wx.showModal({
+                            title: '登录过期，请重新登录',
+                            showCancel: false,
+                            content: '',
+                            complete: res => {
+                                wx.redirectTo({
+                                    url: '../login/login'
+                                })
+                            }
+                        })
+
+                    }
+
+
                 }
             });
         }
 
     },
     gotoNews:function(e) {
-        console.log(e);
         if (e.currentTarget.dataset.status == 1) {
             wx.navigateTo({
                 url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid

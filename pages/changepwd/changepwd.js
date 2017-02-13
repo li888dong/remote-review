@@ -19,7 +19,6 @@ Page({
     },
 
     formSubmit: function (e) {
-        // console.log('form发生了submit事件，携带数据为：', e.detail.value);
         let tempobj = e.detail.value;
         if (tempobj.password == '') {
             wx.showModal({
@@ -73,7 +72,6 @@ Page({
                     old_pd: tempobj.password
                 },
                 success: function (response) {
-                    console.log(response);
                     if (response.data.status == 1) {
                         wx.showModal({
                             title: '密码修改成功',
@@ -96,6 +94,18 @@ Page({
                                 return false;
                             }
                         });
+                    } else if (response.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                        wx.showModal({
+                            title: '登录过期，请重新登录',
+                            showCancel: false,
+                            content: '',
+                            complete: res => {
+                                wx.redirectTo({
+                                    url: '../login/login'
+                                })
+                            }
+                        })
+
                     }
 
                 }
