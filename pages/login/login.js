@@ -8,12 +8,15 @@ Page({
     onLoad: function () {
         // 页面初始化 options为页面跳转所带来的参数
         let that = this;
+        // console.log(this.globalData);
 
-        if (wx.getStorageSync('userInfo') != '') {
+
+        if (wx.getStorageSync('userInfo') != '' && wx.getStorageSync('wentload') == '') {
             this.setData({
                 userInfo:wx.getStorageSync('userInfo')
             });
         } else {
+            console.log('aaa');
             app.getUserInfo(function (userInfo) {
                 //更新数据
                 that.setData({
@@ -21,12 +24,9 @@ Page({
                 })
             });
         }
-
-
-
         //调用应用实例的方法获取全局数据
-
     },
+
     formSubmit: function(e) {
         let tempobj = e.detail.value;
         if (tempobj.username == '') {
@@ -65,7 +65,7 @@ Page({
             success:function(response) {
                 if (response.data.status ==1 ) {
                     wx.setStorageSync('xjuser',response.data.data);
-                    wx.setStorageSync('wentload','');
+                    wx.removeStorageSync('wentload');
                     if (response.data.data.roleid == '37') {
                         wx.redirectTo({
                             url: '../list/list'

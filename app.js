@@ -9,9 +9,8 @@ App({
     },
     getUserInfo: function (cb) {
         let that = this;
-        if (this.globalData.userInfo) {
-            typeof cb == "function" && cb(this.globalData.userInfo)
-        } else {
+
+            console.log('else');
             //调用登录接口
             wx.login({
                 success: function (res) {
@@ -27,7 +26,7 @@ App({
                                 sessid:wx.getStorageSync('sessid')
                             },
                             success:function(response) {
-                                console.log(response);
+                                // console.log(response);
                                 wx.setStorageSync('sessid', response.data.sessid);
                                 if (response.data.status == 0) {
                                     wx.redirectTo({
@@ -51,7 +50,6 @@ App({
                     })
                 }
             })
-        }
     },
     globalData: {
         userInfo: null

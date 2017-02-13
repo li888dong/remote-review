@@ -192,7 +192,7 @@ Page({
                                 })
                             }
                         })
-                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                         wx.showModal({
                             title: '登录过期，请重新登录',
                             showCancel: false,
@@ -292,7 +292,7 @@ Page({
                                 })
                             }
                         })
-                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                         wx.showModal({
                             title: '登录过期，请重新登录',
                             showCancel: false,
@@ -585,5 +585,31 @@ Page({
                 'content.content': resultArr
             })
         }
+    },
+    insertVd:function(e) {
+        let cidx = e.target.dataset.cidx;
+        let that = this;
+        let tempArr = this.data.content.content;
+        let textdata = {
+          "type":"vdtext",
+            "value":""
+        };
+        tempArr.splice(cidx, 0, textdata); // key 可以是任何字符串
+        this.setData({
+            "content.content": tempArr
+        });
+    },
+    addVideo:function(e) {
+        let tempVd = e.detail.value;
+        let cidx = e.target.dataset.cidx;
+        tempVd = tempVd.replace('//www', '//gslb').replace('/show/', '/stream/').replace('.htm', '.mp4');
+        let vddata = {
+            "type":"video",
+            "value":tempVd,
+            "title":""
+        };
+        let data = {};
+        data['content.content[' + cidx + ']'] = vddata; // key 可以是任何字符串
+        this.setData(data);
     }
 });

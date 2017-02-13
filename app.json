@@ -14,9 +14,26 @@
     "pages/login/login",
     "pages/changepwd/changepwd",
     "pages/index/index",
-    "pages/test/test"
-
+    "pages/test/test",
+    "pages/craft/craft",
+    "pages/review/review",
+    "pages/publish/publish"
   ],
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/craft/craft",
+      "text": "草稿箱"
+    }, {
+      "pagePath": "pages/review/review",
+      "text": "审核中"
+    },{
+      "pagePath": "pages/publish/publish",
+      "text": "已审核"
+    }],
+    "position":"top",
+    "color":"#353535",
+    "selectedColor": "#3177B4"
+  },
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#fff",

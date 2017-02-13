@@ -44,7 +44,8 @@ Page({
                     that.setData({
                         stats: response.data.data
                     });
-                } else if (response.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (response.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                    wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -97,7 +98,8 @@ Page({
                                 that.setData({
                                     stats: response.data.data
                                 });
-                            } else if (response.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                            } else if (response.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                                wx.setStorageSync('wentload','went');
                                 wx.showModal({
                                     title: '登录过期，请重新登录',
                                     showCancel: false,
@@ -121,7 +123,8 @@ Page({
                             return false;
                         }
                     })
-                } else if (response.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (response.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                    wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -148,12 +151,23 @@ Page({
             },
             success: function (response) {
                 wx.removeStorageSync('xjuser');
+                wx.removeStorageSync('userInfo');
                 if (response.data.status == 1) {
+                    wx.redirectTo({
+                        url: '../login/login'
+                    })
+                } else if (response.data.status == '100') {
+                    wx.setStorageSync('wentload','went');
                     wx.redirectTo({
                         url: '../login/login'
                     })
                 }
             }
         });
+    },
+    switchtab:function() {
+        wx.switchTab({
+  url: '../craft/craft'
+})
     }
 });

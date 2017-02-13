@@ -38,7 +38,8 @@ Page({
                 if (res.data.status == 1) {
                     that.getList();
                     wx.setStorageSync('ruptime', res.data.change_time);
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                    wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -66,7 +67,6 @@ Page({
                 change_time:change_time
             },
             success: function (res) {
-
                 // res = JSON.parse(res);
                 if (res.data.status == 1) {
                     wx.request({
@@ -83,7 +83,8 @@ Page({
                                     caogaoxiang: res.data.data
                                 });
                                 wx.setStorageSync('caogaoxiang', res.data.data);
-                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                                wx.setStorageSync('wentload','went');
                                 wx.showModal({
                                     title: '登录过期，请重新登录',
                                     showCancel: false,
@@ -112,7 +113,8 @@ Page({
                                     shenhezhong: res.data.data
                                 });
                                 wx.setStorageSync('rshenhezhong', res.data.data);
-                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                                wx.setStorageSync('wentload','went');
                                 wx.showModal({
                                     title: '登录过期，请重新登录',
                                     showCancel: false,
@@ -146,7 +148,8 @@ Page({
                                 wx.setStorageSync('ryishenhe', res.data.data);
                                 wx.stopPullDownRefresh();
                                 wx.hideNavigationBarLoading();
-                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                            } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                                wx.setStorageSync('wentload','went');
                                 wx.showModal({
                                     title: '登录过期，请重新登录',
                                     showCancel: false,
@@ -165,7 +168,8 @@ Page({
                     });
                     wx.setStorageSync('ruptime', res.data.change_time);
 
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                    wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -243,7 +247,7 @@ Page({
                 if (res.data.status == 1) {
                     that.getList();
                     wx.setStorageSync('ruptime', res.data.change_time);
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
@@ -278,7 +282,7 @@ Page({
                         caogaoxiang: res.data.data
                     });
                     wx.setStorageSync('caogaoxiang',res.data.data);
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
@@ -308,7 +312,7 @@ Page({
                         shenhezhong: res.data.data
                     });
                     wx.setStorageSync('rshenhezhong', res.data.data);
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
@@ -339,7 +343,7 @@ Page({
                     });
                     wx.setStorageSync('ryishenhe', res.data.data);
                     wx.hideNavigationBarLoading();
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',

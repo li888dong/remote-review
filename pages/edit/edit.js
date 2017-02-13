@@ -65,7 +65,8 @@ Page({
                     }
 
 
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                    wx.setStorageSync('wentload','went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -255,7 +256,8 @@ Page({
                                 })
                             }
                         })
-                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                        wx.setStorageSync('wentload','went');
                         wx.showModal({
                             title: '登录过期，请重新登录',
                             showCancel: false,
@@ -363,7 +365,8 @@ Page({
                                 })
                             }
                         })
-                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                        wx.setStorageSync('wentload','went');
                         wx.showModal({
                             title: '登录过期，请重新登录',
                             showCancel: false,

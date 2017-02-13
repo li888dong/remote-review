@@ -48,6 +48,9 @@
         测试页 0.5.6
     </navigator>
   </view>
+  <view class="link-area" bindtap="switchtab" wx:if="{{stats.username == '李潇' || stats.username == '杨宁'}}">
+    tabBar
+  </view>
   <radio-group class="radio-group" bindchange="roleChange">
     <view class="section-title">切换身份</view>
     <label class="radio" wx:for="{{roles}}">

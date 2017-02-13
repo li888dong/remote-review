@@ -36,7 +36,7 @@ Page({
                         that.setData({
                             results: res.data.data
                         });
-                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') != '') {
+                    } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                         that.wetoast.hide();
                         wx.showModal({
                             title: '登录过期，请重新登录',
