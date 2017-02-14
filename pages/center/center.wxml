@@ -49,7 +49,7 @@
     </navigator>
   </view>
   <view class="link-area" bindtap="switchtab" wx:if="{{stats.username == '李潇' || stats.username == '杨宁'}}">
-    tabBar
+    <navigator url="../craft/craft" open-type="switchTab" class="link">切换 Tab</navigator>
   </view>
   <radio-group class="radio-group" bindchange="roleChange">
     <view class="section-title">切换身份</view>

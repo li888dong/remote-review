@@ -6,6 +6,7 @@ Page({
         loading:false
     },
     onLoad: function () {
+        
         // 页面初始化 options为页面跳转所带来的参数
         let that = this;
         // console.log(this.globalData);
@@ -66,6 +67,8 @@ Page({
                 if (response.data.status ==1 ) {
                     wx.setStorageSync('xjuser',response.data.data);
                     wx.removeStorageSync('wentload');
+                    wx.removeStorageSync('ruptime');
+                    wx.removeStorageSync('euptime');
                     if (response.data.data.roleid == '37') {
                         wx.redirectTo({
                             url: '../list/list'

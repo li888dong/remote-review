@@ -193,14 +193,17 @@ Page({
         if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
-            })
+            });
+            return false;
         }
         let roleid = wx.getStorageSync('xjuser').roleid;
 
         if (roleid != '37') {
             wx.redirectTo({
                 url: '../elist/elist'
-            })
+            });
+            return false;
+
         }
 
     },
@@ -209,7 +212,8 @@ Page({
         if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
-            })
+            });
+            return false;
         }
 
         let roleid = wx.getStorageSync('xjuser').roleid;
@@ -217,7 +221,8 @@ Page({
         if (roleid != '37') {
             wx.redirectTo({
                 url: '../elist/elist'
-            })
+            });
+            return false;
         }
         console.log(wx.getStorageSync('xjuser'));
         let cgxData = wx.getStorageSync('caogaoxiang') || [];

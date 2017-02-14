@@ -164,10 +164,5 @@ Page({
                 }
             }
         });
-    },
-    switchtab:function() {
-        wx.switchTab({
-  url: '../craft/craft'
-})
     }
 });
