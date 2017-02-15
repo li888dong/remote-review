@@ -144,7 +144,7 @@ page {
   width: 39rpx;
   height: 39rpx;
   top: 32.5rpx;
-  background: url("https://www.hnsjb.cn/static/img/wx/grey-dot.png") center center no-repeat;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/grey-dot.png") center center no-repeat;
     background-size: 35rpx 35rpx;
 }
 
@@ -157,7 +157,7 @@ page {
     width: 39rpx;
     height: 39rpx;
     top: 32.5rpx;
-    background: url("https://www.hnsjb.cn/static/img/wx/red-dot.png") center center no-repeat;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/red-dot.png") center center no-repeat;
     background-size: 39rpx 39rpx;
 
 }
@@ -195,26 +195,26 @@ page {
 
 .edit-btn {
   flex: 1;
-  background: url("https://www.hnsjb.cn/static/img/wx/edit.png") center center no-repeat;
-  background-size: 50rpx 50rpx;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/edit.png") center center no-repeat;
+  background-size: 47rpx 47rpx;
   margin: auto;
   margin-bottom: 7rpx;
 }
 
 .del-btn {
   flex: 1;
-  background: url("https://www.hnsjb.cn/static/img/wx/del.png") center center no-repeat;
-  background-size: 50rpx 50rpx;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/del.png") center center no-repeat;
+  background-size: 45rpx 47rpx;
   margin: auto;
   margin-bottom: 7rpx;
 }
 
 .hover-active .edit-btn {
-    background: url("https://www.hnsjb.cn/static/img/wx/edit-hover.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/edit-hover.png") center center no-repeat;
+    background-size: 47rpx 47rpx;
 }
 
 .hover-active .del-btn {
-    background: url("https://www.hnsjb.cn/static/img/wx/del-hover.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/del-hover.png") center center no-repeat;
+    background-size: 45rpx 47rpx;
 }

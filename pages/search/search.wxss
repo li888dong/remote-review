@@ -14,7 +14,7 @@
   border-radius: 10rpx;
   border: 1rpx solid #dbdbdb;
   box-sizing: border-box;
-  background: url("https://www.hnsjb.cn/static/img/wx/search.png") left center no-repeat, #fff;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/search.png") left center no-repeat, #fff;
   background-size: 37rpx 37rpx;
   background-position-x: 30rpx;
 }

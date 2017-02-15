@@ -1,1 +1,8 @@
-{}
+{
+  "navigationBarBackgroundColor": "#0E69B0",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "审核中",
+  "backgroundColor": "#eeeeee",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh":true
+}

@@ -264,15 +264,15 @@ page {
 
 .edit-btn {
     flex: 1;
-    background: url("https://www.hnsjb.cn/static/img/wx/edit.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/edit.png") center center no-repeat;
+    background-size: 47rpx 47rpx;
     margin: auto;
     margin-bottom: 7rpx;
 }
 
 
 .hover-active .edit-btn {
-    background: url("https://www.hnsjb.cn/static/img/wx/edit-hover.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/edit-hover.png") center center no-repeat;
+    background-size: 47rpx 47rpx;
 }
 

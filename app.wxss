@@ -17,7 +17,7 @@ page {
 .r-btn {
     width:50rpx;
     height:50rpx;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
 }
 .empty-item {
     height:100rpx;
@@ -27,6 +27,10 @@ page {
     color: #9b9b9b;
 }
 .bottom-area .hover-active,.hover-active {
+    color: #3098e5;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.bottom-area .hover-active.bottom-view {
     color: #3098e5;
     background-color: rgba(0, 0, 0, 0.1);
 }

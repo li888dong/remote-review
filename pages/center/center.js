@@ -152,6 +152,8 @@ Page({
             success: function (response) {
                 wx.removeStorageSync('xjuser');
                 wx.removeStorageSync('userInfo');
+                wx.removeStorageSync('ruptime');
+                wx.removeStorageSync('euptime');
                 if (response.data.status == 1) {
                     wx.redirectTo({
                         url: '../login/login'

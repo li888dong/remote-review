@@ -53,7 +53,7 @@ view {
     color: #969696;
     line-height:85rpx;
     font-size: 36rpx;
-    background: url("https://www.hnsjb.cn/static/img/wx/search.png") center center no-repeat,#ffffff;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/search.png") center center no-repeat,#ffffff;
     background-size: 37rpx 37rpx;
     background-position-x: 277rpx;
     padding-left: 339rpx;
@@ -94,7 +94,7 @@ view {
 .link::after {
     width:16rpx;
     height:100%;
-    background: url("https://www.hnsjb.cn/static/img/wx/right-arrow.png") center center no-repeat;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/right-arrow.png") center center no-repeat;
     background-size: 16rpx 25rpx;
     content: '';
     display: block;

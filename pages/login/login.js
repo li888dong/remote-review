@@ -67,8 +67,11 @@ Page({
                 if (response.data.status ==1 ) {
                     wx.setStorageSync('xjuser',response.data.data);
                     wx.removeStorageSync('wentload');
-                    wx.removeStorageSync('ruptime');
+                    wx.removeStorageSync('lastupdate');
+                    wx.removeStorageSync('slastupdate');
+                    wx.removeStorageSync('ylastupdate');
                     wx.removeStorageSync('euptime');
+                    wx.removeStorageSync('ruptime');
                     if (response.data.data.roleid == '37') {
                         wx.redirectTo({
                             url: '../list/list'

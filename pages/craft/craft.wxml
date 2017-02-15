@@ -1,2 +1,26 @@
-<!--pages/craft/craft.wxml-->
-<text>pages/craft/craft.wxml</text>
+<view class="list">
+    <block wx:for="{{caogaoxiang}}">
+      <view class="{{item.typefrom == 'rejected' ? 'news-item reject' : 'news-item'}}" hover="true" hover-class="news-item-hover" bindtap="gotoNews" data-newsid="{{item.id}}">
+        <view class="news-inner">
+          <text class="news-title">{{item.title}}</text>
+          <view class="news-info">
+            <view class="news-time">{{item.time}}</view>
+            <view class="news-author">{{item.realusername}}</view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <view wx-if="{{caogaoxiang.length == 0}}" class="empty-item">
+            该类别下暂无内容
+        </view>
+  </view>
+<view class="bottom-area">
+    <navigator hover-class="hover-active" url="../new/new">
+      <view class="r-btn new-btn"></view>
+      新建稿件
+    </navigator>
+    <navigator hover-class="hover-active" url="../center/center">
+      <view class="r-btn center-btn"></view>
+      个人中心
+    </navigator>
+  </view>

@@ -1,1 +1,8 @@
-{}
+{
+  "navigationBarBackgroundColor": "#0E69B0",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "草稿箱",
+  "backgroundColor": "#eeeeee",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh":true
+}

@@ -64,13 +64,13 @@ page {
 
 .reject.news-item .news-inner {
   padding-left: 80rpx;
-  background: url("https://www.hnsjb.cn/static/img/wx/warn.png") left center no-repeat;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/warn.png") left center no-repeat;
   background-size: 50rpx 50rpx;
 }
 
 .forward.news-item .news-inner {
   padding-left: 80rpx;
-  background: url("https://www.hnsjb.cn/static/img/wx/trans.png") left center no-repeat;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/trans.png") left center no-repeat;
   background-size: 50rpx 50rpx;
 }
 
@@ -114,26 +114,26 @@ page {
 
 .new-btn {
   flex: auto;
-  background: url("https://www.hnsjb.cn/static/img/wx/new.png") center center no-repeat;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/new.png") center center no-repeat;
   background-size: 50rpx 50rpx;
   margin: auto;
   margin-bottom: 7rpx;
 }
 .hover-active .new-btn {
-    background: url("https://www.hnsjb.cn/static/img/wx/new-hover.png") center center no-repeat;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/new-hover.png") center center no-repeat;
     background-size: 50rpx 50rpx;
 }
 
 
 .center-btn {
   flex: auto;
-  background: url("https://www.hnsjb.cn/static/img/wx/center.png") center center no-repeat;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/center.png") center center no-repeat;
   background-size: 50rpx 50rpx;
   margin: auto;
   margin-bottom: 7rpx;
 }
 
 .hover-active .center-btn {
-    background: url("https://www.hnsjb.cn/static/img/wx/center-hover.png") center center no-repeat;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/center-hover.png") center center no-repeat;
     background-size: 50rpx 50rpx;
 }

@@ -57,7 +57,8 @@ Page({
         if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
-            })
+            });
+            return false;
         }
 
         let roleid = wx.getStorageSync('xjuser').roleid;
@@ -65,7 +66,8 @@ Page({
         if (roleid == '37') {
             wx.redirectTo({
                 url: '../list/list'
-            })
+            });
+            return false;
         }
 
     },
@@ -170,7 +172,8 @@ Page({
         if (wx.getStorageSync('xjuser') == '') {
             wx.redirectTo({
                 url: '../login/login'
-            })
+            });
+            return false;
         }
         // 页面显示
         let roleid = wx.getStorageSync('xjuser').roleid;
@@ -178,7 +181,8 @@ Page({
         if (roleid == '37') {
             wx.redirectTo({
                 url: '../list/list'
-            })
+            });
+            return false;
         }
         let shzData = wx.getStorageSync('eshenhezhong') || [];
         let yshData = wx.getStorageSync('eyishenhe') || [];
