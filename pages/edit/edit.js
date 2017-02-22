@@ -8,7 +8,8 @@ Page({
             content: [],
             copyfrom: '',
         },
-        editor:''
+        editor:'',
+        disable:false
     },
     onLoad: function (options) {
         // 页面初始化 options为页面跳转所带来的参数
@@ -23,7 +24,7 @@ Page({
         });
 
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -124,6 +125,17 @@ Page({
                             data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
                             that.setData(data);
                         }
+                    },
+                    fail:function(res) {
+                        wx.showModal({
+                            title: '网络状况差，请稍后再试',
+                            showCancel: false,
+                            content: '',
+                            complete: function (res) {
+                                that.wetoast.hide();
+                            }
+                        });
+
                     }
                 });
 
@@ -169,6 +181,17 @@ Page({
                             that.setData(data);
 
                         }
+                    },
+                    fail:function(res) {
+                        wx.showModal({
+                            title: '网络状况差，请稍后再试',
+                            showCancel: false,
+                            content: '',
+                            complete: function (res) {
+                                that.wetoast.hide()
+                            }
+                        });
+
                     }
                 });
             },
@@ -231,9 +254,13 @@ Page({
                     tempBarr[i].title = tempBarr[i].title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
                 }
             }
+            this.setData({
+                'disable':true
+            });
+            let that = this;
 
             wx.request({
-                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=edit',
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=edit',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
@@ -270,6 +297,19 @@ Page({
                         })
 
                     }
+                },
+                fail:function(res) {
+                    wx.showModal({
+                        title: '网络状况差，请稍后再试',
+                        showCancel: false,
+                        content: '',
+                        complete: function (res) {
+                            that.setData({
+                                'disable':false
+                            })
+                        }
+                    });
+
                 }
             });
         }
@@ -339,9 +379,12 @@ Page({
             } else {
                 formId = ''
             }
-
+            this.setData({
+                'disable':true
+            });
+            let that = this;
             wx.request({
-                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=edit',
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=edit',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
@@ -379,6 +422,19 @@ Page({
                         })
 
                     }
+                },
+                fail:function(res) {
+                    wx.showModal({
+                        title: '网络状况差，请稍后再试',
+                        showCancel: false,
+                        content: '',
+                        complete: function (res) {
+                            that.setData({
+                                'disable':false
+                            })
+                        }
+                    });
+
                 }
             });
         }
@@ -454,6 +510,9 @@ Page({
 
     },
     getArray: function () {
+        this.setData({
+            'disable':true
+        });
         let dataArr = [];
         for (let i=0;i<this.data.content.content.length;i++) {
             if (this.data.content.content[i].type != 'add') {
@@ -572,7 +631,10 @@ Page({
 
         this.setData({
             "content.content": resultArr
-        })
+        });
+        this.setData({
+            'disable':false
+        });
 
     },
     sepText: function (idx) {

@@ -1,23 +1,21 @@
 {
   "pages":[
-    "pages/list/list",
+    "pages/craft/craft",
+    "pages/review/review",
+    "pages/publish/publish",
     "pages/content/content",
     "pages/logs/logs",
     "pages/new/new",
     "pages/edit/edit",
     "pages/center/center",
     "pages/ckcon/ckcon",
-    "pages/elist/elist",
     "pages/search/search",
     "pages/trash/trash",
     "pages/vcon/vcon",
     "pages/login/login",
     "pages/changepwd/changepwd",
     "pages/index/index",
-    "pages/test/test",
-    "pages/craft/craft",
-    "pages/review/review",
-    "pages/publish/publish"
+    "pages/test/test"
   ],
   "tabBar": {
     "list": [{

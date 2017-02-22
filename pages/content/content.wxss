@@ -218,3 +218,38 @@ page {
     background: url("https://www.hnsjb.cn/static/img/wxapp/del-hover.png") center center no-repeat;
     background-size: 45rpx 47rpx;
 }
+
+button.submit {
+    -webkit-appearance: none;
+    border:none;
+    border-radius: 0;
+    padding:0;
+    margin:auto;
+    line-height: 1;
+    font-size: 24rpx;
+    height:110rpx;
+    padding-top: 18rpx;
+
+}
+button.submit::after {
+    display: none;
+}
+
+.submit {
+    height:100%;
+    padding-top: 18rpx;
+    box-sizing: border-box;
+    width:250rpx;
+
+}
+.hover-active .submit-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/submit-hover.png") center center no-repeat;
+    background-size: 44rpx 34rpx;
+}
+.submit-btn {
+    flex: auto;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/submit.png") center center no-repeat;
+    background-size: 44rpx 34rpx;
+    margin: auto;
+    margin-bottom: 7rpx;
+}

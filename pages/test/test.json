@@ -1,7 +1,8 @@
 {
   "navigationBarBackgroundColor": "#0E69B0",
   "navigationBarTextStyle": "white",
-  "navigationBarTitleText": "新建稿件",
+  "navigationBarTitleText": "审核中",
   "backgroundColor": "#eeeeee",
-  "backgroundTextStyle": "light"
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh":true
 }

@@ -1,4 +1,4 @@
-// pages/craft/craft.js
+// pages/review/review.js
 Page({
     data: {
     },
@@ -27,6 +27,14 @@ Page({
             'shenhezhong': shzData
         });
         this.loadNews();
+        let pagestatus = wx.getStorageSync('pagestatus') || 'none';
+        let self = wx.getStorageSync('pageself') || '0';
+        let currentType = wx.getStorageSync('pagetype') || '全部';
+        this.filterNews(pagestatus,self);
+        this.setData({
+            'currentType' : currentType
+        })
+
     },
     onHide: function () {
         // 页面隐藏
@@ -36,9 +44,8 @@ Page({
     },
     onPullDownRefresh:function () {
         let that = this;
-        wx.showNavigationBarLoading();
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -51,8 +58,13 @@ Page({
                     });
                     wx.setStorageSync('slastupdate',0);
                     wx.setStorageSync('shenhezhong',res.data.data);
-                    wx.hideNavigationBarLoading();
                     wx.stopPullDownRefresh();
+                    that.setData({
+                        'currentType' : '全部'
+                    });
+                    wx.removeStorageSync('pagestatus');
+                    wx.removeStorageSync('pageself');
+                    wx.removeStorageSync('pagetype');
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
                     wx.showModal({
@@ -86,7 +98,7 @@ Page({
         let that = this;
         let change_time = wx.getStorageSync('slastupdate') || 0;
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=check_change', //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=check_change', //仅为示例，并非真实的接口地址
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -117,9 +129,8 @@ Page({
     },
     getNews:function() {
         let that = this;
-        wx.showNavigationBarLoading();
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -130,8 +141,14 @@ Page({
                     that.setData({
                         shenhezhong: res.data.data
                     });
+                    let pagestatus = wx.getStorageSync('pagestatus') || 'none';
+                    let self = wx.getStorageSync('pageself') || '0';
+                    let currentType = wx.getStorageSync('pagetype') || '全部';
+                    that.filterNews(pagestatus,self);
+                    that.setData({
+                        'currentType' : currentType
+                    });
                     wx.setStorageSync('shenhezhong',res.data.data);
-                    wx.hideNavigationBarLoading();
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
                     wx.showModal({
@@ -152,9 +169,8 @@ Page({
     showFilter:function() {
         let that = this;
         wx.showActionSheet({
-            itemList: ['全部','待审稿件', '驳回稿件', '转审稿件','我的待审','我的转审'],
+            itemList: ['全部','待审稿件', '驳回稿件', '转审稿件','自采稿件'],
             success: function(res) {
-                console.log(res);
                 that.reformNews(res.tapIndex);
             },
             fail: function(res) {
@@ -163,41 +179,119 @@ Page({
         })
     },
     reformNews:function(idx) {
-        console.log(idx);
         switch (idx) {
             case 0:
                 this.getNews();
+                wx.removeStorageSync('pagestatus');
+                wx.removeStorageSync('pageself');
+                wx.setStorageSync('pagetype', '全部');
+                this.setData({
+                    'currentType' : '全部'
+                });
                 break;
             case 1:
                 this.filterNews('tocheck','0');
+                wx.setStorageSync('pagestatus', 'tocheck');
+                wx.setStorageSync('pageself', '0');
+                wx.setStorageSync('pagetype', '待审稿件');
+
+                this.setData({
+                    'currentType' : '待审稿件'
+                });
                 break;
             case 2:
                 this.filterNews('rejected','0');
+                wx.setStorageSync('pagestatus', 'rejected');
+                wx.setStorageSync('pageself', '0');
+                wx.setStorageSync('pagetype', '驳回稿件');
+
+                this.setData({
+                    'currentType' : '驳回稿件'
+                });
                 break;
             case 3:
                 this.filterNews('tosucheck','0');
+                wx.setStorageSync('pagestatus', 'tosucheck');
+                wx.setStorageSync('pagetype', '转审稿件');
+                wx.setStorageSync('pageself', '0');
+                this.setData({
+                    'currentType' : '转审稿件'
+                });
                 break;
             case 4:
-                this.filterNews('tocheck','1');
-                break;
-            case 5:
-                this.filterNews('tosucheck','1');
+                this.filterNews('all','1');
+                wx.setStorageSync('pagestatus', 'all');
+                wx.setStorageSync('pageself', '1');
+                wx.setStorageSync('pagetype', '自采稿件');
+                this.setData({
+                    'currentType' : '自采稿件'
+                });
                 break;
             default:
-                this.getNews();
+                // this.getNews();
+                return false;
         }
 
     },
     filterNews:function(a,b) {
-        let tempArr = wx.getStorageSync('shenhezhong');
-        let newArr = [];
-        for (let i = 0;i < tempArr.length;i++) {
-            if (tempArr[i].typefrom==a && tempArr[i].is_self == b) {
-                newArr.push(tempArr[i]);
+
+        if (a == 'none') {
+            return false;
+        } else {
+            let tempArr = wx.getStorageSync('shenhezhong');
+            let newArr = [];
+            if (b == 0) {
+                for (let i = 0;i < tempArr.length;i++) {
+                    if (tempArr[i].typefrom==a && tempArr[i].is_self == b) {
+                        newArr.push(tempArr[i]);
+                    }
+                }
+            } else {
+                for (let i = 0;i < tempArr.length;i++) {
+                    if (tempArr[i].is_self == b) {
+                        newArr.push(tempArr[i]);
+                    }
+                }
             }
+            this.setData({
+                'shenhezhong':newArr
+            })
         }
-        this.setData({
-            'shenhezhong':newArr
-        })
+
+
+    },
+    onReachBottom:function() {
+        let currentLength = this.data.shenhezhong.length;
+        let currentNews = this.data.shenhezhong;
+        let that = this;
+        wx.request({
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=new_newslist&status=shenhezhong&offset='+currentLength+'&num=100', //仅为示例，并非真实的接口地址
+            method:'post',
+            header: {"content-type": "application/x-www-form-urlencoded"},
+            data: {
+                sessid: wx.getStorageSync('sessid')
+            },
+            success: function (res) {
+                if (res.data.status == 1) {
+                    that.setData({
+                        shenhezhong: currentNews.concat(res.data.data)
+                    });
+                    wx.setStorageSync('shenhezhong',currentNews.concat(res.data.data));
+                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                    wx.setStorageSync('wentload','went');
+                    wx.showModal({
+                        title: '登录过期，请重新登录',
+                        showCancel: false,
+                        content: '',
+                        complete: res => {
+                            wx.redirectTo({
+                                url: '../login/login'
+                            })
+                        }
+                    })
+
+                }
+            }
+        });
     }
 });

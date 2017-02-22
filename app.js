@@ -15,11 +15,11 @@ App({
             //调用登录接口
             wx.login({
                 success: function (res) {
-                    console.log(res);
+                    // console.log(res);
                     if (res.code) {
                         //发起网络请求
                         wx.request({
-                            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=wx_login',
+                            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=wx_login',
                             method:'post',
                             header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
@@ -45,7 +45,7 @@ App({
                         success: function (res) {
                             that.globalData.userInfo = res.userInfo;
                             wx.setStorageSync('userInfo', res.userInfo);
-                            console.log(res);
+                            // console.log(res);
                             typeof cb == "function" && cb(that.globalData.userInfo)
                         }
                     })

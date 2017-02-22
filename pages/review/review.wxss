@@ -16,7 +16,9 @@ page {
 .news-item-hover {
     background: #e3e3e3;
 }
-
+.news-item.forbid-item .news-title {
+    opacity: 0.5;
+}
 .news-title {
     color: #4a4a4a;
     font-size: 40rpx;

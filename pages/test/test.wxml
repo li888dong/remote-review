@@ -1,21 +1,35 @@
 <view>
 
-  <view class="bottom-area">
-    <view class="submit" hover="true" hover-class="hover-active" bindtap="getArray">
+  <view class="bottom-area" wx:if="{{disable == false}}">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="getArray" data-disableid="1">
       <view class="r-btn insert-btn"></view>
       插图
     </view>
-    <view class="submit" hover="true" hover-class="hover-active" bindtap="getContent">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
       <view class="r-btn save-btn"></view>
       暂存
     </view>
     <form bindsubmit="pushContent" report-submit="true">
-    <button class="submit" formType="submit" hover="true" hover-class="hover-active">
-      <view class="r-btn submit-btn"></view>
-      提交
-    </button>
-    </form>
+        <button class="submit" formType="submit" hover="true" hover-class="hover-active" data-disableid="3">
+          <view class="r-btn submit-btn"></view>
+          提交
+        </button>
+        </form>
   </view>
+  <view class="bottom-area" wx:elif="{{disable == true}}">
+      <view class="submit">
+        <view class="r-btn insert-btn"></view>
+                {{disabletip1}}
+      </view>
+      <view class="submit">
+        <view class="r-btn save-btn"></view>
+        {{disabletip2}}
+      </view>
+      <view class="submit">
+              <view class="r-btn submit-btn"></view>
+                      {{disabletip3}}
+            </view>
+    </view>
   <view class="prop-container">
     <textarea class="input" placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>
@@ -25,9 +39,6 @@
       <view wx:if="{{item.type == 'text'}}">
         <textarea auto-height placeholder="输入文字内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindblur="setText" bindconfirm="setText" value="{{item.value}}" />
       </view>
-      <view wx:if="{{item.type == 'vdtext'}}">
-              <textarea auto-height placeholder="输入视频地址" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindblur="addVideo" bindconfirm="addVideo" value="{{item.value}}" />
-            </view>
       <view wx:elif="{{item.type == 'image'}}" class="content-media">
         <image style="width: 155rpx; height: 155rpx; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
         <textarea class="media-title" bindblur="setTitle" data-cidx="{{idx}}" placeholder="请输入图片标题" value="{{item.title}}"></textarea>
@@ -44,7 +55,6 @@
               <view class="media-add-area" wx:if="{{item.show}}">
                 <view class="img-add" hover="true" hover-class="media-hover" bindtap="uploadImg" data-cidx="{{idx}}"></view>
                 <view class="video-add" hover="true" hover-class="media-hover" bindtap="uploadVd" data-cidx="{{idx}}"></view>
-                <view class="video-add" hover="true" hover-class="media-hover" bindtap="insertVd" data-cidx="{{idx}}"></view>
               </view>
             </view>
     </view>

@@ -17,7 +17,6 @@ Page({
                 userInfo:wx.getStorageSync('userInfo')
             });
         } else {
-            console.log('aaa');
             app.getUserInfo(function (userInfo) {
                 //更新数据
                 that.setData({
@@ -55,7 +54,7 @@ Page({
             loading: true
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=login',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=login',
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -72,15 +71,9 @@ Page({
                     wx.removeStorageSync('ylastupdate');
                     wx.removeStorageSync('euptime');
                     wx.removeStorageSync('ruptime');
-                    if (response.data.data.roleid == '37') {
-                        wx.redirectTo({
-                            url: '../list/list'
-                        })
-                    } else {
-                        wx.redirectTo({
-                            url: '../elist/elist'
-                        })
-                    }
+                    wx.switchTab({
+                        url: '../craft/craft'
+                    })
 
                 } else if (response.data.status == 0) {
                     wx.showModal({

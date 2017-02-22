@@ -9,8 +9,13 @@ Page({
                 "type": "text",
                 "value": ""
             }],
-            copyfrom: '河南手机报'
-        }
+            copyfrom: '河南手机报',
+
+        },
+        disable:false,
+        disabletip1:'插图',
+        disabletip2:'暂存',
+        disabletip3:'提交'
     },
     onLoad: function (options) {
         // 页面初始化 options为页面跳转所带来的参数
@@ -60,6 +65,17 @@ Page({
                             data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
                             that.setData(data);
                         }
+                    },
+                    fail:function(res) {
+                        wx.showModal({
+                            title: '网络状况差，请稍后再试',
+                            showCancel: false,
+                            content: '',
+                            complete: function (res) {
+                                console.log(res);
+                                that.wetoast.hide();
+                            }
+                        })
                     }
                 });
 
@@ -105,6 +121,17 @@ Page({
                             data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
                             that.setData(data);
                         }
+                    },
+                    fail:function(res) {
+                        wx.showModal({
+                            title: '网络状况差，请稍后再试',
+                            showCancel: false,
+                            content: '',
+                            complete: function (res) {
+                                console.log(res);
+                                that.wetoast.hide();
+                            }
+                        })
                     }
                 });
             },
@@ -116,8 +143,7 @@ Page({
             }
         })
     },
-    getContent: function () {
-
+    getContent: function (e) {
         if (this.data.content.title.replace(/\s+/g,"") == '') {
             wx.showModal({
                 title: '标题不得为空',
@@ -127,7 +153,7 @@ Page({
                     return false;
                 }
             })
-        } else if (this.data.content.copyfrom == '') {
+        } else if (this.data.content.copyfrom.replace(/\s+/g,"") == '') {
             wx.showModal({
                 title: '来源不得为空',
                 showCancel: false,
@@ -168,9 +194,16 @@ Page({
                     tempBarr[i].title = tempBarr[i].title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
                 }
             }
-
+            this.setData({
+                'disable':true
+            });
+            let disabletip = 'disabletip' + e.target.dataset.disableid;
+            let tempData = {};
+            tempData[disabletip] = this.data[disabletip] + '中';
+            this.setData(tempData);
+            let that = this;
             wx.request({
-                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=add',
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=add',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
@@ -187,8 +220,8 @@ Page({
                             showCancel: false,
                             content: '',
                             complete: function (res) {
-                                wx.redirectTo({
-                                    url: '../list/list'   //todo:change redirect url
+                                wx.navigateBack({
+                                    delta: 1
                                 })
                             }
                         })
@@ -205,6 +238,21 @@ Page({
                         })
 
                     }
+                },
+                fail:function(res) {
+                    wx.showModal({
+                        title: '网络状况差，请稍后再试',
+                        showCancel: false,
+                        content: '',
+                        complete: function (res) {
+                            that.setData({
+                                'disable':false
+                            });
+                            tempData = {};
+                            tempData[disabletip] = that.data[disabletip].replace('中','');
+                            that.setData(tempData);
+                        }
+                    })
                 }
             });
         }
@@ -224,7 +272,7 @@ Page({
                     return false;
                 }
             })
-        } else if (this.data.content.copyfrom == '') {
+        } else if (this.data.content.copyfrom.replace(/\s+/g,"") == '') {
             wx.showModal({
                 title: '来源不得为空',
                 showCancel: false,
@@ -265,11 +313,17 @@ Page({
                     tempBarr[i].title = tempBarr[i].title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
                 }
             }
-
-
-
+            this.setData({
+                'disable':true
+            });
+            let disabletip = 'disabletip' + e.detail.target.dataset.disableid;
+            let tempData = {};
+            tempData[disabletip] = this.data[disabletip] + '中';
+            console.log(e);
+            this.setData(tempData);
+            let that = this;
             wx.request({
-                url: 'https://www.hnsjb.cn/v2_api.php?op=test',
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=add',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
@@ -305,6 +359,22 @@ Page({
                         })
 
                     }
+                },
+                fail:function(res) {
+                    wx.showModal({
+                        title: '网络状况差，请稍后再试',
+                        showCancel: false,
+                        content: '',
+                        complete: function (res) {
+                            that.setData({
+                                'disable':false
+                            });
+                            tempData = {};
+                            tempData[disabletip] = that.data[disabletip].replace('中','');
+                            that.setData(tempData);
+                        }
+                    });
+
                 }
             });
         }
@@ -373,10 +443,27 @@ Page({
                 } else {
                     return false;
                 }
+            },
+            fail:function(res) {
+                wx.showModal({
+                    title: '网络状况差，请稍后再试',
+                    showCancel: false,
+                    content: '',
+                    complete: function (res) {
+                        //
+                    }
+                })
             }
         });
     },
-    getArray: function () {
+    getArray: function (e) {
+        this.setData({
+            'disable':true
+        });
+        let disabletip = 'disabletip' + e.target.dataset.disableid;
+        let tempData = {};
+        tempData[disabletip] = this.data[disabletip] + '中';
+        this.setData(tempData);
         let dataArr = [];
         for (let i=0;i<this.data.content.content.length;i++) {
             if (this.data.content.content[i].type != 'add') {
@@ -492,7 +579,13 @@ Page({
         }
         this.setData({
             "content.content": resultArr
-        })
+        });
+        tempData = {};
+        tempData[disabletip] = this.data[disabletip].replace('中','');
+        this.setData(tempData);
+        this.setData({
+            'disable':false
+        });
 
     },
     sepText: function (idx) {
@@ -585,31 +678,5 @@ Page({
                 'content.content': resultArr
             })
         }
-    },
-    insertVd:function(e) {
-        let cidx = e.target.dataset.cidx;
-        let that = this;
-        let tempArr = this.data.content.content;
-        let textdata = {
-          "type":"vdtext",
-            "value":""
-        };
-        tempArr.splice(cidx, 0, textdata); // key 可以是任何字符串
-        this.setData({
-            "content.content": tempArr
-        });
-    },
-    addVideo:function(e) {
-        let tempVd = e.detail.value;
-        let cidx = e.target.dataset.cidx;
-        tempVd = tempVd.replace('//www', '//gslb').replace('/show/', '/stream/').replace('.htm', '.mp4');
-        let vddata = {
-            "type":"video",
-            "value":tempVd,
-            "title":""
-        };
-        let data = {};
-        data['content.content[' + cidx + ']'] = vddata; // key 可以是任何字符串
-        this.setData(data);
     }
 });

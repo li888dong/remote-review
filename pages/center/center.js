@@ -33,7 +33,7 @@ Page({
             xjuser: wx.getStorageSync("xjuser")
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=userlist',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=userlist',
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -59,91 +59,13 @@ Page({
 
                 }
 
-                // that.setData({
-                //     stats: response.data
-                // });
 
             }
         });
-    },
-
-    roleChange: function (e) {
-        let that = this;
-        wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=choose_role',
-            method: 'post',
-            header: {"content-type": "application/x-www-form-urlencoded"},
-            data: {
-                sessid: wx.getStorageSync('sessid'),
-                username: this.data.xjuser.username,
-                userid: this.data.xjuser.userid,
-                roleid: e.detail.value,
-                realusername: this.data.xjuser.realusername
-            },
-            success: function (response) {
-                if (response.data.status == 1) {
-                    wx.setStorageSync('xjuser', response.data.data);
-                    that.setData({
-                        'xjuser': response.data.data
-                    });
-                    wx.request({
-                        url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=userlist',
-                        method: 'post',
-                        header: {"content-type": "application/x-www-form-urlencoded"},
-                        data: {
-                            sessid: wx.getStorageSync('sessid')
-                        },
-                        success: function (response) {
-                            if (response.data.status == '1') {
-                                that.setData({
-                                    stats: response.data.data
-                                });
-                            } else if (response.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                                wx.setStorageSync('wentload','went');
-                                wx.showModal({
-                                    title: '登录过期，请重新登录',
-                                    showCancel: false,
-                                    content: '',
-                                    complete: res => {
-                                        wx.redirectTo({
-                                            url: '../login/login'
-                                        })
-                                    }
-                                })
-
-                            }
-                        }
-                    });
-                } else if (response.data.status == 6) {
-                    wx.showModal({
-                        title: '您没有总值班权限',
-                        content: '',
-                        showCancel: false,
-                        complete: res => {
-                            return false;
-                        }
-                    })
-                } else if (response.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                    wx.setStorageSync('wentload','went');
-                    wx.showModal({
-                        title: '登录过期，请重新登录',
-                        showCancel: false,
-                        content: '',
-                        complete: res => {
-                            wx.redirectTo({
-                                url: '../login/login'
-                            })
-                        }
-                    })
-
-                }
-            }
-        });
-
     },
     logout: function () {
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=logout',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=logout',
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {

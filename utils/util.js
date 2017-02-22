@@ -53,13 +53,14 @@ function mergeArray(arr) {
 
 
 function getArrayindx(key, array, factor) {
+    // console.log(factor);
+    // console.log(key);
     for (let i = 0; i < array.length; i++) {
         if (key == array[i][factor]) {
             return i;
-        } else {
-            return 0;
         }
     }
+    return 0;
 }
 
 module.exports = {

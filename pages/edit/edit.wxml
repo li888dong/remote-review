@@ -1,10 +1,12 @@
 <view>
-  <view class="bottom-area">
-    <view class="submit"  hover="true" hover-class="hover-active" bindtap="getArray">
+
+
+  <view class="bottom-area" wx:if="{{disable == false}}">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="getArray">
       <view class="r-btn insert-btn"></view>
       插图
     </view>
-    <view class="submit"  hover="true" hover-class="hover-active" bindtap="getContent">
+    <view class="submit" hover="true" hover-class="hover-active" bindtap="getContent">
       <view class="r-btn save-btn"></view>
       暂存
     </view>
@@ -20,6 +22,20 @@
             </button>
             </form>
   </view>
+  <view class="bottom-area" wx:elif="{{disable == true}}">
+        <view class="submit">
+          <view class="r-btn insert-btn"></view>
+          插图
+        </view>
+        <view class="submit">
+          <view class="r-btn save-btn"></view>
+          暂存
+        </view>
+        <view class="submit">
+                <view class="r-btn submit-btn"></view>
+                提交
+              </view>
+      </view>
   <view class="prop-container">
     <textarea class="input" auto-height placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>

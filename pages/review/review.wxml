@@ -1,7 +1,7 @@
 <view class="list">
   <block wx:for="{{shenhezhong}}">
     <block wx:if="{{item.typefrom == 'tosucheck' && item.is_self == '0'}}">
-      <view class="forward news-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
+      <view class="forward news-item forbid-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
         <view class="news-inner">
           <text class="news-title">{{item.title}}</text>
           <view class="news-info">
@@ -23,7 +23,7 @@
       </view>
     </block>
     <block wx:elif="{{item.typefrom == 'rejected' && item.is_self == '0'}}">
-      <view class="reject news-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
+      <view class="reject news-item forbid-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
         <view class="news-inner">
           <text class="news-title">{{item.title}}</text>
           <view class="news-info">
@@ -71,6 +71,6 @@
   </navigator>
   <view hover-class="hover-active" class="bottom-view" hover="true" bindtap="showFilter">
     <view class="r-btn filter-btn"></view>
-    筛选稿件
+    {{currentType}}
   </view>
 </view>

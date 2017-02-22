@@ -64,7 +64,7 @@ page {
     justify-content: space-around;
 }
 
-.bottom-area navigator {
+.bottom-area navigator,.bottom-area .bottom-view{
     font-size: 24rpx;
     text-align: center;
     flex: 1;
@@ -98,4 +98,15 @@ page {
 .hover-active .center-btn {
     background: url("https://www.hnsjb.cn/static/img/wxapp/center-hover.png") center center no-repeat;
     background-size: 45rpx 45rpx;
+}
+
+.filter-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/filter.png") center center no-repeat;
+    background-size: 40rpx 28rpx;
+    margin: auto;
+    margin-bottom: 7rpx;
+}
+.hover-active .filter-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/filter-hover.png") center center no-repeat;
+    background-size: 40rpx 28rpx;
 }

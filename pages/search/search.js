@@ -24,7 +24,7 @@ Page({
                 duration:0
             });
             wx.request({
-                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=search&pattern=' + q, //仅为示例，并非真实的接口地址
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=search&pattern=' + q, //仅为示例，并非真实的接口地址
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
@@ -36,6 +36,7 @@ Page({
                         that.setData({
                             results: res.data.data
                         });
+                        that.wetoast.hide();
                     } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                         that.wetoast.hide();
                         wx.showModal({

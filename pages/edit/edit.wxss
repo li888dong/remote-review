@@ -182,12 +182,6 @@ button.submit::after {
     display: none;
 }
 
-.submit {
-    height:100%;
-    padding-top: 18rpx;
-    box-sizing: border-box;
-}
-
 .insert-btn {
     flex: auto;
     background: url("https://www.hnsjb.cn/static/img/wxapp/insert.png") center center no-repeat;

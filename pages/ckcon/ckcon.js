@@ -1,5 +1,5 @@
 // pages/content/content.js
-
+let util = require('../../utils/util.js');
 Page({
     data: {
         "content": {},
@@ -7,12 +7,12 @@ Page({
         workflow: [],
         lineLength: 0,
         editorauth: '',
-        category: '19',
+        category: '116',
         subcate: '',
         categories: [],
         sucheckers: [],
         sucheck: '',
-        currentCate: '',
+        currentCate: '116',
         selection: [],
         rejectopen: false,
         optionopen: '0',
@@ -20,7 +20,11 @@ Page({
         rejectreason: '',
         mainindex: 0,
         subindex: 0,
-        suindex: 0
+        suindex: 0,
+        disable:false,
+        onlyreject:false,
+        tocatid:0,
+        parentid:0
     },
     onLoad: function (options) {
         let that = this;
@@ -31,8 +35,14 @@ Page({
         this.setData({
             cid: options.id
         });
+        if (options.onlycheck == '1') {
+            this.setData({
+                'onlyreject':true
+            });
+        }
+
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -66,7 +76,7 @@ Page({
             }
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -99,7 +109,7 @@ Page({
             }
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=cats',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=cats',
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -111,6 +121,24 @@ Page({
                     that.setData({
                         categories: res.data.data
                     });
+                    if (that.data.content.parentid != 0) {
+                        // console.log(that.data.content.parentid);
+
+                        that.setData({
+                            'mainindex':util.getArrayindx(that.data.content.parentid,that.data.categories,'catid')
+                        });
+                        // console.log(util.getArrayindx(that.data.content.parentid,that.data.categories,'catid'));
+                        that.setData({
+                            selection:that.data.categories[that.data.mainindex].subcats
+                        });
+                        that.setData({
+                            'subindex':util.getArrayindx(that.data.content.tocatid,that.data.categories[that.data.mainindex].subcats,'catid')
+                        })
+                    } else {
+                        that.setData({
+                            'mainindex':util.getArrayindx(that.data.content.tocatid,that.data.categories,'catid')
+                        })
+                    }
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
                     wx.showModal({
@@ -131,7 +159,7 @@ Page({
             }
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=sulist',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=sulist',
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -162,7 +190,7 @@ Page({
         that.setData({
             lineLength: (this.data.workflow.length - 1) * 100
         });
-        if (this.data.xjuser.roleid == '38') {
+        if (this.data.xjuser.roleid == '38' || this.data.xjuser.roleid == '37') {
             this.setData({
                 editorauth: 'tocheck'
             })
@@ -171,6 +199,8 @@ Page({
                 editorauth: 'tosucheck'
             })
         }
+
+
     },
 
     openOp: function (e) {
@@ -207,7 +237,7 @@ Page({
                 success: function (res) {
                     if (res.confirm) {
                         wx.request({
-                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=reject",
+                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=reject",
                             method: 'post',
                             header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
@@ -242,6 +272,19 @@ Page({
                                     })
 
                                 }
+                            },
+                            fail:function(res) {
+                                wx.showModal({
+                                    title: '网络状况差，请稍后再试',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: function (res) {
+                                        that.setData({
+                                            'disable':false
+                                        })
+                                    }
+                                });
+
                             }
                         })
                     } else {
@@ -317,7 +360,7 @@ Page({
                 success: function (res) {
                     if (res.confirm) {
                         wx.request({
-                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=pass",
+                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=pass",
                             method: 'post',
                             header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
@@ -352,12 +395,26 @@ Page({
                                     })
 
                                 }
+                            },
+                            fail:function(res) {
+                                wx.showModal({
+                                    title: '网络状况差，请稍后再试',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: function (res) {
+                                        that.setData({
+                                            'disable':false
+                                        })
+                                    }
+                                });
+
                             }
                         })
                     } else {
                         return false;
                     }
                 }
+
             });
 
         }
@@ -401,7 +458,7 @@ Page({
                 success: function (res) {
                     if (res.confirm) {
                         wx.request({
-                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=transcheck",
+                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=transcheck",
                             method: 'post',
                             header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
@@ -437,6 +494,19 @@ Page({
                                     })
 
                                 }
+                            },
+                            fail:function(res) {
+                                wx.showModal({
+                                    title: '网络状况差，请稍后再试',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: function (res) {
+                                        that.setData({
+                                            'disable':false
+                                        })
+                                    }
+                                });
+
                             }
                         })
                     } else {
@@ -456,7 +526,7 @@ Page({
             success: function (res) {
                 if (res.confirm) {
                     wx.request({
-                        url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=pass",
+                        url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=pass",
                         method: 'post',
                         header: {"content-type": "application/x-www-form-urlencoded"},
                         data: {
@@ -491,6 +561,19 @@ Page({
                                 })
 
                             }
+                        },
+                        fail:function(res) {
+                            wx.showModal({
+                                title: '网络状况差，请稍后再试',
+                                showCancel: false,
+                                content: '',
+                                complete: function (res) {
+                                    that.setData({
+                                        'disable':false
+                                    })
+                                }
+                            });
+
                         }
                     })
                 } else {

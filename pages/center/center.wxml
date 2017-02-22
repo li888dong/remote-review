@@ -4,12 +4,11 @@
   <view class="userinfo">
     <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
     <view class="name">{{xjuser.realusername}}</view>
-    <view class="role">{{xjuser.rolename}}</view>
   </view>
   <view class="search-area">
     <navigator class="search" url="../search/search">搜索</navigator>
   </view>
-  <view class="user-stat" wx:if="{{xjuser.roleid == '37'}}">
+  <view class="user-stat">
     <view class="section-title">我的发稿</view>
     <view class="user-figure">
       总发稿：
@@ -17,14 +16,14 @@
     </view>
     <view class="user-figure">
       已审核：
-      <text>{{stats.checked}}</text> 条
+      <text>{{stats.bepassed}}</text> 条
     </view>
     <view class="user-figure">
       草稿箱：
       <text>{{stats.raw}}</text> 条
     </view>
   </view>
-  <view class="user-stat" wx:elif="{{xjuser.roleid != '37'}}">
+  <view class="user-stat">
     <view class="section-title">我的审稿</view>
     <view class="user-figure">
       已审核：<text>{{stats.passed}}</text> 条
@@ -33,7 +32,7 @@
       已驳回：<text>{{stats.rejected}}</text> 条
     </view>
   </view>
-  <view class="link-area" wx:if="{{xjuser.roleid == '37'}}">
+  <view class="link-area">
     <navigator url="../trash/trash" class="link">
       已删除稿件: <text>{{stats.deleted}}</text>条
     </navigator>
@@ -43,20 +42,11 @@
         修改密码
       </navigator>
     </view>
-  <view class="link-area" wx:if="{{stats.username == '李潇' || stats.username == '王皓'}}">
+  <view class="link-area" wx:if="{{stats.username == '李潇' || stats.username == '杨宁'}}">
     <navigator url="../test/test" class="link">
-        测试页 0.6.0
+        测试页 0.7.4
     </navigator>
   </view>
-  <view class="link-area" bindtap="switchtab" wx:if="{{stats.username == '李潇' || stats.username == '杨宁'}}">
-    <navigator url="../craft/craft" open-type="switchTab" class="link">切换 Tab</navigator>
-  </view>
-  <radio-group class="radio-group" bindchange="roleChange">
-    <view class="section-title">切换身份</view>
-    <label class="radio" wx:for="{{roles}}">
-      <radio value="{{item.roleid}}" color="#F62B22" checked="{{item.roleid == xjuser.roleid}}" />{{item.rolename}}
-    </label>
-  </radio-group>
   <view class="padding-area">
     <button type="warn" plain="true" bindtap="logout">退出登录</button>
   </view>

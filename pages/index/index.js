@@ -12,8 +12,8 @@ Page({
         })
     },
     bindListTap: function () {
-        wx.navigateTo({
-            url: '../list/list'
+        wx.switchTab({
+            url: '../craft/craft'  //todo:change redirect url
         })
     },
     onLoad: function (options) {

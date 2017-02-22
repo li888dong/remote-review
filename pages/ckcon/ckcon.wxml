@@ -1,5 +1,5 @@
 <view>
-<view class="bottom-area">
+<view class="bottom-area" wx:if="{{!onlyreject}}">
     <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
       <view class="r-btn edit-btn"></view>
       编辑
@@ -41,18 +41,25 @@
       </view>
     </view>
   </view>
-  <view class="content-options">
-    <button type="default" class="{{optionopen == 1 ? 'current-btn':''}}" bindtap="openOp" data-opid="1">驳回</button>
-    <button type="primary" class="{{optionopen == 2 ? 'current-btn':''}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="2">通过</button>
-    <button type="primary" bindtap="suNews" wx:elif="{{editorauth == 'tosucheck'}}">通过</button>
-    <button type="default" class="{{optionopen == 3 ? 'current-btn':''}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="3">转审</button>
+  <view class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}" wx:if="{{!onlyreject}}">
+    <button type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="1">驳回</button>
+    <button type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="2">通过</button>
+    <button type="primary" class="{{optionopen == 4 ? 'current-btn':'default-btn'}}" bindtap="openOp" wx:elif="{{editorauth == 'tosucheck'}}" data-opid="4">通过</button>
+    <button type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="3">转审</button>
   </view>
+  <view class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}" wx:elif="{{onlyreject}}">
+      <button type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="1">驳回</button>
+    </view>
   <view class="content-option" wx:if="{{optionopen == 1}}">
     <textarea class="reject-reason" auto-height placeholder="驳回理由" maxlength="-1" bindblur="setReject" value="" />
-    <view class="btn-container">
+    <view class="btn-container" wx:if="{{disable == false}}">
       <button type="warn" bindtap="rejectNews">确认驳回</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
+    <view class="btn-container" wx:elif="{{disable == true}}">
+          <button type="warn">确认驳回</button>
+          <button type="default">取消</button>
+        </view>
   </view>
   <view class="content-option" wx:elif="{{optionopen == 2}}">
     <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
@@ -65,10 +72,14 @@
         选择子栏目：{{selection[subindex].catname}}
       </view>
     </picker>
-    <view class="btn-container">
-      <button type="warn" bindtap="confirmNews">确认通过</button>
+    <view class="btn-container" wx:if="{{disable == false}}">
+      <button type="warn" bindtap="confirmNews" >确认通过</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
+    <view class="btn-container" wx:elif="{{disable == true}}">
+          <button type="warn">确认通过</button>
+          <button type="default">取消</button>
+        </view>
   </view>
   <view class="content-option" wx:elif="{{optionopen == 3}}">
     <picker bindchange="setSu" value="{{suindex}}" range-key="realname" range="{{sucheckers}}">
@@ -86,11 +97,35 @@
         选择子栏目：{{selection[subindex].catname}}
       </view>
     </picker>
-    <view class="btn-container">
+    <view class="btn-container" wx:if="{{disable == false}}">
       <button type="warn" bindtap="forwardNews">确认转审</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
+    <view class="btn-container" wx:elif="{{disable == true}}">
+          <button type="warn">确认转审</button>
+          <button type="default">取消</button>
+        </view>
   </view>
+  <view class="content-option" wx:elif="{{optionopen == 4}}">
+      <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
+        <view class="picker">
+          选择栏目：{{categories[mainindex].catname}}
+        </view>
+      </picker>
+      <picker bindchange="setCate" value="{{subindex}}" range-key="catname" range="{{selection}}" wx:if="{{selection.length > 0}}">
+        <view class="picker">
+          选择子栏目：{{selection[subindex].catname}}
+        </view>
+      </picker>
+      <view class="btn-container" wx:if="{{disable == false}}">
+        <button type="warn" bindtap="suNews" >确认通过</button>
+        <button type="default" bindtap="closeOp">取消</button>
+      </view>
+      <view class="btn-container" wx:elif="{{disable == true}}">
+            <button type="warn">确认通过</button>
+            <button type="default">取消</button>
+          </view>
+    </view>
   <view class="padding">
     <view class="flow">
       <view class="line-left" style="height:{{lineLength}}rpx"></view>

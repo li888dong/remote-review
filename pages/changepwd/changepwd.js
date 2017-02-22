@@ -63,7 +63,7 @@ Page({
                 loading: true
             });
             wx.request({
-                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx&param=change_pd',
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=change_pd',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {

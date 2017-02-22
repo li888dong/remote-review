@@ -115,6 +115,18 @@ page {
     flex: 1;
 }
 
+.media-hover.img-add {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/image.png") center center no-repeat,#cccccc;
+    background-size: 50rpx 42rpx;
+    background-position-x: 190rpx;
+}
+
+.media-hover.video-add {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/video.png") center center no-repeat,#cccccc;
+    background-size: 50rpx 42rpx;
+    background-position-x: 30rpx;
+}
+
 .btn-del {
     background: url("https://www.hnsjb.cn/static/img/wxapp/delete.png") center center no-repeat;
     background-size: 30rpx 30rpx;
@@ -146,6 +158,11 @@ page {
     height:100%;
     padding-top: 18rpx;
     box-sizing: border-box;
+}
+.submit {
+    height:100%;
+    padding-top: 18rpx;
+    box-sizing: border-box;
     width:250rpx;
 }
 button.submit {
@@ -158,7 +175,7 @@ button.submit {
     font-size: 24rpx;
     height:110rpx;
     padding-top: 18rpx;
-    
+
 }
 button.submit::after {
     display: none;
@@ -167,7 +184,7 @@ button.submit::after {
 .insert-btn {
     flex: auto;
     background: url("https://www.hnsjb.cn/static/img/wxapp/insert.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background-size: 45rpx 46rpx;
     margin: auto;
     margin-bottom: 7rpx;
 }
@@ -175,7 +192,7 @@ button.submit::after {
 .submit-btn {
     flex: auto;
     background: url("https://www.hnsjb.cn/static/img/wxapp/submit.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background-size: 44rpx 34rpx;
     margin: auto;
     margin-bottom: 7rpx;
 }
@@ -183,20 +200,20 @@ button.submit::after {
 .save-btn {
     flex: auto;
     background: url("https://www.hnsjb.cn/static/img/wxapp/save.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background-size: 40rpx 44rpx;
     margin: auto;
     margin-bottom: 7rpx;
 }
 
 .hover-active .insert-btn {
     background: url("https://www.hnsjb.cn/static/img/wxapp/insert-hover.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background-size: 45rpx 46rpx;
 }
 .hover-active .submit-btn {
     background: url("https://www.hnsjb.cn/static/img/wxapp/submit-hover.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background-size: 44rpx 34rpx;
 }
 .hover-active .save-btn {
     background: url("https://www.hnsjb.cn/static/img/wxapp/save-hover.png") center center no-repeat;
-    background-size: 50rpx 50rpx;
+    background-size: 40rpx 44rpx;
 }

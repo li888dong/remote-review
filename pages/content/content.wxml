@@ -1,14 +1,34 @@
 <view>
-<view class="bottom-area">
+<view class="bottom-area" wx:if="{{disable == false}}">
     <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
       <view class="r-btn edit-btn"></view>
       编辑
     </view>
+    <form bindsubmit="pushContent" report-submit="true">
+                <button class="submit" formType="submit" hover="true" hover-class="hover-active">
+                  <view class="r-btn submit-btn"></view>
+                  提交
+                </button>
+                </form>
     <view class="edit" hover="true" hover-class="hover-active" bindtap="delNews">
       <view class="r-btn del-btn"></view>
       删除
     </view>
   </view>
+  <view class="bottom-area" wx:elif="{{disable == true}}">
+      <view class="edit">
+        <view class="r-btn edit-btn"></view>
+        编辑
+      </view>
+                  <view class="edit">
+                          <view class="r-btn submit-btn"></view>
+                          提交
+                        </view>
+      <view class="edit">
+        <view class="r-btn del-btn"></view>
+        删除
+      </view>
+    </view>
   <view class="content-reason" wx:if="{{content.reject_reason != ''}}">
     <view wx:for="{{content.reject_reason}}" class="reason-item">
       <view class="reason-content">

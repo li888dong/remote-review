@@ -1,5 +1,5 @@
 <view class="list">
-    <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-newsid="{{item.id}}">
+    <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-forbid="{{item.forbidden}}" data-newsid="{{item.id}}">
       <view class="news-inner">
         <text class="news-title">{{item.title}}</text>
         <view class="news-info">
@@ -21,4 +21,8 @@
       <view class="r-btn center-btn"></view>
       个人中心
     </navigator>
+    <view hover-class="hover-active" class="bottom-view" hover="true" bindtap="showFilter">
+        <view class="r-btn filter-btn"></view>
+            {{currentType}}
+      </view>
   </view>
