@@ -183,3 +183,39 @@ page {
 .workflow-time {
     float: right;
 }
+
+.reason-audio {
+    margin-top: 40rpx;
+    position: relative;
+}
+.audio {
+    width:80rpx;
+    height:80rpx;
+    background:url("https://www.hnsjb.cn/static/img/wxapp/sound-icon.png") center left no-repeat,#ffffff;
+    background-size: 20rpx 26rpx;
+    background-position-x: 25rpx;
+    border-radius: 12rpx;
+    border: 1rpx solid #E3E3E3;
+    float: left;
+}
+.audio-duration {
+    height:80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+    margin-left: 40rpx;
+    float: left;
+    color: #848484;
+}
+
+.reason-audio::after {
+    clear: both;
+    content: '';
+    display: block;
+}
+.audio-playing {
+    background-image:url("https://www.hnsjb.cn/static/img/wxapp/sound-icon.gif");
+    background-position-y: center;
+    background-size: 20rpx 26rpx;
+    background-position-x: 25rpx;
+    background-repeat: no-repeat;
+}

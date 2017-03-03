@@ -183,53 +183,31 @@ page {
 }
 
 .bottom-area view {
-  font-size: 24rpx;
-  text-align: center;
-    flex:1;
+  font-size: 30rpx;
+  text-align: left;
+    line-height: 80rpx;
+    padding-left: 125rpx;
+    width:250rpx;
+
 }
 .edit {
     height:100%;
     padding-top: 18rpx;
     box-sizing: border-box;
 }
-
-.edit-btn {
-  flex: 1;
-  background: url("https://www.hnsjb.cn/static/img/wxapp/edit.png") center center no-repeat;
-  background-size: 47rpx 47rpx;
-  margin: auto;
-  margin-bottom: 7rpx;
-}
-
-.del-btn {
-  flex: 1;
-  background: url("https://www.hnsjb.cn/static/img/wxapp/del.png") center center no-repeat;
-  background-size: 45rpx 47rpx;
-  margin: auto;
-  margin-bottom: 7rpx;
-}
-
-.hover-active .edit-btn {
-    background: url("https://www.hnsjb.cn/static/img/wxapp/edit-hover.png") center center no-repeat;
-    background-size: 47rpx 47rpx;
-}
-
-.hover-active .del-btn {
-    background: url("https://www.hnsjb.cn/static/img/wxapp/del-hover.png") center center no-repeat;
-    background-size: 45rpx 47rpx;
-}
-
 button.submit {
     -webkit-appearance: none;
     border:none;
     border-radius: 0;
     padding:0;
     margin:auto;
-    line-height: 1;
-    font-size: 24rpx;
+    font-size: 30rpx;
     height:110rpx;
     padding-top: 18rpx;
-
+    line-height: 80rpx;
+    padding-left: 125rpx;
+    width:250rpx;
+    text-align: left;
 }
 button.submit::after {
     display: none;
@@ -242,14 +220,88 @@ button.submit::after {
     width:250rpx;
 
 }
-.hover-active .submit-btn {
-    background: url("https://www.hnsjb.cn/static/img/wxapp/submit-hover.png") center center no-repeat;
-    background-size: 44rpx 34rpx;
+.edit-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/edit-new.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
+
+}
+
+.del-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/del-new.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
+
 }
 .submit-btn {
-    flex: auto;
-    background: url("https://www.hnsjb.cn/static/img/wxapp/submit.png") center center no-repeat;
-    background-size: 44rpx 34rpx;
-    margin: auto;
-    margin-bottom: 7rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/submit-new.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
+
+}
+.hover-active.submit-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/submit-new-hover.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
+}
+
+.hover-active.edit-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/edit-new-hover.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
+
+}
+
+.hover-active.del-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/del-new-hover.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
+
+}
+
+
+.dark-bottom {
+    opacity: 0.2;
+}
+view.edit.disable-btn, button.submit.disable-btn {
+    background:none;
+    padding-left: 0;
+    text-align: center;
+}
+
+
+.reason-audio {
+    margin-top: 40rpx;
+    position: relative;
+}
+.audio {
+    width:80rpx;
+    height:80rpx;
+    background:url("https://www.hnsjb.cn/static/img/wxapp/sound-icon.png") center left no-repeat,#ffffff;
+    background-size: 20rpx 26rpx;
+    background-position-x: 25rpx;
+    border-radius: 12rpx;
+    border: 1rpx solid #E3E3E3;
+    float: left;
+}
+.audio-duration {
+    height:80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+    margin-left: 40rpx;
+    float: left;
+    color: #848484;
+}
+
+.reason-audio::after {
+    clear: both;
+    content: '';
+    display: block;
+}
+.audio-playing {
+    background-image:url("https://www.hnsjb.cn/static/img/wxapp/sound-icon.gif");
+    background-position-y: center;
+    background-size: 20rpx 26rpx;
+    background-position-x: 25rpx;
+    background-repeat: no-repeat;
 }

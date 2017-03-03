@@ -4,7 +4,8 @@ let app = getApp();
 Page({
     data: {
         userInfo:{},
-        loading:false
+        loading:false,
+        btntext:'确认修改'
     },
     onLoad: function (options) {
         // 页面初始化 options为页面跳转所带来的参数
@@ -62,6 +63,10 @@ Page({
             this.setData({
                 loading: true
             });
+            this.setData({
+                'btntext':'提交中...'
+            });
+            let that = this;
             wx.request({
                 url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=change_pd',
                 method: 'post',
@@ -91,6 +96,12 @@ Page({
                             content: '',
                             showCancel: false,
                             complete: function (res) {
+                                that.setData({
+                                    loading:false
+                                });
+                                that.setData({
+                                    'btntext':'确认修改'
+                                });
                                 return false;
                             }
                         });
@@ -109,6 +120,21 @@ Page({
 
                     }
 
+                },
+                fail:function() {
+                    wx.showModal({
+                        title: '网络状况差，请稍后再试',
+                        showCancel: false,
+                        content: '',
+                        complete: function (res) {
+                            that.setData({
+                                'loading': false
+                            });
+                            that.setData({
+                                'btntext':'确认修改'
+                            })
+                        }
+                    });
                 }
             });
         }

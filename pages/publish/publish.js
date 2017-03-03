@@ -26,9 +26,12 @@ Page({
             'yishenhe': yshData
         });
         this.loadNews();
-        this.filterNews('all','1');
+        let pagestatus = wx.getStorageSync('ysstatus') || 'none';
+        let self = wx.getStorageSync('ysself') || '0';
+        let currentType = wx.getStorageSync('ystype') || '全部';
+        this.filterNews(pagestatus,self);
         this.setData({
-            'currentType':'自采稿件'
+            'currentType':currentType
         })
     },
     onHide: function () {
@@ -57,6 +60,9 @@ Page({
                         'currentType':'全部'
                     });
                     wx.stopPullDownRefresh();
+                    wx.removeStorageSync('ysstatus');
+                    wx.removeStorageSync('ysself');
+                    wx.removeStorageSync('ystype');
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
                     wx.showModal({
@@ -132,9 +138,12 @@ Page({
                     that.setData({
                         yishenhe: res.data.data
                     });
-                    // that.filterNews('all','1');
-                    that.setData({
-                        'currentType':'全部'
+                    let pagestatus = wx.getStorageSync('ysstatus') || 'none';
+                    let self = wx.getStorageSync('ysself') || '0';
+                    let currentType = wx.getStorageSync('ystype') || '全部';
+                    this.filterNews(pagestatus,self);
+                    this.setData({
+                        'currentType':currentType
                     });
                     wx.setStorageSync('yishenhe',res.data.data);
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
@@ -172,20 +181,29 @@ Page({
         switch (idx) {
             case 0:
                 this.getNews();
+                wx.removeStorageSync('ysstatus');
+                wx.removeStorageSync('ysself');
+                wx.setStorageSync('ystype', '全部');
                 this.setData({
                     'currentType':'全部'
                 });
                 break;
             case 1:
                 this.filterNews('all','1');
+                wx.setStorageSync('ysstatus', 'all');
+                wx.setStorageSync('ysself', '1');
+                wx.setStorageSync('ystype', '自采稿件');
                 this.setData({
                     'currentType':'自采稿件'
                 });
                 break;
             case 2:
                 this.filterNews('self_check','1');
+                wx.setStorageSync('ysstatus', 'self_check');
+                wx.setStorageSync('ysself', '1');
+                wx.setStorageSync('ystype', '我通过的稿件');
                 this.setData({
-                    'currentType':'自采稿件'
+                    'currentType':'我通过的稿件'
                 });
                 break;
             default:

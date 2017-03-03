@@ -42,11 +42,17 @@
         修改密码
       </navigator>
     </view>
-  <view class="link-area" wx:if="{{stats.username == '李潇' || stats.username == '杨宁'}}">
-    <navigator url="../test/test" class="link">
-        测试页 0.7.4
+    <view class="link-area">
+          <navigator url="../about/about" class="link">
+              关于我们
+          </navigator>
+        </view>
+  <view class="link-area" wx:if="{{stats.username == '测试账号' || stats.username == '王皓'}}">
+    <navigator url="../test/test?id=541375" class="link">
+        测试页
     </navigator>
   </view>
+
   <view class="padding-area">
     <button type="warn" plain="true" bindtap="logout">退出登录</button>
   </view>

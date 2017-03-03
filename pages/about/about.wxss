@@ -1,0 +1,68 @@
+/* pages/content/content.wxss */
+
+page {
+    padding-bottom: 120rpx;
+}
+.content-area {
+    padding: 0 30rpx;
+    margin-top: 50rpx;
+}
+
+.content-title {
+    margin: 50rpx 0 0 0;
+    font-size: 48rpx;
+    color: #000;
+    line-height: 67rpx;
+}
+
+.content-info {
+    margin-top: 19rpx;
+    color: #888;
+    font-size: 30rpx;
+}
+
+.content-info text {
+    margin-left: 1em;
+}
+
+.content-info text:first-child {
+    margin-left: 0;
+}
+
+.info-copyfrom {
+    color: #576b95;
+}
+
+.content-content {
+    margin-top: 50rpx;
+    font-size: 36rpx;
+    line-height: 56rpx;
+    color: #4a4a4a;
+    padding-bottom: 50rpx;
+    border-bottom: 1rpx solid #e3e3e3;
+}
+
+.content-content text {
+    color: #111;
+    font-size: 34rpx;
+    line-height: 50rpx;
+    text-indent: 2em;
+}
+.media-view {
+    text-align: center;
+}
+.text-view {
+    margin-top: 50rpx;
+
+}
+.content-content image, .content-content video {
+    margin-top: 30rpx;
+    width: 100%;
+}
+.content-content text.media-desc {
+    margin-top: 10rpx;
+    margin-bottom: 10rpx;
+    width:100%;
+    display: block;
+    text-align: center;
+}

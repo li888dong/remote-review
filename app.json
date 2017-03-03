@@ -15,6 +15,7 @@
     "pages/login/login",
     "pages/changepwd/changepwd",
     "pages/index/index",
+    "pages/about/about",
     "pages/test/test"
   ],
   "tabBar": {

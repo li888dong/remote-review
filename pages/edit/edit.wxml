@@ -2,45 +2,38 @@
 
 
   <view class="bottom-area" wx:if="{{disable == false}}">
-    <view class="submit" hover="true" hover-class="hover-active" bindtap="getArray">
-      <view class="r-btn insert-btn"></view>
-      插图
-    </view>
-    <view class="submit" hover="true" hover-class="hover-active" bindtap="getContent">
-      <view class="r-btn save-btn"></view>
-      暂存
-    </view>
-
-    <view class="submit" hover="true" hover-class="hover-active" bindtap="pushContent" wx:if="{{editor == 'editor'}}">
-      <view class="r-btn submit-btn"></view>
-      提交
-    </view>
-    <form bindsubmit="pushContent" report-submit="true" wx:if="{{editor=='reporter'}}">
-            <button class="submit" formType="submit" hover="true" hover-class="hover-active">
-              <view class="r-btn submit-btn"></view>
-              提交
-            </button>
-            </form>
-  </view>
-  <view class="bottom-area" wx:elif="{{disable == true}}">
-        <view class="submit">
-          <view class="r-btn insert-btn"></view>
+    <view class="submit insert-btn" hover="true" hover-class="hover-active" bindtap="getArray" data-disableid="1">
           插图
         </view>
-        <view class="submit">
-          <view class="r-btn save-btn"></view>
+        <view class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
           暂存
         </view>
-        <view class="submit">
-                <view class="r-btn submit-btn"></view>
-                提交
+    <view class="submit submit-btn" hover="true" hover-class="hover-active" bindtap="pushContent" data-disableid="3" wx:if="{{editor == 'editor'}}">
+              提交
+            </view>
+
+            <form bindsubmit="pushContent" report-submit="true" wx:if="{{editor=='reporter'}}">
+                    <button class="submit submit-btn" formType="submit" hover="true" hover-class="hover-active" data-disableid="3">
+                      提交
+                    </button>
+                    </form>
+  </view>
+  <view class="bottom-area dark-bottom" wx:elif="{{disable == true}}">
+        <view class="{{disableid == 1 ? 'submit submit-btn insert-btn' : 'submit insert-btn'}}">
+                  {{disabletip1}}
+        </view>
+        <view class="{{disableid == 2 ? 'submit save-btn disable-btn' : 'submit save-btn'}}">
+          {{disabletip2}}
+        </view>
+        <view class="{{disableid == 3 ? 'submit submit-btn disable-btn' : 'submit submit-btn'}}">
+                        {{disabletip3}}
               </view>
       </view>
   <view class="prop-container">
     <textarea class="input" auto-height placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>
   <view class="prop-container content-container">
-    <view class="input">正文</view>
+    <view class="input">正文:</view>
     <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">
       <view wx:if="{{item.type == 'text'}}">
         <textarea auto-height placeholder="输入文字内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindconfirm="setText" value="{{item.value}}" />

@@ -151,8 +151,8 @@ page {
 }
 
 .bottom-area view {
-    font-size: 24rpx;
-    text-align: center;
+    font-size: 30rpx;
+    /*text-align: center;*/
     /*flex:1;*/
 }
 
@@ -164,7 +164,14 @@ page {
     height:100%;
     padding-top: 18rpx;
     box-sizing: border-box;
+}
+.submit {
+    height:100%;
+    padding-top: 18rpx;
+    box-sizing: border-box;
     width:250rpx;
+    line-height: 80rpx;
+    padding-left: 125rpx;
 }
 button.submit {
     -webkit-appearance: none;
@@ -172,49 +179,55 @@ button.submit {
     border-radius: 0;
     padding:0;
     margin:auto;
-    line-height: 1;
-    font-size: 24rpx;
+    font-size: 30rpx;
     height:110rpx;
     padding-top: 18rpx;
-
+    line-height: 80rpx;
+    padding-left: 125rpx;
+    text-align: left;
 }
 button.submit::after {
     display: none;
 }
-
 .insert-btn {
-    flex: auto;
-    background: url("https://www.hnsjb.cn/static/img/wxapp/insert.png") center center no-repeat;
-    background-size: 45rpx 46rpx;
-    margin: auto;
-    margin-bottom: 7rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/insert-new.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
 }
 
 .submit-btn {
-    flex: auto;
-    background: url("https://www.hnsjb.cn/static/img/wxapp/submit.png") center center no-repeat;
-    background-size: 44rpx 34rpx;
-    margin: auto;
-    margin-bottom: 7rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/submit-new.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
+
 }
 
 .save-btn {
-    flex: auto;
-    background: url("https://www.hnsjb.cn/static/img/wxapp/save.png") center center no-repeat;
-    background-size: 40rpx 44rpx;
-    margin: auto;
-    margin-bottom: 7rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/save-new.png") center center no-repeat;
+    background-size: 54rpx 36rpx;
+    background-position-x: 60rpx;
 }
 
-.hover-active .insert-btn {
-    background: url("https://www.hnsjb.cn/static/img/wxapp/insert-hover.png") center center no-repeat;
-    background-size: 45rpx 46rpx;
+.hover-active.insert-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/insert-new-hover.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
 }
-.hover-active .submit-btn {
-    background: url("https://www.hnsjb.cn/static/img/wxapp/submit-hover.png") center center no-repeat;
-    background-size: 44rpx 34rpx;
+.hover-active.submit-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/submit-new-hover.png") center center no-repeat;
+    background-size: 42rpx 42rpx;
+    background-position-x: 70rpx;
 }
-.hover-active .save-btn {
-    background: url("https://www.hnsjb.cn/static/img/wxapp/save-hover.png") center center no-repeat;
-    background-size: 40rpx 44rpx;
+.hover-active.save-btn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/save-new-hover.png") center center no-repeat;
+    background-size: 54rpx 36rpx;
+    background-position-x: 60rpx;
+}
+.dark-bottom {
+    opacity: 0.2;
+}
+view.submit.disable-btn, button.submit.disable-btn {
+    background:none;
+    padding-left: 0;
+    text-align: center;
 }

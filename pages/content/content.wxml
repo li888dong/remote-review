@@ -1,36 +1,38 @@
 <view>
 <view class="bottom-area" wx:if="{{disable == false}}">
-    <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
-      <view class="r-btn edit-btn"></view>
+    <view class="edit edit-btn" hover="true" hover-class="hover-active" bindtap="editNews">
       编辑
     </view>
     <form bindsubmit="pushContent" report-submit="true">
-                <button class="submit" formType="submit" hover="true" hover-class="hover-active">
-                  <view class="r-btn submit-btn"></view>
+                <button class="submit submit-btn" formType="submit" hover="true" hover-class="hover-active" data-disableid="1">
                   提交
                 </button>
                 </form>
-    <view class="edit" hover="true" hover-class="hover-active" bindtap="delNews">
-      <view class="r-btn del-btn"></view>
+    <view class="edit del-btn" hover="true" hover-class="hover-active" bindtap="delNews" data-disableid="2">
       删除
     </view>
   </view>
-  <view class="bottom-area" wx:elif="{{disable == true}}">
-      <view class="edit">
-        <view class="r-btn edit-btn"></view>
+  <view class="bottom-area dark-bottom" wx:elif="{{disable == true}}">
+      <view class="edit edit-btn">
         编辑
       </view>
-                  <view class="edit">
-                          <view class="r-btn submit-btn"></view>
-                          提交
+                  <view class="{{disableid == 1 ? 'edit submit-btn disable-btn' : 'edit submit-btn'}}">
+                          {{disabletip1}}
                         </view>
-      <view class="edit">
-        <view class="r-btn del-btn"></view>
-        删除
+      <view class="{{disableid == 2 ? 'edit del-btn disable-btn' : 'edit del-btn'}}">
+        {{disabletip2}}
       </view>
     </view>
   <view class="content-reason" wx:if="{{content.reject_reason != ''}}">
-    <view wx:for="{{content.reject_reason}}" class="reason-item">
+    <view wx:for="{{content.reject_reason}}" class="reason-item" wx:for-index="rid">
+       <view class="reason-audio" wx:for="{{item.reject_audio}}" wx:for-item="voice" wx:for-index="idx">
+                        <view class="{{voice.playing ? 'audio audio-playing' : 'audio'}}" style="width:{{8*voice.duration+75}}rpx" data-rid="{{rid}}" data-vid="{{idx}}" bindtap="playVoice" data-src="{{voice.src}}">
+
+                        </view>
+                        <view class="audio-duration">
+                        {{voice.duration}}"
+                         </view>
+                        </view>
       <view class="reason-content">
         {{item.reason}}
       </view>

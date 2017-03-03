@@ -1,69 +1,158 @@
-<view>
-
-  <view class="bottom-area" wx:if="{{disable == false}}">
-    <view class="submit" hover="true" hover-class="hover-active" bindtap="getArray" data-disableid="1">
-      <view class="r-btn insert-btn"></view>
-      插图
-    </view>
-    <view class="submit" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
-      <view class="r-btn save-btn"></view>
-      暂存
-    </view>
-    <form bindsubmit="pushContent" report-submit="true">
-        <button class="submit" formType="submit" hover="true" hover-class="hover-active" data-disableid="3">
-          <view class="r-btn submit-btn"></view>
-          提交
-        </button>
-        </form>
-  </view>
-  <view class="bottom-area" wx:elif="{{disable == true}}">
-      <view class="submit">
-        <view class="r-btn insert-btn"></view>
-                {{disabletip1}}
-      </view>
-      <view class="submit">
-        <view class="r-btn save-btn"></view>
-        {{disabletip2}}
-      </view>
-      <view class="submit">
-              <view class="r-btn submit-btn"></view>
-                      {{disabletip3}}
-            </view>
-    </view>
-  <view class="prop-container">
-    <textarea class="input" placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
-  </view>
-  <view class="prop-container content-container">
-    <view class="input">正文</view>
-    <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">
-      <view wx:if="{{item.type == 'text'}}">
-        <textarea auto-height placeholder="输入文字内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindblur="setText" bindconfirm="setText" value="{{item.value}}" />
-      </view>
-      <view wx:elif="{{item.type == 'image'}}" class="content-media">
-        <image style="width: 155rpx; height: 155rpx; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
-        <textarea class="media-title" bindblur="setTitle" data-cidx="{{idx}}" placeholder="请输入图片标题" value="{{item.title}}"></textarea>
-        <view class="media-del" hover="true" hover-class="media-del-hover" bindtap="delMedia" data-cidx="{{idx}}"></view>
-      </view>
-      <view wx:elif="{{item.type == 'video'}}" class="content-media">
-        <video style="width:155rpx;height:155rpx;" objectFit="contain" src="{{item.value}}"></video>
-        <textarea class="media-title" bindblur="setTitle" data-cidx="{{idx}}" placeholder="请输入视频标题" value="{{item.title}}"></textarea>
-        <view class="media-del" bindtap="delMedia" data-cidx="{{idx}}"></view>
-      </view>
-      <view wx:elif="{{item.type == 'add'}}" class="content-media-add">
-              <view class="{{item.show ? 'add-btn add-rotate' : 'add-btn' }}" hover="true" hover-class="add-hover" bindtap="showFuns" data-cidx="{{idx}}">
-              </view>
-              <view class="media-add-area" wx:if="{{item.show}}">
-                <view class="img-add" hover="true" hover-class="media-hover" bindtap="uploadImg" data-cidx="{{idx}}"></view>
-                <view class="video-add" hover="true" hover-class="media-hover" bindtap="uploadVd" data-cidx="{{idx}}"></view>
-              </view>
-            </view>
+<view class="{{recording ? 'recording' : '' }}">
+  <view class="bottom-area" wx:if="{{!onlyreject}}">
+    <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
+      <view class="r-btn edit-btn"></view>
+      编辑
     </view>
   </view>
-  <view class="prop-container">
-    <textarea class="input" value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
+  <view class="content-reason" wx:if="{{content.reject_reason != ''}}">
+    <view wx:for="{{content.reject_reason}}" class="reason-item" wx:for-index="rid">
+      <view class="reason-audio" wx:for="{{item.reject_audio}}" wx:for-item="voice" wx:for-index="idx">
+        <view class="{{voice.playing ? 'audio audio-playing' : 'audio'}}" style="width:{{8*voice.duration+75}}rpx" data-rid="{{rid}}" data-vid="{{idx}}" bindtap="playVoice" data-src="{{voice.src}}">
+        </view>
+        <view class="audio-duration">
+          {{voice.duration}}"
+        </view>
+      </view>
+      <view class="reason-content">
+        {{item.reason}}
+      </view>
+      <view class="reason-info">
+        <text class="reason-name">{{item.name}}</text>
+        <text class="reason-time">{{item.time}}</text>
+      </view>
+    </view>
   </view>
-<import src="../../src/wetoast.wxml"/>
-
-    <template is="wetoast" data="{{...__wetoast__}}"/>
-
+  <view class="content-area">
+    <view>
+      <text class="content-title">{{content.title}}</text>
+    </view>
+    <view class="content-info">
+      <text>{{content.inputtime}}</text>
+      <text>{{content.username}}</text>
+      <text class="info-copyfrom">{{content.copyfrom}}</text>
+    </view>
+    <view class="content-content">
+      <view wx:for="{{content.content}}">
+        <view wx:if="{{item.type == 'text'}}">
+          <text>{{item.value}}</text>
+        </view>
+        <view class="media-view" wx:elif="{{item.type == 'image'}}">
+          <image wx:if="{{item.value != ''}}" style="width: 200px; height: 200px; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
+          <text class="media-desc">{{item.title}}</text>
+        </view>
+        <view wx:elif="{{item.type == 'video'}}">
+          <video wx:if="{{item.value != ''}}" objectFit="contain" src="{{item.value}}"></video>
+          <text class="media-desc">{{item.title}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}" wx:if="{{!onlyreject}}">
+    <button type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="1">驳回</button>
+    <button type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="2">通过</button>
+    <button type="primary" class="{{optionopen == 4 ? 'current-btn':'default-btn'}}" bindtap="openOp" wx:elif="{{editorauth == 'tosucheck'}}" data-opid="4">通过</button>
+    <button type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="3">转审</button>
+  </view>
+  <view class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}" wx:elif="{{onlyreject}}">
+    <button type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="1">驳回</button>
+  </view>
+  <view class="content-option" wx:if="{{optionopen == 1}}">
+    <textarea class="reject-reason" auto-height placeholder="驳回理由" maxlength="-1" bindblur="setReject" value="" />
+    <block wx:if="{{rejectaudio.length > 0}}">
+      <view class="voice-container" wx:for="{{rejectaudio}}" wx:for-index="idx" wx:key="item">
+        <view class="{{item.playing ? 'voice audio-playing' : 'voice'}}" style="width:{{8*item.duration+75}}rpx" bindtap="playRecord" data-vid="{{idx}}">
+        </view>
+        <view class="voice-duration">
+          {{item.duration}}"
+        </view>
+        <view class="voice-del" bindtap="delRecord"></view>
+      </view>
+    </block>
+    <view class="btn-container">
+      <button class="{{recording ? 'audiobtn audiorecording' : 'audiobtn'}}" bindtouchstart="startRecord" bindtouchcancel="cancalRecord" bindtouchmove="setMoving" bindtouchend="completeRecord">按住 说话</button>
+    </view>
+    <view class="btn-container" wx:if="{{disable == false}}">
+      <button type="warn" bindtap="rejectNews" data-disableid="1">确认驳回</button>
+      <button type="default" bindtap="closeOp">取消</button>
+    </view>
+    <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+      <button type="warn">{{disabletip1}}</button>
+      <button type="default">取消</button>
+    </view>
+  </view>
+  <view class="content-option" wx:elif="{{optionopen == 2}}">
+    <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
+      <view class="picker">
+        选择栏目：{{categories[mainindex].catname}}
+      </view>
+    </picker>
+    <picker bindchange="setCate" value="{{subindex}}" range-key="catname" range="{{selection}}" wx:if="{{selection.length > 0}}">
+      <view class="picker">
+        选择子栏目：{{selection[subindex].catname}}
+      </view>
+    </picker>
+    <view class="btn-container" wx:if="{{disable == false}}">
+      <button type="warn" bindtap="confirmNews" data-disableid="2">确认通过</button>
+      <button type="default" bindtap="closeOp">取消</button>
+    </view>
+    <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+      <button type="warn">{{disabletip2}}</button>
+      <button type="default">取消</button>
+    </view>
+  </view>
+  <view class="content-option" wx:elif="{{optionopen == 3}}">
+    <picker bindchange="setSu" value="{{suindex}}" range-key="realname" range="{{sucheckers}}">
+      <view class="picker">
+        选择总编辑：{{sucheckers[suindex].realname}}
+      </view>
+    </picker>
+    <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
+      <view class="picker">
+        选择栏目：{{categories[mainindex].catname}}
+      </view>
+    </picker>
+    <picker bindchange="setCate" value="{{subindex}}" range-key="catname" range="{{selection}}" wx:if="{{selection.length > 0}}">
+      <view class="picker">
+        选择子栏目：{{selection[subindex].catname}}
+      </view>
+    </picker>
+    <view class="btn-container" wx:if="{{disable == false}}">
+      <button type="warn" bindtap="forwardNews" data-disableid="3">确认转审</button>
+      <button type="default" bindtap="closeOp">取消</button>
+    </view>
+    <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+      <button type="warn">{{disabletip3}}</button>
+      <button type="default">取消</button>
+    </view>
+  </view>
+  <view class="content-option" wx:elif="{{optionopen == 4}}">
+    <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
+      <view class="picker">
+        选择栏目：{{categories[mainindex].catname}}
+      </view>
+    </picker>
+    <picker bindchange="setCate" value="{{subindex}}" range-key="catname" range="{{selection}}" wx:if="{{selection.length > 0}}">
+      <view class="picker">
+        选择子栏目：{{selection[subindex].catname}}
+      </view>
+    </picker>
+    <view class="btn-container" wx:if="{{disable == false}}">
+      <button type="warn" bindtap="suNews" data-disableid="2">确认通过</button>
+      <button type="default" bindtap="closeOp">取消</button>
+    </view>
+    <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+      <button type="warn">{{disabletip2}}</button>
+      <button type="default">取消</button>
+    </view>
+  </view>
+  <view class="padding">
+    <view class="flow">
+      <view class="line-left" style="height:{{lineLength}}rpx"></view>
+      <view class="{{index == workflow.length-1 ? 'workflow-item last-item' : 'workflow-item'}}" wx:for="{{workflow}}">
+        <view class="workflow-action">{{item.action}}</view>
+        <view class="workflow-time">{{item.time}}</view>
+      </view>
+    </view>
+  </view>
 </view>

@@ -3,7 +3,8 @@ Page({
     data:{
         'content':{},
         workflow:[],
-        lineLength:0
+        lineLength:0,
+        currentVoice:['','']
     },
     onLoad:function(options){
         let that = this;
@@ -71,5 +72,127 @@ Page({
                 }
             }
         });
+    },
+    playVoice:function(e) {
+
+        let currentRid = this.data.currentVoice[0];
+        let currentVid = this.data.currentVoice[1];
+
+
+        let src = e.currentTarget.dataset.src;
+        let i = e.currentTarget.dataset.vid;
+        let rid = e.currentTarget.dataset.rid;
+        let that = this;
+
+        if (currentRid == rid && currentVid == i) {
+            if (that.data.content.reject_reason[rid].reject_audio[i].playing) {
+                wx.pauseVoice();
+                let data = {};
+                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                that.setData(data);
+            } else {
+                if (that.data.content.reject_reason[rid].reject_audio[i].filepath != '') {
+                    let data = {};
+                    data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                    that.setData(data);
+                    that.setData({
+                        'currentVoice':[rid,i]
+                    });
+                    setTimeout(function() {
+                        wx.playVoice({
+                            filePath: that.data.content.reject_reason[rid].reject_audio[i].filepath,
+                            success:function() {
+                                let data = {};
+                                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                that.setData(data);
+                            }
+                        });
+                    },500);
+
+                } else {
+                    wx.downloadFile({
+                        url: src,
+                        success: function(res) {
+                            wx.stopVoice();
+                            let data = {};
+                            data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                            that.setData(data);
+                            let pathdata = {};
+                            pathdata['content.reject_reason['+rid+'].reject_audio['+i+'].filepath'] = res.tempFilePath;
+                            that.setData(pathdata);
+                            that.setData({
+                                'currentVoice':[rid,i]
+                            });
+                            setTimeout(function() {
+                                wx.playVoice({
+                                    filePath: res.tempFilePath,
+                                    success:function() {
+                                        let data = {};
+                                        data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                        that.setData(data);
+                                    }
+                                });
+                            },500);
+                        }
+                    })
+                }
+            }
+        } else {
+            wx.stopVoice();
+            let tempVarr = this.data.content.reject_reason[rid].reject_audio;
+            for (let i = 0;i<tempVarr.length;i++) {
+                tempVarr[i].playing = false;
+            }
+            let data = {};
+            data['content.reject_reason['+rid+'].reject_audio'] = tempVarr;
+            this.setData(data);
+            console.log(that.data.content.reject_reason[rid].reject_audio[i].filepath);
+            if (that.data.content.reject_reason[rid].reject_audio[i].filepath != '') {
+                let data = {};
+                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                that.setData(data);
+                that.setData({
+                    'currentVoice':[rid,i]
+                });
+
+                setTimeout(function() {
+                    wx.playVoice({
+                        filePath: that.data.content.reject_reason[rid].reject_audio[i].filepath,
+                        success:function() {
+                            let data = {};
+                            data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                            that.setData(data);
+                        }
+                    });
+                },500);
+            } else {
+                wx.downloadFile({
+                    url: src,
+                    success: function(res) {
+                        let data = {};
+                        data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                        that.setData(data);
+                        let pathdata = {};
+                        pathdata['content.reject_reason['+rid+'].reject_audio['+i+'].filepath'] = res.tempFilePath;
+                        that.setData(pathdata);
+                        that.setData({
+                            'currentVoice':[rid,i]
+                        });
+
+                        setTimeout(function() {
+                            wx.playVoice({
+                                filePath: res.tempFilePath,
+                                success:function() {
+                                    let data = {};
+                                    data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                    console.log('triggered');
+                                    that.setData(data);
+                                }
+                            });
+                        },500);
+                    }
+                })
+            }
+        }
     }
 });

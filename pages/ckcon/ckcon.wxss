@@ -1,96 +1,96 @@
 /* pages/content/content.wxss */
 
 page {
-  padding-bottom: 120rpx;
+    padding-bottom: 120rpx;
 }
 
 .content-reason {
-  padding: 10rpx 30rpx 20rpx;
-  background: #ededed;
+    padding: 10rpx 30rpx 20rpx;
+    background: #ededed;
 }
 
 .reason-item {
-  margin-top: 31rpx;
-  padding-bottom: 30rpx;
-  border-bottom: 1rpx solid rgba(120, 120, 120, 0.15);
+    margin-top: 31rpx;
+    padding-bottom: 30rpx;
+    border-bottom: 1rpx solid rgba(120, 120, 120, 0.15);
 }
 
 .reason-item:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 .reason-content {
-  color: #898989;
-  font-size: 34rpx;
-  line-height: 48rpx;
+    color: #898989;
+    font-size: 34rpx;
+    line-height: 48rpx;
 }
 
 .reason-item:first-child .reason-content {
-  color: #0a0a0a;
+    color: #0a0a0a;
 }
 
 .reason-info {
-  margin-top: 21rpx;
-  font-size: 26rpx;
-  color: #a5a5a5;
-  line-height: 1;
+    margin-top: 21rpx;
+    font-size: 26rpx;
+    color: #a5a5a5;
+    line-height: 1;
 }
 
 .reason-time {
-  margin-left: 0.5em;
+    margin-left: 0.5em;
 }
 
 .content-area {
-  padding: 0 30rpx;
-  margin-top: 50rpx;
+    padding: 0 30rpx;
+    margin-top: 50rpx;
 }
 
 .content-title {
-  margin: 50rpx 0 0 0;
-  font-size: 48rpx;
-  color: #000;
-  line-height: 67rpx;
+    margin: 50rpx 0 0 0;
+    font-size: 48rpx;
+    color: #000;
+    line-height: 67rpx;
 }
 
 .content-info {
-  margin-top: 19rpx;
-  color: #888;
-  font-size: 30rpx;
+    margin-top: 19rpx;
+    color: #888;
+    font-size: 30rpx;
 }
 
 .content-info text {
-  margin-left: 1em;
+    margin-left: 1em;
 }
 
 .content-info text:first-child {
-  margin-left: 0;
+    margin-left: 0;
 }
 
 .info-copyfrom {
-  color: #576b95;
+    color: #576b95;
 }
 
 .content-content {
-  margin-top: 50rpx;
-  font-size: 36rpx;
-  line-height: 56rpx;
-  color: #4a4a4a;
-  padding-bottom: 50rpx;
-  border-bottom: 1rpx solid #e3e3e3;
+    margin-top: 50rpx;
+    font-size: 36rpx;
+    line-height: 56rpx;
+    color: #4a4a4a;
+    padding-bottom: 50rpx;
+    border-bottom: 1rpx solid #e3e3e3;
 }
 .media-view {
     text-align: center;
 }
 .content-content text {
-  color: #111;
-  font-size: 34rpx;
-  line-height: 50rpx;
-  margin-top: 30rpx;
+    color: #111;
+    font-size: 34rpx;
+    line-height: 50rpx;
+    margin-top: 30rpx;
 }
 
 .content-content image, .content-content video {
-  margin-top: 30rpx;
-  width: 100%;
+    margin-top: 30rpx;
+    width: 100%;
 }
 
 .content-content text.media-desc {
@@ -102,7 +102,7 @@ page {
 }
 
 .padding {
-  padding: 0 30rpx;
+    padding: 0 30rpx;
 }
 
 .flow {
@@ -187,21 +187,21 @@ page {
 }
 
 .content-options {
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
-  width: 100%;
-  margin-top: 60rpx;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 60rpx;
 }
 
 .content-options button {
-  width: 190rpx;
-  height: 80rpx;
-  box-sizing: border-box;
+    width: 190rpx;
+    height: 80rpx;
+    box-sizing: border-box;
 }
 
 .content-option {
-  margin-top: 64rpx;
+    margin-top: 64rpx;
 }
 .opened-options .default-btn {
     position:relative;
@@ -238,36 +238,36 @@ page {
     border-radius:10px;
 }
 .btn-container {
-  padding: 0 40rpx;
+    padding: 0 40rpx;
 }
 
 .reject-reason {
-  background: #fff;
-  border-top: 1rpx solid #e5e5e5;
-  border-bottom: 1rpx solid #e5e5e5;
-  color: #222;
-  font-size: 34rpx;
-  line-height: 48rpx;
-  width: 100%;
-  padding: 20rpx 30rpx;
-  box-sizing: border-box;
+    background: #fff;
+    border-top: 1rpx solid #e5e5e5;
+    border-bottom: 1rpx solid #e5e5e5;
+    color: #222;
+    font-size: 34rpx;
+    line-height: 48rpx;
+    width: 100%;
+    padding: 20rpx 30rpx;
+    box-sizing: border-box;
 }
 
 .btn-container button {
-  margin-top: 50rpx;
+    margin-top: 50rpx;
 }
 
 .picker {
-  height: 100rpx;
-  width: 100%;
-  background: #fff;
-  padding: 0 30rpx;
-  line-height: 100rpx;
-  font-size: 36rpx;
-  position: relative;
-  border-top: 1rpx solid #e5e5e5;
-  border-bottom: 1rpx solid #e5e5e5;
-  margin-top: 30rpx;
+    height: 100rpx;
+    width: 100%;
+    background: #fff;
+    padding: 0 30rpx;
+    line-height: 100rpx;
+    font-size: 36rpx;
+    position: relative;
+    border-top: 1rpx solid #e5e5e5;
+    border-bottom: 1rpx solid #e5e5e5;
+    margin-top: 30rpx;
 }
 .current-btn {
     background-color: rgba(0, 0, 0, 0.1);
@@ -309,3 +309,95 @@ page {
     background-size: 47rpx 47rpx;
 }
 
+.dark-container {
+    opacity: 0.2;
+}
+
+.voice-container {
+    padding:0 40rpx;
+    margin-top: 40rpx;
+    position: relative;
+}
+.voice {
+    width:80rpx;
+    height:80rpx;
+    background:url("https://www.hnsjb.cn/static/img/wxapp/sound-icon.png") center left no-repeat,#86E472;
+    background-size: 20rpx 26rpx;
+    background-position-x: 25rpx;
+    border-radius: 12rpx;
+    border: 1rpx solid #E3E3E3;
+    float: left;
+}
+.voice-duration {
+    height:80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+    margin-left: 40rpx;
+    float: left;
+    color: #848484;
+}
+.voice-del {
+    height:80rpx;
+    width:80rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/audio-del.png") center center no-repeat;
+    background-size: 30rpx 30rpx;
+    float: left;
+}
+.voice-container::after {
+    clear: both;
+    content: '';
+    display: block;
+}
+.recording {
+    margin-top: -120rpx;
+}
+.audiobtn {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/microphone.png") center center no-repeat, #FFFFFF;
+    background-size: 24rpx 40rpx;
+    background-position-x: 192rpx;
+    border:1rpx solid #979797;
+    color: #848484;
+}
+.audiobtn.button-hover {
+    background-color: #DEDEDE;
+}
+.audiobtn.audiorecording {
+    background-color: #DEDEDE;
+}
+
+
+.reason-audio {
+    margin-top: 40rpx;
+    position: relative;
+}
+.audio {
+    width:80rpx;
+    height:80rpx;
+    background:url("https://www.hnsjb.cn/static/img/wxapp/sound-icon.png") center left no-repeat,#ffffff;
+    background-size: 20rpx 26rpx;
+    background-position-x: 25rpx;
+    border-radius: 12rpx;
+    border: 1rpx solid #E3E3E3;
+    float: left;
+}
+.audio-duration {
+    height:80rpx;
+    line-height: 80rpx;
+    font-size: 30rpx;
+    margin-left: 40rpx;
+    float: left;
+    color: #848484;
+}
+
+.reason-audio::after {
+    clear: both;
+    content: '';
+    display: block;
+}
+.audio-playing {
+    background-image:url("https://www.hnsjb.cn/static/img/wxapp/sound-icon.gif");
+    background-position-y: center;
+    background-size: 20rpx 26rpx;
+    background-position-x: 25rpx;
+    background-repeat: no-repeat;
+}

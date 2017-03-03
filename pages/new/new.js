@@ -12,7 +12,10 @@ Page({
             copyfrom: '河南手机报',
 
         },
-        disable:false
+        disable: false,
+        disabletip1: '插图',
+        disabletip2: '暂存',
+        disabletip3: '提交'
     },
     onLoad: function (options) {
         // 页面初始化 options为页面跳转所带来的参数
@@ -117,6 +120,42 @@ Page({
                             });
                             data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
                             that.setData(data);
+                        } else if (data.status == '-1') {
+                            wx.showModal({
+                                title: '视频错误，请重新上传',
+                                showCancel: false,
+                                content: '',
+                                complete: function (res) {
+                                    that.wetoast.hide()
+                                }
+                            });
+                        } else if (data.status == '-2') {
+                            wx.showModal({
+                                title: '视频大小超过限制，请重新上传',
+                                showCancel: false,
+                                content: '',
+                                complete: function (res) {
+                                    that.wetoast.hide()
+                                }
+                            });
+                        } else if (data.status == '-3') {
+                            wx.showModal({
+                                title: '视频文件错误，请重新上传',
+                                showCancel: false,
+                                content: '',
+                                complete: function (res) {
+                                    that.wetoast.hide()
+                                }
+                            });
+                        } else if (data.status == '-5' || data.status == '-6' || data.status == '-7' || data.status == '-8') {
+                            wx.showModal({
+                                title: '服务器错误，请稍后再试或联系管理员',
+                                showCancel: false,
+                                content: '',
+                                complete: function (res) {
+                                    that.wetoast.hide()
+                                }
+                            });
                         }
                     },
                     fail:function(res) {
@@ -140,7 +179,7 @@ Page({
             }
         })
     },
-    getContent: function () {
+    getContent: function (e) {
 
         if (this.data.content.title.replace(/\s+/g,"") == '') {
             wx.showModal({
@@ -195,7 +234,14 @@ Page({
             this.setData({
                 'disable':true
             });
+            let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
+            let tempData = {};
+            tempData[disabletip] = this.data[disabletip] + '中...';
+            this.setData(tempData);
             let that = this;
+            this.setData({
+                'disableid':e.currentTarget.dataset.disableid
+            });
             wx.request({
                 url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=add',
                 method: 'post',
@@ -241,7 +287,10 @@ Page({
                         complete: function (res) {
                             that.setData({
                                 'disable':false
-                            })
+                            });
+                            tempData = {};
+                            tempData[disabletip] = that.data[disabletip].replace('中...', '');
+                            that.setData(tempData);
                         }
                     });
 
@@ -308,7 +357,14 @@ Page({
             this.setData({
                 'disable':true
             });
+            let disabletip = 'disabletip' + e.detail.target.dataset.disableid;
+            let tempData = {};
+            tempData[disabletip] = this.data[disabletip] + '中...';
+            this.setData(tempData);
             let that = this;
+            this.setData({
+                'disableid':e.detail.target.dataset.disableid
+            });
             wx.request({
                 url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=add',
                 method: 'post',
@@ -355,7 +411,10 @@ Page({
                         complete: function (res) {
                             that.setData({
                                 'disable':false
-                            })
+                            });
+                            tempData = {};
+                            tempData[disabletip] = that.data[disabletip].replace('中...', '');
+                            that.setData(tempData);
                         }
                     });
 
@@ -430,9 +489,16 @@ Page({
             }
         });
     },
-    getArray: function () {
+    getArray: function (e) {
         this.setData({
             'disable':true
+        });
+        let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
+        let tempData = {};
+        tempData[disabletip] = this.data[disabletip] + '中...';
+        this.setData(tempData);
+        this.setData({
+            'disableid':e.currentTarget.dataset.disableid
         });
         let dataArr = [];
         for (let i=0;i<this.data.content.content.length;i++) {
@@ -550,6 +616,9 @@ Page({
         this.setData({
             "content.content": resultArr
         });
+        tempData = {};
+        tempData[disabletip] = this.data[disabletip].replace('中...', '');
+        this.setData(tempData);
         this.setData({
             'disable':false
         });

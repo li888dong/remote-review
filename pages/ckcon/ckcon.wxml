@@ -1,4 +1,4 @@
-<view>
+<view class="{{recording ? 'recording' : '' }}">
 <view class="bottom-area" wx:if="{{!onlyreject}}">
     <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
       <view class="r-btn edit-btn"></view>
@@ -6,7 +6,15 @@
     </view>
   </view>
   <view class="content-reason" wx:if="{{content.reject_reason != ''}}">
-    <view wx:for="{{content.reject_reason}}" class="reason-item">
+   <view wx:for="{{content.reject_reason}}" class="reason-item" wx:for-index="rid">
+          <view class="reason-audio" wx:for="{{item.reject_audio}}" wx:for-item="voice" wx:for-index="idx">
+                 <view class="{{voice.playing ? 'audio audio-playing' : 'audio'}}" style="width:{{8*voice.duration+75}}rpx" data-rid="{{rid}}" data-vid="{{idx}}" bindtap="playVoice" data-src="{{voice.src}}">
+
+                 </view>
+                 <view class="audio-duration">
+                 {{voice.duration}}"
+                  </view>
+                 </view>
       <view class="reason-content">
         {{item.reason}}
       </view>
@@ -51,13 +59,34 @@
       <button type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="1">驳回</button>
     </view>
   <view class="content-option" wx:if="{{optionopen == 1}}">
+
+
+
+
     <textarea class="reject-reason" auto-height placeholder="驳回理由" maxlength="-1" bindblur="setReject" value="" />
+
+
+      <block wx:if="{{rejectaudio.length > 0}}">
+              <view class="voice-container" wx:for="{{rejectaudio}}" wx:for-index="idx" wx:key="item">
+                  <view class="{{item.playing ? 'voice audio-playing' : 'voice'}}" style="width:{{8*item.duration+75}}rpx" bindtap="playRecord" data-vid="{{idx}}">
+
+                  </view>
+                  <view class="voice-duration">
+                    {{item.duration}}"
+                  </view>
+                  <view class="voice-del" bindtap="delRecord"></view>
+              </view>
+          </block>
+
+          <view class="btn-container">
+                            <button class="{{recording ? 'audiobtn audiorecording' : 'audiobtn'}}" bindtouchstart="startRecord" bindtouchend="completeRecord">按住 说话</button>
+                          </view>
     <view class="btn-container" wx:if="{{disable == false}}">
-      <button type="warn" bindtap="rejectNews">确认驳回</button>
+      <button type="warn" bindtap="rejectNews" data-disableid="1">确认驳回</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
-    <view class="btn-container" wx:elif="{{disable == true}}">
-          <button type="warn">确认驳回</button>
+    <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+          <button type="warn">{{disabletip1}}</button>
           <button type="default">取消</button>
         </view>
   </view>
@@ -73,11 +102,11 @@
       </view>
     </picker>
     <view class="btn-container" wx:if="{{disable == false}}">
-      <button type="warn" bindtap="confirmNews" >确认通过</button>
+      <button type="warn" bindtap="confirmNews" data-disableid="2">确认通过</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
-    <view class="btn-container" wx:elif="{{disable == true}}">
-          <button type="warn">确认通过</button>
+    <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+          <button type="warn">{{disabletip2}}</button>
           <button type="default">取消</button>
         </view>
   </view>
@@ -98,11 +127,11 @@
       </view>
     </picker>
     <view class="btn-container" wx:if="{{disable == false}}">
-      <button type="warn" bindtap="forwardNews">确认转审</button>
+      <button type="warn" bindtap="forwardNews" data-disableid="3">确认转审</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
-    <view class="btn-container" wx:elif="{{disable == true}}">
-          <button type="warn">确认转审</button>
+    <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+          <button type="warn">{{disabletip3}}</button>
           <button type="default">取消</button>
         </view>
   </view>
@@ -118,11 +147,11 @@
         </view>
       </picker>
       <view class="btn-container" wx:if="{{disable == false}}">
-        <button type="warn" bindtap="suNews" >确认通过</button>
+        <button type="warn" bindtap="suNews" data-disableid="2">确认通过</button>
         <button type="default" bindtap="closeOp">取消</button>
       </view>
-      <view class="btn-container" wx:elif="{{disable == true}}">
-            <button type="warn">确认通过</button>
+      <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+            <button type="warn">{{disabletip2}}</button>
             <button type="default">取消</button>
           </view>
     </view>

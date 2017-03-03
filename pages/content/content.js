@@ -5,7 +5,10 @@ Page({
         cid: 0,
         workflow: [],
         lineLength: 0,
-        disable:false
+        disable:false,
+        disabletip1:'提交',
+        disabletip2:'删除',
+        currentVoice:['','']
     },
     onLoad: function (options) {
         let that = this;
@@ -21,7 +24,6 @@ Page({
                 sessid: wx.getStorageSync('sessid')
             },
             success: function (res) {
-
                 if (res.data.status == 1) {
                     that.setData({
                         workflow: res.data.data
@@ -84,16 +86,23 @@ Page({
             url: '../edit/edit?id=' + this.data.cid + '&type=reporter'
         })
     },
-    delNews: function () {
+    delNews: function (e) {
         let that = this;
-        this.setData({
-            'disable':true
-        });
         wx.showModal({
             title: '确认删除',
             content: '您确定要删除这篇稿件吗？',
             success: function (res) {
                 if (res.confirm) {
+                    that.setData({
+                        'disable': true
+                    });
+                    let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
+                    let tempData = {};
+                    tempData[disabletip] = that.data[disabletip] + '中...';
+                    that.setData(tempData);
+                    that.setData({
+                        'disableid':e.currentTarget.dataset.disableid
+                    });
                     wx.request({
                         url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=delete",
                         method: 'post',
@@ -131,24 +140,27 @@ Page({
                                 })
 
                             }
+                        },
+                        fail:function(res) {
+                            wx.showModal({
+                                title: '网络状况差，请稍后再试',
+                                showCancel: false,
+                                content: '',
+                                complete: function (res) {
+                                    that.setData({
+                                        'disable':false
+                                    });
+                                    tempData = {};
+                                    tempData[disabletip] = that.data[disabletip].replace('中...', '');
+                                    that.setData(tempData);
+                                }
+                            });
+
                         }
                     })
                 } else {
                     return false;
                 }
-            },
-            fail:function(res) {
-                wx.showModal({
-                    title: '网络状况差，请稍后再试',
-                    showCancel: false,
-                    content: '',
-                    complete: function (res) {
-                        that.setData({
-                            'disable':false
-                        })
-                    }
-                });
-
             }
         });
     },
@@ -207,9 +219,16 @@ Page({
 
             let formId = e.detail.formId;
             this.setData({
-                'disable':true
+                'disable': true
             });
+            let disabletip = 'disabletip' + e.detail.target.dataset.disableid;
+            let tempData = {};
+            tempData[disabletip] = this.data[disabletip] + '中...';
+            this.setData(tempData);
             let that = this;
+            this.setData({
+                'disableid':e.detail.target.dataset.disableid
+            });
             wx.request({
                 url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=edit',
                 method: 'post',
@@ -258,7 +277,10 @@ Page({
                         complete: function (res) {
                             that.setData({
                                 'disable':false
-                            })
+                            });
+                            tempData = {};
+                            tempData[disabletip] = that.data[disabletip].replace('中...', '');
+                            that.setData(tempData);
                         }
                     });
 
@@ -267,4 +289,126 @@ Page({
         }
 
     },
+    playVoice:function(e) {
+
+        let currentRid = this.data.currentVoice[0];
+        let currentVid = this.data.currentVoice[1];
+
+
+        let src = e.currentTarget.dataset.src;
+        let i = e.currentTarget.dataset.vid;
+        let rid = e.currentTarget.dataset.rid;
+        let that = this;
+
+        if (currentRid == rid && currentVid == i) {
+            if (that.data.content.reject_reason[rid].reject_audio[i].playing) {
+                wx.pauseVoice();
+                let data = {};
+                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                that.setData(data);
+            } else {
+                if (that.data.content.reject_reason[rid].reject_audio[i].filepath != '') {
+                    let data = {};
+                    data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                    that.setData(data);
+                    that.setData({
+                        'currentVoice':[rid,i]
+                    });
+                    setTimeout(function() {
+                        wx.playVoice({
+                            filePath: that.data.content.reject_reason[rid].reject_audio[i].filepath,
+                            success:function() {
+                                let data = {};
+                                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                that.setData(data);
+                            }
+                        });
+                    },500);
+
+                } else {
+                    wx.downloadFile({
+                        url: src,
+                        success: function(res) {
+                            wx.stopVoice();
+                            let data = {};
+                            data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                            that.setData(data);
+                            let pathdata = {};
+                            pathdata['content.reject_reason['+rid+'].reject_audio['+i+'].filepath'] = res.tempFilePath;
+                            that.setData(pathdata);
+                            that.setData({
+                                'currentVoice':[rid,i]
+                            });
+                            setTimeout(function() {
+                                wx.playVoice({
+                                    filePath: res.tempFilePath,
+                                    success:function() {
+                                        let data = {};
+                                        data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                        that.setData(data);
+                                    }
+                                });
+                            },500);
+                        }
+                    })
+                }
+            }
+        } else {
+            wx.stopVoice();
+            let tempVarr = this.data.content.reject_reason[rid].reject_audio;
+            for (let i = 0;i<tempVarr.length;i++) {
+                tempVarr[i].playing = false;
+            }
+            let data = {};
+            data['content.reject_reason['+rid+'].reject_audio'] = tempVarr;
+            this.setData(data);
+            console.log(that.data.content.reject_reason[rid].reject_audio[i].filepath);
+            if (that.data.content.reject_reason[rid].reject_audio[i].filepath != '') {
+                let data = {};
+                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                that.setData(data);
+                that.setData({
+                    'currentVoice':[rid,i]
+                });
+
+                setTimeout(function() {
+                    wx.playVoice({
+                        filePath: that.data.content.reject_reason[rid].reject_audio[i].filepath,
+                        success:function() {
+                            let data = {};
+                            data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                            that.setData(data);
+                        }
+                    });
+                },500);
+            } else {
+                wx.downloadFile({
+                    url: src,
+                    success: function(res) {
+                        let data = {};
+                        data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                        that.setData(data);
+                        let pathdata = {};
+                        pathdata['content.reject_reason['+rid+'].reject_audio['+i+'].filepath'] = res.tempFilePath;
+                        that.setData(pathdata);
+                        that.setData({
+                            'currentVoice':[rid,i]
+                        });
+
+                        setTimeout(function() {
+                            wx.playVoice({
+                                filePath: res.tempFilePath,
+                                success:function() {
+                                    let data = {};
+                                    data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                    console.log('triggered');
+                                    that.setData(data);
+                                }
+                            });
+                        },500);
+                    }
+                })
+            }
+        }
+    }
 });
