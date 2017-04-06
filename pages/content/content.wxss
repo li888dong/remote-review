@@ -24,7 +24,9 @@ page {
   font-size: 34rpx;
   line-height: 48rpx;
 }
-
+.reason-content.reason-withaudio {
+    margin-top: 30rpx;
+}
 .reason-item:first-child .reason-content {
   color: #0a0a0a;
 }
@@ -283,6 +285,9 @@ view.edit.disable-btn, button.submit.disable-btn {
     border-radius: 12rpx;
     border: 1rpx solid #E3E3E3;
     float: left;
+}
+.audio.voice-hover {
+    background-color: #DEDEDE;
 }
 .audio-duration {
     height:80rpx;

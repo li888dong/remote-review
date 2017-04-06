@@ -25,24 +25,23 @@
     </view>
   </view>
   <view class="content-reason" wx:if="{{content.reject_reason != ''}}">
-   <view wx:for="{{content.reject_reason}}" class="reason-item" wx:for-index="rid">
-          <view class="reason-audio" wx:for="{{item.reject_audio}}" wx:for-item="voice" wx:for-index="idx">
-                           <view class="{{voice.playing ? 'audio audio-playing' : 'audio'}}" style="width:{{8*voice.duration+75}}rpx" data-rid="{{rid}}" data-vid="{{idx}}" bindtap="playVoice" data-src="{{voice.src}}">
-
-                           </view>
-                           <view class="audio-duration">
-                           {{voice.duration}}"
-                            </view>
-                           </view>
-      <view class="reason-content">
-        {{item.reason}}
-      </view>
-      <view class="reason-info">
-        <text class="reason-name">{{item.name}}</text>
-        <text class="reason-time">{{item.time}}</text>
+      <view wx:for="{{content.reject_reason}}" class="reason-item" wx:for-index="rid">
+        <view class="reason-audio" wx:for="{{item.reject_audio}}" wx:for-item="voice" wx:for-index="idx">
+          <view class="{{voice.playing ? 'audio audio-playing' : 'audio'}}" hover="true" hover-class="voice-hover" style="width:{{8*voice.duration+75}}rpx" data-rid="{{rid}}" data-vid="{{idx}}" bindtap="playVoice" data-src="{{voice.src}}">
+          </view>
+          <view class="audio-duration">
+            {{voice.duration}}"
+          </view>
+        </view>
+        <view class="{{ item.reject_audio.length > 0 ? 'reason-content reason-withaudio' : 'reason-content'}}">
+          {{item.reason}}
+        </view>
+        <view class="reason-info">
+          <text class="reason-name">{{item.name}}</text>
+          <text class="reason-time">{{item.time}}</text>
+        </view>
       </view>
     </view>
-  </view>
   <view class="padding">
     <view class="flow">
       <view class="line-left" style="height:{{lineLength}}rpx"></view>

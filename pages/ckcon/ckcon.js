@@ -1,7 +1,8 @@
 // pages/content/content.js
 let util = require('../../utils/util.js');
-let interval;
-let timegap;
+let interval,
+    touchstarttime,
+    tout;
 Page({
     data: {
         "content": {},
@@ -23,16 +24,18 @@ Page({
         mainindex: 0,
         subindex: 0,
         suindex: 0,
-        disable:false,
-        onlyreject:false,
-        tocatid:0,
-        parentid:0,
-        disabletip3:'确认转审',
-        disabletip2:'确认通过',
-        disabletip1:'确认驳回',
-        rejectaudio:[],
-        currentVoice:['',''],
-        currentRecord:''
+        disable: false,
+        onlyreject: false,
+        tocatid: 0,
+        parentid: 0,
+        disabletip3: '确认转审',
+        disabletip2: '确认通过',
+        disabletip1: '确认驳回',
+        rejectaudio: [],
+        currentVoice: ['', ''],
+        currentRecord: '',
+        audioarea: false,
+        newsScore:1
 
     },
     onLoad: function (options) {
@@ -46,7 +49,7 @@ Page({
         });
         if (options.onlycheck == '1') {
             this.setData({
-                'onlyreject':true
+                'onlyreject': true
             });
         }
 
@@ -67,7 +70,7 @@ Page({
                         lineLength: (res.data.data.length - 1) * 100
                     });
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                    wx.setStorageSync('wentload','went');
+                    wx.setStorageSync('wentload', 'went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -95,12 +98,12 @@ Page({
 
                 if (res.data.status == 1) {
                     let tempArr = res.data.data;
-                    tempArr['content'] = JSON.parse(tempArr['content']) ;
+                    tempArr['content'] = JSON.parse(tempArr['content']);
                     that.setData({
                         content: tempArr
                     });
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                    wx.setStorageSync('wentload','went');
+                    wx.setStorageSync('wentload', 'went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -137,22 +140,22 @@ Page({
                         // console.log(that.data.content.parentid);
 
                         that.setData({
-                            'mainindex':util.getArrayindx(that.data.content.parentid,that.data.categories,'catid')
+                            'mainindex': util.getArrayindx(that.data.content.parentid, that.data.categories, 'catid')
                         });
                         // console.log(util.getArrayindx(that.data.content.parentid,that.data.categories,'catid'));
                         that.setData({
-                            selection:that.data.categories[that.data.mainindex].subcats
+                            selection: that.data.categories[that.data.mainindex].subcats
                         });
                         that.setData({
-                            'subindex':util.getArrayindx(that.data.content.tocatid,that.data.categories[that.data.mainindex].subcats,'catid')
+                            'subindex': util.getArrayindx(that.data.content.tocatid, that.data.categories[that.data.mainindex].subcats, 'catid')
                         })
                     } else {
                         that.setData({
-                            'mainindex':util.getArrayindx(that.data.content.tocatid,that.data.categories,'catid')
+                            'mainindex': util.getArrayindx(that.data.content.tocatid, that.data.categories, 'catid')
                         })
                     }
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                    wx.setStorageSync('wentload','went');
+                    wx.setStorageSync('wentload', 'went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -165,7 +168,6 @@ Page({
                     })
 
                 }
-
 
 
             }
@@ -183,7 +185,7 @@ Page({
                         sucheckers: res.data.data
                     });
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                    wx.setStorageSync('wentload','went');
+                    wx.setStorageSync('wentload', 'went');
                     wx.showModal({
                         title: '登录过期，请重新登录',
                         showCancel: false,
@@ -254,11 +256,11 @@ Page({
                         });
                         let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
                         let tempData = {};
-                        tempData[disabletip] = that.data[disabletip].replace('确认','') + '中...';
+                        tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
                         that.setData(tempData);
 
                         let tempRejectAudio = that.data.rejectaudio;
-                        for (let i = 0;i<tempRejectAudio.length;i++) {
+                        for (let i = 0; i < tempRejectAudio.length; i++) {
                             tempRejectAudio[i].filepath = ''
                         }
                         wx.request({
@@ -285,7 +287,7 @@ Page({
                                         }
                                     })
                                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                                    wx.setStorageSync('wentload','went');
+                                    wx.setStorageSync('wentload', 'went');
                                     wx.showModal({
                                         title: '登录过期，请重新登录',
                                         showCancel: false,
@@ -299,7 +301,7 @@ Page({
 
                                 }
                             },
-                            fail:function(res) {
+                            fail: function (res) {
                                 wx.showModal({
                                     title: '网络状况差，请稍后再试',
                                     showCancel: false,
@@ -393,7 +395,7 @@ Page({
                         });
                         let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
                         let tempData = {};
-                        tempData[disabletip] = that.data[disabletip].replace('确认','') + '中...';
+                        tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
                         that.setData(tempData);
                         wx.request({
                             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=pass",
@@ -418,7 +420,7 @@ Page({
                                         }
                                     })
                                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                                    wx.setStorageSync('wentload','went');
+                                    wx.setStorageSync('wentload', 'went');
                                     wx.showModal({
                                         title: '登录过期，请重新登录',
                                         showCancel: false,
@@ -432,7 +434,7 @@ Page({
 
                                 }
                             },
-                            fail:function(res) {
+                            fail: function (res) {
                                 wx.showModal({
                                     title: '网络状况差，请稍后再试',
                                     showCancel: false,
@@ -501,7 +503,7 @@ Page({
                         });
                         let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
                         let tempData = {};
-                        tempData[disabletip] = that.data[disabletip].replace('确认','') + '中...';
+                        tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
                         that.setData(tempData);
                         wx.request({
                             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=transcheck",
@@ -527,7 +529,7 @@ Page({
                                         }
                                     })
                                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                                    wx.setStorageSync('wentload','went');
+                                    wx.setStorageSync('wentload', 'went');
                                     wx.showModal({
                                         title: '登录过期，请重新登录',
                                         showCancel: false,
@@ -541,7 +543,7 @@ Page({
 
                                 }
                             },
-                            fail:function(res) {
+                            fail: function (res) {
                                 wx.showModal({
                                     title: '网络状况差，请稍后再试',
                                     showCancel: false,
@@ -580,7 +582,7 @@ Page({
                     let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
                     let tempData = {};
 
-                    tempData[disabletip] = that.data[disabletip].replace('确认','') + '中...';
+                    tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
                     that.setData(tempData);
                     wx.request({
                         url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=pass",
@@ -605,7 +607,7 @@ Page({
                                     }
                                 })
                             } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                                wx.setStorageSync('wentload','went');
+                                wx.setStorageSync('wentload', 'went');
                                 wx.showModal({
                                     title: '登录过期，请重新登录',
                                     showCancel: false,
@@ -619,7 +621,7 @@ Page({
 
                             }
                         },
-                        fail:function(res) {
+                        fail: function (res) {
                             wx.showModal({
                                 title: '网络状况差，请稍后再试',
                                 showCancel: false,
@@ -647,29 +649,46 @@ Page({
             url: '../edit/edit?id=' + this.data.cid + '&type=editor'
         })
     },
-    startRecord:function() {
+    startRecord: function (e) {
+        touchstarttime = e.timeStamp;
         let that = this;
-        timegap = setTimeout(function() {
+        tout = setTimeout(function () {
+            let tempVoice = {
+                "duration": 1,
+                "filepath": '',
+                "playing": false,
+                'src': ''
+            };
+            let tempArr = that.data.rejectaudio;
+            tempArr.push(tempVoice);
+            that.setData({
+                'recording': true
+            });
+            that.setData({
+                "rejectaudio": tempArr
+            });
+            interval = setInterval(that.updateRecord, 1000);
             wx.startRecord({
-                success: function(res) {
+                success: function (res) {
+                    console.log(res);
                     let tempFilePath = res.tempFilePath;
                     that.setData({
-                        'recording':false
+                        'recording': false
                     });
                     let idx = that.data.rejectaudio.length - 1;
                     let data = {};
-                    data['rejectaudio['+idx+'].filepath'] = tempFilePath;
+                    data['rejectaudio[' + idx + '].filepath'] = tempFilePath;
                     console.log(tempFilePath);
                     wx.uploadFile({
                         url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=audio',
                         filePath: tempFilePath,
                         name: 'files',
-                        success:res=>{
+                        success: res => {
                             res.data = JSON.parse(res.data);
                             if (res.data.status == 1) {
                                 let data = {};
                                 console.log(res);
-                                data['rejectaudio['+idx+'].src'] = res.data.url;
+                                data['rejectaudio[' + idx + '].src'] = res.data.url;
                                 that.setData(data);
                             }
                         }
@@ -677,102 +696,121 @@ Page({
                     that.setData(data);
                     clearInterval(interval);
                 },
-                fail: function(res) {
+                fail: function (res) {
                     //录音失败
+                    console.log('failed');
+                    that.cancelRecord();
                 }
             });
-            let tempVoice = {
-                "duration":1,
-                "filepath":'',
-                "playing":false,
-                'src':''
-            };
-            let tempArr = that.data.rejectaudio;
-            tempArr.push(tempVoice);
-            that.setData({
-                'recording':true
-            });
-            that.setData({
-                "rejectaudio":tempArr
-            });
-            interval = setInterval(that.updateRecord,1000);
-        },1000);
+            console.log('setted');
+        }, 300);
     },
-    updateRecord:function() {
+    updateRecord: function () {
         let idx = this.data.rejectaudio.length - 1;
         console.log(this.data.rejectaudio[idx]);
         let data = {};
-        data['rejectaudio['+idx+'].duration'] = this.data.rejectaudio[idx].duration + 1;
+        data['rejectaudio[' + idx + '].duration'] = this.data.rejectaudio[idx].duration + 1;
         this.setData(data);
     },
-    completeRecord:function() {
-
-        if (this.data.recording) {
-            console.log('complete');
-            wx.stopRecord();
+    completeRecord: function (e) {
+        let timegap = e.timeStamp - touchstarttime;
+        if (timegap > 300) {
+            console.log(e);
+            console.log('triggered');
+            if (this.data.recording) {
+                console.log('cstro');
+                wx.stopRecord();
+            } else {
+                console.log('complete');
+                this.cancelRecord();
+            }
         } else {
-            clearTimeout(timegap);
+            clearTimeout(tout)
         }
-
-
     },
-    playRecord:function(e) {
+    cancelRecord: function () {
+        console.log('touchcanceled');
+        let that = this;
+        if (this.data.recording) {
+            console.log('first?');
+            let idx = this.data.rejectaudio.length - 1;
+            console.log(idx);
+            let tempArr = this.data.rejectaudio;
+            console.log(tempArr);
+            tempArr.splice(idx, 1);
+
+            that.setData({
+                "rejectaudio": tempArr
+            });
+
+            console.log(tempArr);
+
+            this.setData({
+                "recording": false
+            });
+        }
+        wx.stopRecord();
+        clearTimeout(tout);
+        clearInterval(interval);
+        console.log('canceled');
+    },
+    playRecord: function (e) {
         let i = e.currentTarget.dataset.vid;
         let that = this;
         if (i == this.data.currentRecord) {
             if (that.data.rejectaudio[i].playing) {
                 wx.pauseVoice();
                 let data = {};
-                data['rejectaudio['+i+'].playing'] = false;
+                data['rejectaudio[' + i + '].playing'] = false;
                 this.setData(data);
             } else {
                 let pdata = {};
-                pdata['rejectaudio['+i+'].playing'] = true;
+                pdata['rejectaudio[' + i + '].playing'] = true;
                 that.setData(pdata);
                 that.setData({
-                    'currentRecord':i
+                    'currentRecord': i
                 });
-                setTimeout(function() {
+                setTimeout(function () {
                     wx.playVoice({
                         filePath: that.data.rejectaudio[i].filepath,
-                        success:function() {
+                        success: function () {
                             let data = {};
-                            data['rejectaudio['+i+'].playing'] = false;
+                            data['rejectaudio[' + i + '].playing'] = false;
                             that.setData(data);
                         }
                     });
-                },500);
+                }, 500);
 
             }
         } else {
             wx.stopVoice();
             let tempVarr = this.data.rejectaudio;
-            for (let i = 0;i<tempVarr.length;i++) {
+            for (let i = 0; i < tempVarr.length; i++) {
                 tempVarr[i].playing = false;
             }
             let data = {};
             data['rejectaudio'] = tempVarr;
             this.setData(data);
             let pdata = {};
-            pdata['rejectaudio['+i+'].playing'] = true;
+            pdata['rejectaudio[' + i + '].playing'] = true;
             that.setData(pdata);
             that.setData({
-                'currentRecord':i
+                'currentRecord': i
             });
-            setTimeout(function() {
+            setTimeout(function () {
                 wx.playVoice({
                     filePath: that.data.rejectaudio[i].filepath,
-                    success:function() {
+                    success: function () {
                         let data = {};
-                        data['rejectaudio['+i+'].playing'] = false;
+                        data['rejectaudio[' + i + '].playing'] = false;
                         that.setData(data);
                     }
                 });
-            },500);
+            }, 500);
         }
 
     },
-    delRecord:function(e) {
+    delRecord: function (e) {
         let that = this;
         wx.showModal({
             title: '确认删除',
@@ -783,7 +821,7 @@ Page({
                     let tempArr = that.data.rejectaudio;
                     tempArr.splice(i, 1);
                     that.setData({
-                        'rejectaudio':tempArr
+                        'rejectaudio': tempArr
                     })
                 } else {
                     return false;
@@ -791,7 +829,7 @@ Page({
             }
         });
     },
-    playVoice:function(e) {
+    playVoice: function (e) {
 
         let currentRid = this.data.currentVoice[0];
         let currentVid = this.data.currentVoice[1];
@@ -806,111 +844,132 @@ Page({
             if (that.data.content.reject_reason[rid].reject_audio[i].playing) {
                 wx.pauseVoice();
                 let data = {};
-                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
                 that.setData(data);
             } else {
                 if (that.data.content.reject_reason[rid].reject_audio[i].filepath != '') {
                     let data = {};
-                    data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                    data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = true;
                     that.setData(data);
                     that.setData({
-                        'currentVoice':[rid,i]
+                        'currentVoice': [rid, i]
                     });
-                    setTimeout(function() {
+                    setTimeout(function () {
                         wx.playVoice({
                             filePath: that.data.content.reject_reason[rid].reject_audio[i].filepath,
-                            success:function() {
+                            success: function () {
                                 let data = {};
-                                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
                                 that.setData(data);
                             }
                         });
-                    },500);
+                    }, 500);
 
                 } else {
                     wx.downloadFile({
                         url: src,
-                        success: function(res) {
+                        success: function (res) {
                             wx.stopVoice();
                             let data = {};
-                            data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                            data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = true;
                             that.setData(data);
                             let pathdata = {};
-                            pathdata['content.reject_reason['+rid+'].reject_audio['+i+'].filepath'] = res.tempFilePath;
+                            pathdata['content.reject_reason[' + rid + '].reject_audio[' + i + '].filepath'] = res.tempFilePath;
                             that.setData(pathdata);
                             that.setData({
-                                'currentVoice':[rid,i]
+                                'currentVoice': [rid, i]
                             });
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 wx.playVoice({
                                     filePath: res.tempFilePath,
-                                    success:function() {
+                                    success: function () {
                                         let data = {};
-                                        data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                        data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
                                         that.setData(data);
                                     }
                                 });
-                            },500);
+                            }, 500);
                         }
                     })
                 }
             }
         } else {
             wx.stopVoice();
-            let tempVarr = this.data.content.reject_reason[rid].reject_audio;
-            for (let i = 0;i<tempVarr.length;i++) {
-                tempVarr[i].playing = false;
+            for (let i = 0; i < this.data.content.reject_reason.length; i++) {
+                // tempVarr.concat(this.data.content.reject_reason[i].reject_audio)
+                let tempVarr = this.data.content.reject_reason[i].reject_audio;
+                for (let j = 0; j < tempVarr.length; j++) {
+                    tempVarr[j].playing = false;
+                }
+                let data = {};
+                data['content.reject_reason[' + i + '].reject_audio'] = tempVarr;
+                this.setData(data);
             }
-            let data = {};
-            data['content.reject_reason['+rid+'].reject_audio'] = tempVarr;
-            this.setData(data);
-            console.log(that.data.content.reject_reason[rid].reject_audio[i].filepath);
+
+            console.log(that.data.content.reject_reason[rid]);
             if (that.data.content.reject_reason[rid].reject_audio[i].filepath != '') {
                 let data = {};
-                data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = true;
                 that.setData(data);
                 that.setData({
-                    'currentVoice':[rid,i]
+                    'currentVoice': [rid, i]
                 });
 
-                setTimeout(function() {
+                setTimeout(function () {
                     wx.playVoice({
                         filePath: that.data.content.reject_reason[rid].reject_audio[i].filepath,
-                        success:function() {
+                        success: function () {
                             let data = {};
-                            data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                            data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
                             that.setData(data);
                         }
                     });
-                },500);
+                }, 500);
             } else {
                 wx.downloadFile({
                     url: src,
-                    success: function(res) {
+                    success: function (res) {
                         let data = {};
-                        data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = true;
+                        data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = true;
                         that.setData(data);
                         let pathdata = {};
-                        pathdata['content.reject_reason['+rid+'].reject_audio['+i+'].filepath'] = res.tempFilePath;
+                        pathdata['content.reject_reason[' + rid + '].reject_audio[' + i + '].filepath'] = res.tempFilePath;
                         that.setData(pathdata);
                         that.setData({
-                            'currentVoice':[rid,i]
+                            'currentVoice': [rid, i]
                         });
-
-                        setTimeout(function() {
+                        setTimeout(function () {
                             wx.playVoice({
                                 filePath: res.tempFilePath,
-                                success:function() {
+                                success: function () {
                                     let data = {};
-                                    data['content.reject_reason['+rid+'].reject_audio['+i+'].playing'] = false;
+                                    data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
                                     console.log('triggered');
                                     that.setData(data);
                                 }
                             });
-                        },500);
+                        }, 500);
                     }
                 })
             }
         }
+    },
+    toggleAudio: function (e) {
+        let rtype = e.currentTarget.dataset.rtype;
+        if (rtype == 'audio') {
+            this.setData({
+                'audioarea': true
+            })
+        } else {
+            this.setData({
+                'audioarea': false
+            })
+        }
+    },
+    sliderChange:function(e) {
+        this.setData({
+            'newsScore':e.detail.value
+        })
     }
+
 });

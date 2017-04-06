@@ -59,9 +59,7 @@ Page({
                             // wx.hideToast();
                             that.wetoast.hide();
                             tempArr.splice(cidx, 0, imagedata); // key 可以是任何字符串
-                            that.setData({
-                                "content.content": tempArr
-                            });
+                            that.setContent(tempArr);
                             data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
                             that.setData(data);
                         }
@@ -115,9 +113,7 @@ Page({
                             that.wetoast.hide();
                             // wx.hideToast();
                             tempArr.splice(cidx, 0, videodata); // key 可以是任何字符串
-                            that.setData({
-                                "content.content": tempArr
-                            });
+                            that.setContent(tempArr);
                             data['content.content[' + (cidx+1) + '].show'] = false; // key 可以是任何字符串
                             that.setData(data);
                         } else if (data.status == '-1') {
@@ -480,9 +476,7 @@ Page({
                             tempArr[i].show = false
                         }
                     }
-                    that.setData({
-                        "content.content": tempArr
-                    })
+                    that.setContent(tempArr);
                 } else {
                     return false;
                 }
@@ -613,9 +607,8 @@ Page({
         if (resultArr[resultArr.length -1].type !='text') {
             resultArr = resultArr.concat([{"type":"text","value":""}]);
         }
-        this.setData({
-            "content.content": resultArr
-        });
+        this.setContent(resultArr);
+
         tempData = {};
         tempData[disabletip] = this.data[disabletip].replace('中...', '');
         this.setData(tempData);
@@ -655,9 +648,7 @@ Page({
             }
             resultArr = tempA.concat(tempRarr);
             resultArr = resultArr.concat(tempB);
-            this.setData({
-                'content.content': resultArr
-            })
+            this.setContent(resultArr);
         } else if (idx == 0) {
             let tempB = dataArr.slice(idx + 1);
             let resultArr = [];
@@ -685,10 +676,7 @@ Page({
                 tempRarr = tempRarr.concat(tempObj);
             }
             resultArr = tempRarr.concat(tempB);
-            this.setData({
-                'content.content': resultArr
-            })
-
+            this.setContent(resultArr);
         } else {
             let tempA = dataArr.slice(0, idx);
             // let tempB = dataArr.slice(idx+1);
@@ -710,9 +698,28 @@ Page({
             }
             resultArr = tempA.concat(tempRarr);
             // resultArr = resultArr.concat(tempB);
-            this.setData({
-                'content.content': resultArr
-            })
+            this.setContent(resultArr);
+        }
+    },
+    setContent(tempArr) {
+        let tempCArr = [];
+
+        for (let i = 0;i<tempArr.length;i++) {
+            if (tempArr[i].type === 'text' && tempArr[i].value.length > 140) {
+                tempCArr.push({
+                    'id':i,
+                    'strA':tempArr[i].value.substr(0,140),
+                    'strB':tempArr[i].value.substr(140,tempArr[i].value.length)
+                })
+            }
+        }
+        this.setData({
+            'content.content': tempArr
+        });
+        for (let j = 0;j<tempCArr.length;j++) {
+            let data = {};
+            data['content.content[' + tempCArr[j].id + '].value'] = tempCArr[j].strA + tempCArr[j].strB; // key 可以是任何字符串
+            this.setData(data);
         }
     }
 });
