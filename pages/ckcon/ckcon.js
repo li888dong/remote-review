@@ -28,6 +28,7 @@ Page({
         onlyreject: false,
         tocatid: 0,
         parentid: 0,
+        disabletip4: '确认修改',
         disabletip3: '确认转审',
         disabletip2: '确认通过',
         disabletip1: '确认驳回',
@@ -35,8 +36,7 @@ Page({
         currentVoice: ['', ''],
         currentRecord: '',
         audioarea: false,
-        newsScore:1
-
+        newsScore: 1
     },
     onLoad: function (options) {
         let that = this;
@@ -56,7 +56,7 @@ Page({
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
-            header: {"content-type": "application/x-www-form-urlencoded"},
+            header: { "content-type": "application/x-www-form-urlencoded" },
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
@@ -90,7 +90,7 @@ Page({
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
-            header: {"content-type": "application/x-www-form-urlencoded"},
+            header: { "content-type": "application/x-www-form-urlencoded" },
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
@@ -102,6 +102,13 @@ Page({
                     that.setData({
                         content: tempArr
                     });
+                    if (tempArr.news_grade != 0) {
+                        that.setData({
+                            newsScore: tempArr.news_grade
+                        })
+                    }
+
+
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload', 'went');
                     wx.showModal({
@@ -123,7 +130,7 @@ Page({
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=cats',
             method: 'post',
-            header: {"content-type": "application/x-www-form-urlencoded"},
+            header: { "content-type": "application/x-www-form-urlencoded" },
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
@@ -175,7 +182,7 @@ Page({
         wx.request({
             url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=sulist',
             method: 'post',
-            header: {"content-type": "application/x-www-form-urlencoded"},
+            header: { "content-type": "application/x-www-form-urlencoded" },
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
@@ -233,6 +240,11 @@ Page({
             rejectreason: e.detail.value
         })
     },
+    setGradeReason: function (e) {
+        this.setData({
+            grade_message: e.detail.value
+        })
+    },
     rejectNews: function (e) {
         let that = this;
         if (this.data.rejectreason == '' && this.data.rejectaudio.length == 0) {
@@ -266,7 +278,7 @@ Page({
                         wx.request({
                             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=reject",
                             method: 'post',
-                            header: {"content-type": "application/x-www-form-urlencoded"},
+                            header: { "content-type": "application/x-www-form-urlencoded" },
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
@@ -384,6 +396,15 @@ Page({
                     return false;
                 }
             })
+        } else if (this.data.newsScore === 0) {
+            wx.showModal({
+                title: '请给这篇稿件打分',
+                content: '',
+                showCancel: false,
+                complete: function (res) {
+                    return false;
+                }
+            })
         } else {
             wx.showModal({
                 title: '确认通过',
@@ -400,12 +421,13 @@ Page({
                         wx.request({
                             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=pass",
                             method: 'post',
-                            header: {"content-type": "application/x-www-form-urlencoded"},
+                            header: { "content-type": "application/x-www-form-urlencoded" },
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
                                 catid: that.data.currentCate,
-                                typefrom: that.data.editorauth
+                                typefrom: that.data.editorauth,
+                                news_grade: that.data.newsScore
                             },
                             success: function (res) {
                                 if (res.data.status == 1) {
@@ -508,7 +530,7 @@ Page({
                         wx.request({
                             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=transcheck",
                             method: 'post',
-                            header: {"content-type": "application/x-www-form-urlencoded"},
+                            header: { "content-type": "application/x-www-form-urlencoded" },
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
@@ -587,7 +609,7 @@ Page({
                     wx.request({
                         url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=pass",
                         method: 'post',
-                        header: {"content-type": "application/x-www-form-urlencoded"},
+                        header: { "content-type": "application/x-www-form-urlencoded" },
                         data: {
                             sessid: wx.getStorageSync('sessid'),
                             id: that.data.cid,
@@ -966,10 +988,109 @@ Page({
             })
         }
     },
-    sliderChange:function(e) {
+    setScore: function (e) {
+        console.log(e.target.dataset.score);
         this.setData({
-            'newsScore':e.detail.value
+            'newsScore': e.target.dataset.score
         })
-    }
+    },
+    confirmGrade: function (e) {
+        let that = this;
+        if (that.data.newsScore == that.data.content.news_grade) {
+            wx.showModal({
+                title: '分值无改动！',
+                content: "",
+                showCancel: false,
+                complete: function () {
+                    return false;
+                }
+            })
+        } else if (that.data.grade_message == '') {
+            wx.showModal({
+                title: '请填写修改理由！',
+                content: "",
+                showCancel: false,
+                complete: function () {
+                    return false;
+                }
+            })
+        } else {
+            wx.showModal({
+                title: '确认修改',
+                content: '您确定要修改这篇稿件的分数吗？',
+                success: function (res) {
+                    if (res.confirm) {
+                        that.setData({
+                            'disable': true
+                        });
+                        let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
+                        let tempData = {};
+
+                        tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
+                        that.setData(tempData);
+                        wx.request({
+                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=edit_grade",
+                            method: 'post',
+                            header: { "content-type": "application/x-www-form-urlencoded" },
+                            data: {
+                                sessid: wx.getStorageSync('sessid'),
+                                id: that.data.cid,
+                                news_grade: that.data.newsScore,
+                                grade_message: that.data.grade_message
+                            },
+                            success: function (res) {
+                                if (res.data.status == 1) {
+                                    wx.showModal({
+                                        title: '修改成功',
+                                        showCancel: false,
+                                        content: '',
+                                        complete: function (res) {
+                                            wx.navigateBack({
+                                                delta: 1
+                                            })
+                                        }
+                                    })
+                                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
+                                    wx.setStorageSync('wentload', 'went');
+                                    wx.showModal({
+                                        title: '登录过期，请重新登录',
+                                        showCancel: false,
+                                        content: '',
+                                        complete: res => {
+                                            wx.redirectTo({
+                                                url: '../login/login'
+                                            })
+                                        }
+                                    })
+
+                                }
+                            },
+                            fail: function (res) {
+                                wx.showModal({
+                                    title: '网络状况差，请稍后再试',
+                                    showCancel: false,
+                                    content: '',
+                                    complete: function (res) {
+                                        that.setData({
+                                            'disable': false
+                                        });
+                                        tempData = {};
+                                        tempData[disabletip] = '确认' + that.data[disabletip].replace('中...', '');
+                                        that.setData(tempData);
+                                    }
+                                });
+
+                            }
+                        })
+                    } else {
+                        return false;
+                    }
+                }
+            });
+        }
+
+
+
+    },
 
 });

@@ -225,3 +225,37 @@ page {
     background-position-x: 25rpx;
     background-repeat: no-repeat;
 }
+.slider-container {
+    display:flex;
+    align-items:middle;
+    margin-top:40rpx
+}
+.slider-container .score {
+   font-size:120rpx;
+   color:#FDBD2C;
+
+   text-align:right;
+   width:260rpx;
+}
+
+.star-container {
+    display:flex;
+    justify-content:space-between;
+    width:450rpx;
+    margin-top:40rpx;
+    padding-left:40rpx;
+}
+
+.star {
+    width:42rpx;
+    height:38rpx;
+
+}
+.star-grey {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/star-grey.png") center center no-repeat;
+    background-size: 42rpx 38rpx;
+}
+.star-gold {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/star-gold.png") center center no-repeat;
+    background-size: 42rpx 38rpx;
+}

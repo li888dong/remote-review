@@ -457,13 +457,36 @@ page {
     padding:50rpx 0;
 }
 .slider-container {
-    margin-top: 30rpx;
-    background:#ffffff;
-    padding:30rpx 0;
+    display:flex;
+    align-items:middle;
+    margin-top:40rpx
 }
-.slider-container text {
-    padding-left:16rpx;
+.slider-container .score {
+   font-size:120rpx;
+   color:#FDBD2C;
+
+   text-align:right;
+   width:260rpx;
 }
-.slider-container slider {
-    margin-top: 30rpx;
+
+.star-container {
+    display:flex;
+    justify-content:space-between;
+    width:450rpx;
+    margin-top:40rpx;
+    padding-left:40rpx;
+}
+
+.star {
+    width:42rpx;
+    height:38rpx;
+
+}
+.star-grey {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/star-grey.png") center center no-repeat;
+    background-size: 42rpx 38rpx;
+}
+.star-gold {
+    background: url("https://www.hnsjb.cn/static/img/wxapp/star-gold.png") center center no-repeat;
+    background-size: 42rpx 38rpx;
 }

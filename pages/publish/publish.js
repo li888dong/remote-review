@@ -141,8 +141,8 @@ Page({
                     let pagestatus = wx.getStorageSync('ysstatus') || 'none';
                     let self = wx.getStorageSync('ysself') || '0';
                     let currentType = wx.getStorageSync('ystype') || '全部';
-                    this.filterNews(pagestatus,self);
-                    this.setData({
+                    that.filterNews(pagestatus,self);
+                    that.setData({
                         'currentType':currentType
                     });
                     wx.setStorageSync('yishenhe',res.data.data);

@@ -46,6 +46,13 @@
           <text class="media-desc">{{item.title}}</text>
         </view>
       </view>
+      <view class="slider-container">
+        <view class="star-container">
+        <view wx:for="{{[1, 2, 3, 4, 5]}}" class="{{content.news_grade > item - 1 ? 'star star-gold':'star star-grey'}}">
+        </view>
+        </view>
+        <view class="score">{{content.news_grade}}</view>
+     </view>
     </view>
   </view>
   <view class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}" wx:if="{{!onlyreject}}">
@@ -55,7 +62,8 @@
     <button type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" wx:if="{{editorauth == 'tocheck'}}" data-opid="3">转审</button>
   </view>
   <view class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}" wx:elif="{{onlyreject}}">
-    <button type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="1">驳回</button>
+    <button type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" style="width:300rpx" bindtap="openOp" data-opid="1">驳回稿件</button>
+      <button type="primary" class="{{optionopen == 5 ? 'current-btn':'default-btn'}}" style="width:300rpx" bindtap="openOp" data-opid="5">修改评分</button>
   </view>
   <view class="content-option" wx:if="{{optionopen == 1}}">
     <view class="audio-toggle">
@@ -104,8 +112,13 @@
       </view>
     </picker>
     <view class="slider-container">
-        <text>打分</text>
-        <slider value="{{newsScore}}" bindchange="sliderChange" step="1" min="1" max="5" show-value />
+        <view class="star-container">
+        <view wx:for="{{[1, 2, 3, 4, 5]}}" class="{{newsScore > item - 1 ? 'star star-gold':'star star-grey'}}" bindtap="setScore" data-score="{{item}}">
+        
+        </view>
+        </view>
+        <view class="score">{{newsScore}}</view>
+        
     </view>
 
     <view class="btn-container" wx:if="{{disable == false}}">
@@ -162,6 +175,32 @@
       <button type="default">取消</button>
     </view>
   </view>
+
+ <view class="content-option" wx:if="{{optionopen == 5}}">
+
+ <view class="slider-container">
+        <view class="star-container">
+        <view wx:for="{{[1, 2, 3, 4, 5]}}" class="{{newsScore > item - 1 ? 'star star-gold':'star star-grey'}}" bindtap="setScore" data-score="{{item}}">
+        </view>
+        </view>
+        <view class="score">{{newsScore}}</view>
+    </view>
+    
+    <view class="reject-input-area" >
+    <textarea class="reject-reason" placeholder="分数修改理由" maxlength="-1" bindblur="setGradeReason" value="" />
+    </view>
+    
+    <view class="btn-container" wx:if="{{disable == false}}">
+      <button type="warn" bindtap="confirmGrade" data-disableid="1">确认修改</button>
+      <button type="default" bindtap="closeOp">取消</button>
+    </view>
+    <view class="btn-container dark-container" wx:elif="{{disable == true}}">
+      <button type="warn">{{disabletip4}}</button>
+      <button type="default">取消</button>
+    </view>
+  </view>
+
+
   <view class="padding">
     <view class="flow">
       <view class="line-left" style="height:{{lineLength}}rpx"></view>
