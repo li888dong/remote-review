@@ -8,6 +8,7 @@
       <text>{{content.username}}</text>
       <text class="info-copyfrom">{{content.copyfrom}}</text>
     </view>
+
     <view class="content-content">
       <view wx:for="{{content.content}}">
         <view wx:if="{{item.type == 'text'}}">
@@ -22,9 +23,13 @@
           <text class="media-desc">{{item.title}}</text>
         </view>
       </view>
+
+      <view class="content-info" wx:if="{{is_special}}">
+               <text>本文发布于{{specialName}}专题下的{{specialType}}</text>
+          </view>
       <view class="slider-container">
         <view class="star-container">
-        <view wx:for="{{[1, 2, 3, 4, 5]}}" class="{{content.news_grade > item - 1 ? 'star star-gold':'star star-grey'}}">
+        <view wx:for="{{[1, 2, 3, 4, 5, 6, 7]}}" class="{{content.news_grade > item - 1 ? 'star star-gold':'star star-grey'}}">
         </view>
         </view>
         <view class="score">{{content.news_grade}}</view>

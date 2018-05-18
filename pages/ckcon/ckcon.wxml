@@ -32,6 +32,7 @@
       <text>{{content.username}}</text>
       <text class="info-copyfrom">{{content.copyfrom}}</text>
     </view>
+
     <view class="content-content">
       <view wx:for="{{content.content}}">
         <view wx:if="{{item.type == 'text'}}">
@@ -46,9 +47,13 @@
           <text class="media-desc">{{item.title}}</text>
         </view>
       </view>
+
+      <view class="content-info" wx:if="{{is_special}}">
+                   <text>本文发布于{{specialName}}专题下的{{specialType}}</text>
+              </view>
       <view class="slider-container">
         <view class="star-container">
-        <view wx:for="{{[1, 2, 3, 4, 5]}}" class="{{content.news_grade > item - 1 ? 'star star-gold':'star star-grey'}}">
+        <view wx:for="{{[1, 2, 3, 4, 5, 6, 7]}}" class="{{content.news_grade > item - 1 ? 'star star-gold':'star star-grey'}}">
         </view>
         </view>
         <view class="score">{{content.news_grade}}</view>
@@ -101,6 +106,24 @@
     </view>
   </view>
   <view class="content-option" wx:elif="{{optionopen == 2}}">
+  <block wx:if="{{is_special}}">
+
+  <block wx:if="{{specials.length > 0}}">
+  <picker bindchange="getSpecialTypes" range="{{specials}}" value="{{specialIndex}}" range-key="sname">
+        <view class="picker">专题：{{specials[specialIndex].sname}}</view>
+      </picker>
+
+      <picker bindchange="setSpecialType" range="{{types}}" value="{{typeIndex}}" range-key="scname" wx:if="{{types.length > 0}}">
+        <view class="picker">选择分类：{{types[typeIndex].scname}}</view>
+      </picker>
+  </block>
+  <block wx:if="{{specials.length == 0}}">
+  <view class="picker">专题信息加载中...</view>
+  </block>
+
+
+  </block>
+  <block wx:if="{{!is_special}}">
     <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
       <view class="picker">
         选择栏目：{{categories[mainindex].catname}}
@@ -111,9 +134,10 @@
         选择子栏目：{{selection[subindex].catname}}
       </view>
     </picker>
+    </block>
     <view class="slider-container">
         <view class="star-container">
-        <view wx:for="{{[1, 2, 3, 4, 5]}}" class="{{newsScore > item - 1 ? 'star star-gold':'star star-grey'}}" bindtap="setScore" data-score="{{item}}">
+        <view wx:for="{{[1, 2, 3, 4, 5, 6, 7]}}" class="{{newsScore > item - 1 ? 'star star-gold':'star star-grey'}}" bindtap="setScore" data-score="{{item}}">
         
         </view>
         </view>
@@ -136,16 +160,40 @@
         选择总编辑：{{sucheckers[suindex].realname}}
       </view>
     </picker>
-    <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
-      <view class="picker">
-        选择栏目：{{categories[mainindex].catname}}
-      </view>
-    </picker>
-    <picker bindchange="setCate" value="{{subindex}}" range-key="catname" range="{{selection}}" wx:if="{{selection.length > 0}}">
-      <view class="picker">
-        选择子栏目：{{selection[subindex].catname}}
-      </view>
-    </picker>
+
+    <block wx:if="{{is_special}}">
+<block wx:if="{{specials.length > 0}}">
+  <picker bindchange="getSpecialTypes" range="{{specials}}" value="{{specialIndex}}" range-key="sname">
+        <view class="picker">专题：{{specials[specialIndex].sname}}</view>
+      </picker>
+
+      <picker bindchange="setSpecialType" range="{{types}}" value="{{typeIndex}}" range-key="scname" wx:if="{{types.length > 0}}">
+        <view class="picker">选择分类：{{types[typeIndex].scname}}</view>
+      </picker>
+  </block>
+  <block wx:if="{{specials.length == 0}}">
+  <view class="picker">专题信息加载中...</view>
+  </block>
+
+    </block>
+
+    <block wx:if="{{!is_special}}">
+
+        <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
+              <view class="picker">
+                选择栏目：{{categories[mainindex].catname}}
+              </view>
+            </picker>
+            <picker bindchange="setCate" value="{{subindex}}" range-key="catname" range="{{selection}}" wx:if="{{selection.length > 0}}">
+              <view class="picker">
+                选择子栏目：{{selection[subindex].catname}}
+              </view>
+            </picker>
+
+        </block>
+
+
+
     <view class="btn-container" wx:if="{{disable == false}}">
       <button type="warn" bindtap="forwardNews" data-disableid="3">确认转审</button>
       <button type="default" bindtap="closeOp">取消</button>
@@ -156,16 +204,38 @@
     </view>
   </view>
   <view class="content-option" wx:elif="{{optionopen == 4}}">
-    <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
-      <view class="picker">
-        选择栏目：{{categories[mainindex].catname}}
-      </view>
-    </picker>
-    <picker bindchange="setCate" value="{{subindex}}" range-key="catname" range="{{selection}}" wx:if="{{selection.length > 0}}">
-      <view class="picker">
-        选择子栏目：{{selection[subindex].catname}}
-      </view>
-    </picker>
+
+
+   <block wx:if="{{is_special}}">
+ <block wx:if="{{specials.length > 0}}">
+   <picker bindchange="getSpecialTypes" range="{{specials}}" value="{{specialIndex}}" range-key="sname">
+         <view class="picker">专题：{{specials[specialIndex].sname}}</view>
+       </picker>
+
+       <picker bindchange="setSpecialType" range="{{types}}" value="{{typeIndex}}" range-key="scname" wx:if="{{types.length > 0}}">
+         <view class="picker">选择分类：{{types[typeIndex].scname}}</view>
+       </picker>
+   </block>
+   <block wx:if="{{specials.length == 0}}">
+   <view class="picker">专题信息加载中...</view>
+   </block>
+      </block>
+  <block wx:if="{{!is_special}}">
+
+          <picker bindchange="changeSelection" value="{{mainindex}}" range-key="catname" range="{{categories}}">
+                <view class="picker">
+                  选择栏目：{{categories[mainindex].catname}}
+                </view>
+              </picker>
+              <picker bindchange="setCate" value="{{subindex}}" range-key="catname" range="{{selection}}" wx:if="{{selection.length > 0}}">
+                <view class="picker">
+                  选择子栏目：{{selection[subindex].catname}}
+                </view>
+              </picker>
+
+          </block>
+
+
     <view class="btn-container" wx:if="{{disable == false}}">
       <button type="warn" bindtap="suNews" data-disableid="2">确认通过</button>
       <button type="default" bindtap="closeOp">取消</button>
@@ -180,7 +250,7 @@
 
  <view class="slider-container">
         <view class="star-container">
-        <view wx:for="{{[1, 2, 3, 4, 5]}}" class="{{newsScore > item - 1 ? 'star star-gold':'star star-grey'}}" bindtap="setScore" data-score="{{item}}">
+        <view wx:for="{{[1, 2, 3, 4, 5, 6, 7]}}" class="{{newsScore > item - 1 ? 'star star-gold':'star star-grey'}}" bindtap="setScore" data-score="{{item}}">
         </view>
         </view>
         <view class="score">{{newsScore}}</view>

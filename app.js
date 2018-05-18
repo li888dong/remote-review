@@ -1,5 +1,5 @@
 //app.js
-let {WeToast} = require('src/wetoast.js');
+// let {WeToast} = require('src/wetoast.js');
 App({
     onLaunch: function () {
         //调用API从本地缓存中获取数据
@@ -19,7 +19,7 @@ App({
                     if (res.code) {
                         //发起网络请求
                         wx.request({
-                            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=wx_login',
+                            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=wx_login',
                             method:'post',
                             header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
@@ -55,6 +55,6 @@ App({
     },
     globalData: {
         userInfo: null
-    },
-    WeToast
+    }
+    // WeToast
 });

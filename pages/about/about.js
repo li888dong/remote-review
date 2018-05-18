@@ -105,9 +105,9 @@ Page({
                   value:"https://www.hnsjb.cn/video/weapp-guide/resetpassword.mp4"
               }
           ],
-          inputtime:'2017-03-13',
+          inputtime:'2017-12-11',
           username:'产品支撑部',
-          copyright:'version 0.8.4'
+          copyright:'version 1.0.2'
       }
   },
   onLoad:function(options){

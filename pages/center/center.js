@@ -5,11 +5,6 @@ Page({
     data: {
         userInfo: {},
         loading: false,
-        roles: [
-            {roleid: 36, rolename: '总值班'},
-            {roleid: 37, rolename: '记者'},
-            {roleid: 38, rolename: '编辑'}
-        ],
         xjuser: {},
         stats: {}
     },
@@ -33,7 +28,7 @@ Page({
             xjuser: wx.getStorageSync("xjuser")
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=userlist',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=userlist',
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -65,7 +60,7 @@ Page({
     },
     logout: function () {
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=logout',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=logout',
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {

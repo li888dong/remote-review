@@ -36,7 +36,16 @@ Page({
         currentVoice: ['', ''],
         currentRecord: '',
         audioarea: false,
-        newsScore: 1
+        newsScore: 1,
+        autheditors: [],
+        supereditors: [],
+        is_special: false,
+        specials: [],
+        types: [],
+        selectedType: 0,
+        selectedSpecial: 0,
+        specialIndex: -1,
+        typeIndex: -1
     },
     onLoad: function (options) {
         let that = this;
@@ -52,11 +61,10 @@ Page({
                 'onlyreject': true
             });
         }
-
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
-            header: { "content-type": "application/x-www-form-urlencoded" },
+            header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
@@ -83,14 +91,12 @@ Page({
                     })
 
                 }
-
-
             }
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
-            header: { "content-type": "application/x-www-form-urlencoded" },
+            header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
@@ -102,11 +108,35 @@ Page({
                     that.setData({
                         content: tempArr
                     });
+
+                    if (tempArr.is_special == 1) {
+                        that.setData({
+                            is_special: true
+                        });
+                    }
+
+                    that.setData({
+                        selectedSpecial: tempArr.sid
+                    });
+                    that.setData({
+                        selectedType: tempArr.scid
+                    });
+
+                    that.setData({
+                        specialName: tempArr.sname
+                    });
+                    that.setData({
+                        specialType: tempArr.scname
+                    });
+
                     if (tempArr.news_grade != 0) {
                         that.setData({
                             newsScore: tempArr.news_grade
                         })
                     }
+
+                    that.getSpecials();
+
 
 
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
@@ -128,9 +158,9 @@ Page({
             }
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=cats',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=cats',
             method: 'post',
-            header: { "content-type": "application/x-www-form-urlencoded" },
+            header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
@@ -173,16 +203,47 @@ Page({
                             })
                         }
                     })
-
                 }
-
-
             }
         });
+
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=sulist',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=set_checkers',
+            type: 'get',
+            // header: { "content-type": "application/x-www-form-urlencoded"},
+            success: function (res) {
+                // console.log(res);
+                if (res.data.status === 1) {
+                    that.setData({
+                        'supereditors': res.data.data.sucheckers
+                    });
+                    that.setData({
+                        'autheditors': res.data.data.checkers
+                    });
+                    let tempID = parseInt(that.data.xjuser.roleid);
+                    if (that.data.autheditors.indexOf(tempID) > -1) {
+                        // console.log('true');
+                        that.setData({
+                            editorauth: 'tocheck'
+                        })
+                    } else if (that.data.supereditors.indexOf(tempID) > -1) {
+                        // console.log('sutrue');
+
+                        that.setData({
+                            editorauth: 'tosucheck'
+                        })
+                    }
+                    // console.log(that.data.xjuser.roleid);
+                }
+            }
+        });
+
+
+
+        wx.request({
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=sulist',
             method: 'post',
-            header: { "content-type": "application/x-www-form-urlencoded" },
+            header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
                 sessid: wx.getStorageSync('sessid')
             },
@@ -211,19 +272,41 @@ Page({
         that.setData({
             lineLength: (this.data.workflow.length - 1) * 100
         });
-        if (this.data.xjuser.roleid == '38' || this.data.xjuser.roleid == '37') {
-            this.setData({
-                editorauth: 'tocheck'
-            })
-        } else if (this.data.xjuser.roleid == '36') {
-            this.setData({
-                editorauth: 'tosucheck'
-            })
-        }
-
 
     },
 
+    getSpecials:function() {
+
+        let that = this;
+
+        wx.request({
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=special_list',
+            type: 'post',
+            header: {"content-type": "application/x-www-form-urlencoded"},
+            data: {
+                sessid: wx.getStorageSync('sessid')
+            },
+            success: function (res) {
+                if (res.data.status == 1) {
+                    that.setData({
+                        specials: res.data.data
+                    });
+                    if (that.data.content.sid !== 0) {
+                        that.setData({
+                            'specialIndex': util.getArrayindx(that.data.content.sid, that.data.specials, 'sid')
+                        });
+                        // console.log(util.getArrayindx(that.data.content.parentid,that.data.categories,'catid'));
+                        that.setData({
+                            types: that.data.specials[that.data.specialIndex].category
+                        });
+                        that.setData({
+                            'typeIndex': util.getArrayindx(that.data.content.scid, that.data.types, 'scid')
+                        })
+                    }
+                }
+            }
+        });
+    },
     openOp: function (e) {
         let opid = e.target.dataset.opid;
         this.setData({
@@ -276,9 +359,9 @@ Page({
                             tempRejectAudio[i].filepath = ''
                         }
                         wx.request({
-                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=reject",
+                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=reject",
                             method: 'post',
-                            header: { "content-type": "application/x-www-form-urlencoded" },
+                            header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
@@ -378,7 +461,7 @@ Page({
 
         let that = this;
 
-        if (this.data.currentCate == '') {
+        if (!this.data.is_special && this.data.currentCate == '') {
             wx.showModal({
                 title: '请选择栏目',
                 content: '',
@@ -387,9 +470,22 @@ Page({
                     return false;
                 }
             })
-        } else if (this.data.selection.length > 0 && this.data.subcate == '') {
+        } else if (this.data.is_special && (this.data.currentCate == '' || this.data.currentCate == 0)) {
+            this.setData({
+                currentCate:'116'
+            })
+        } else if (!this.data.is_special && this.data.selection.length > 0 && this.data.subcate == '') {
             wx.showModal({
                 title: '请选择子栏目',
+                content: '',
+                showCancel: false,
+                complete: function (res) {
+                    return false;
+                }
+            })
+        } else if (this.data.is_special && this.data.selectedType == 0) {
+            wx.showModal({
+                title: '请专题栏目',
                 content: '',
                 showCancel: false,
                 complete: function (res) {
@@ -406,6 +502,14 @@ Page({
                 }
             })
         } else {
+
+            let is_special = 0;
+
+            if (this.data.is_special) {
+                is_special = 1;
+            }
+
+
             wx.showModal({
                 title: '确认通过',
                 content: '您确定要通过这篇稿件吗？',
@@ -419,15 +523,18 @@ Page({
                         tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
                         that.setData(tempData);
                         wx.request({
-                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=pass",
+                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=pass",
                             method: 'post',
-                            header: { "content-type": "application/x-www-form-urlencoded" },
+                            header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
                                 catid: that.data.currentCate,
                                 typefrom: that.data.editorauth,
-                                news_grade: that.data.newsScore
+                                news_grade: that.data.newsScore,
+                                to_specialid:that.data.selectedSpecial,
+                                to_specialcat:that.data.selectedType,
+                                is_special:is_special
                             },
                             success: function (res) {
                                 if (res.data.status == 1) {
@@ -496,16 +603,11 @@ Page({
                     return false;
                 }
             })
-        } else if (this.data.currentCate == '') {
-            wx.showModal({
-                title: '请选择栏目',
-                content: '',
-                showCancel: false,
-                complete: function (res) {
-                    return false;
-                }
+        } else if (this.data.is_special && (this.data.currentCate == '' || this.data.currentCate == 0) ) {
+            this.setData({
+                currentCate:'116'
             })
-        } else if (this.data.selection.length > 0 && this.data.subcate == '') {
+        }  else if (!this.data.is_special && this.data.selection.length > 0 && this.data.subcate == '') {
             wx.showModal({
                 title: '请选择子栏目',
                 content: '',
@@ -514,7 +616,23 @@ Page({
                     return false;
                 }
             })
+        } else if (this.data.is_special && this.data.selectedType == 0) {
+            wx.showModal({
+                title: '请专题栏目',
+                content: '',
+                showCancel: false,
+                complete: function (res) {
+                    return false;
+                }
+            })
         } else {
+
+            let is_special = 0;
+
+            if (this.data.is_special) {
+                is_special = 1;
+            }
+
             wx.showModal({
                 title: '确认转审',
                 content: '您确定要转审这篇稿件吗？',
@@ -528,15 +646,18 @@ Page({
                         tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
                         that.setData(tempData);
                         wx.request({
-                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=transcheck",
+                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=transcheck",
                             method: 'post',
-                            header: { "content-type": "application/x-www-form-urlencoded" },
+                            header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
                                 catid: that.data.currentCate,
                                 typefrom: that.data.editorauth,
-                                userid: that.data.sucheck
+                                userid: that.data.sucheck,
+                                to_specialid:that.data.selectedSpecial,
+                                to_specialcat:that.data.selectedType,
+                                is_special:is_special
                             },
                             success: function (res) {
                                 if (res.data.status == 1) {
@@ -593,6 +714,18 @@ Page({
     },
     suNews: function (e) {
         let that = this;
+
+        if (this.data.is_special && (this.data.currentCate == '' || this.data.currentCate == 0)) {
+                this.setData({
+                    currentCate:'116'
+                })
+        }
+        let is_special = 0;
+
+        if (this.data.is_special) {
+            is_special = 1;
+        }
+
         wx.showModal({
             title: '确认通过',
             content: '您确定要通过这篇稿件吗？',
@@ -607,14 +740,17 @@ Page({
                     tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
                     that.setData(tempData);
                     wx.request({
-                        url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=pass",
+                        url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=pass",
                         method: 'post',
-                        header: { "content-type": "application/x-www-form-urlencoded" },
+                        header: {"content-type": "application/x-www-form-urlencoded"},
                         data: {
                             sessid: wx.getStorageSync('sessid'),
                             id: that.data.cid,
                             catid: that.data.currentCate,
-                            typefrom: that.data.editorauth
+                            typefrom: that.data.editorauth,
+                            to_specialid:that.data.selectedSpecial,
+                            to_specialcat:that.data.selectedType,
+                            is_special:is_special
                         },
                         success: function (res) {
                             if (res.data.status == 1) {
@@ -1029,9 +1165,9 @@ Page({
                         tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
                         that.setData(tempData);
                         wx.request({
-                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=edit_grade",
+                            url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=edit_grade",
                             method: 'post',
-                            header: { "content-type": "application/x-www-form-urlencoded" },
+                            header: {"content-type": "application/x-www-form-urlencoded"},
                             data: {
                                 sessid: wx.getStorageSync('sessid'),
                                 id: that.data.cid,
@@ -1088,9 +1224,45 @@ Page({
                 }
             });
         }
-
-
-
     },
+
+    setSpecial(e) {
+        // console.log(e.detail.value);
+        this.setData({
+            is_special: e.detail.value
+        })
+    },
+    getSpecialTypes(e) {
+        let cid = e.detail.value;
+        let that = this;
+        console.log(cid);
+        console.log(this.data.specialIndex);
+        // console.log(this.specials[2]);
+
+        // console.log(that.specials[cid]);
+        this.setData({
+            specialIndex: cid
+        });
+        this.setData({
+            selectedSpecial: that.data.specials[cid].sid
+        });
+        this.setData({
+            types: that.data.specials[cid].category
+        });
+        this.setData({
+            selectedType: 0
+        })
+    },
+
+    setSpecialType(e) {
+        let tid = e.detail.value;
+        this.setData({
+            typeIndex: tid
+        });
+        let that = this;
+        this.setData({
+            selectedType: that.data.types[tid].scid
+        })
+    }
 
 });

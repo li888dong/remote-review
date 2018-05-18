@@ -1,5 +1,5 @@
 <view class="list">
-    <block wx:for="{{caogaoxiang}}">
+    <block wx:for="{{caogaoxiang}}" wx:key="id">
       <view class="{{item.typefrom == 'rejected' ? 'news-item reject' : 'news-item'}}" hover="true" hover-class="news-item-hover" bindtap="gotoNews" data-newsid="{{item.id}}">
         <view class="news-inner">
           <text class="news-title">{{item.title}}</text>

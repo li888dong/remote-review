@@ -16,6 +16,8 @@ page {
     width: 100%;
     padding: 20rpx 30rpx;
     box-sizing: border-box;
+    display:block;
+    height: 96rpx;
 }
 
 .content-container {
@@ -224,4 +226,35 @@ view.submit.disable-btn, button.submit.disable-btn {
     background:none;
     padding-left: 0;
     text-align: center;
+}
+
+.picker {
+    height: 100rpx;
+    width: 100%;
+    background: #fff;
+    padding: 0 30rpx;
+    line-height: 100rpx;
+    font-size: 36rpx;
+    position: relative;
+    border-top: 1rpx solid #e5e5e5;
+    border-bottom: 1rpx solid #e5e5e5;
+    margin-top: 30rpx;
+    box-sizing:border-box;
+    overflow:hidden;
+}
+
+.switch-container {
+  height: 100rpx;
+    width: 100%;
+    background: #fff;
+    padding: 0 30rpx;
+    line-height: 100rpx;
+    font-size: 36rpx;
+    position: relative;
+    border-top: 1rpx solid #e5e5e5;
+    border-bottom: 1rpx solid #e5e5e5;
+    margin-top: 30rpx;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
 }

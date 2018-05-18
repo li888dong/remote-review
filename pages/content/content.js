@@ -8,7 +8,12 @@ Page({
         disable:false,
         disabletip1:'提交',
         disabletip2:'删除',
-        currentVoice:['','']
+        currentVoice:['',''],
+        is_special:false,
+        specialName:'',
+        specialType:'',
+        selectedSpecial:0,
+        selectedType:0
     },
     onLoad: function (options) {
         let that = this;
@@ -17,7 +22,7 @@ Page({
             cid: options.id
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -50,7 +55,7 @@ Page({
             }
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -62,6 +67,25 @@ Page({
                     tempArr['content'] = JSON.parse(tempArr['content']) ;
                     that.setData({
                         content: tempArr
+                    });
+                    if (tempArr.is_special == 1) {
+                        that.setData({
+                            is_special: true
+                        });
+                    }
+
+                    that.setData({
+                        selectedSpecial: tempArr.sid
+                    });
+                    that.setData({
+                        selectedType: tempArr.scid
+                    });
+
+                    that.setData({
+                        specialName: tempArr.sname
+                    });
+                    that.setData({
+                        specialType: tempArr.scname
                     });
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.setStorageSync('wentload','went');
@@ -104,7 +128,7 @@ Page({
                         'disableid':e.currentTarget.dataset.disableid
                     });
                     wx.request({
-                        url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=delete",
+                        url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=delete",
                         method: 'post',
                         header: {"content-type": "application/x-www-form-urlencoded"},
                         data: {
@@ -229,8 +253,15 @@ Page({
             this.setData({
                 'disableid':e.detail.target.dataset.disableid
             });
+
+            let is_special = 0;
+
+            if (this.data.is_special) {
+                is_special = 1;
+            }
+
             wx.request({
-                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=edit',
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=edit',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
@@ -240,7 +271,10 @@ Page({
                     way: 'tijiao',
                     id:this.data.content.id,
                     sessid: wx.getStorageSync('sessid'),
-                    formId:formId
+                    formId: formId,
+                    to_specialid: this.data.selectedSpecial,
+                    to_specialcat: this.data.selectedType,
+                    is_special:is_special
                 },
                 success: function (res) {
                     if (res.data.status == '1') {

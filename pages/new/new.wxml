@@ -1,31 +1,31 @@
 <view>
 
   <view class="bottom-area" wx:if="{{disable == false}}">
-      <view class="submit insert-btn" hover="true" hover-class="hover-active" bindtap="getArray" data-disableid="1">
-        插图
-      </view>
-      <view class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
-        暂存
-      </view>
-      <form bindsubmit="pushContent" report-submit="true">
-          <button class="submit submit-btn" formType="submit" hover="true" hover-class="hover-active" data-disableid="3">
-            提交
-          </button>
-          </form>
+    <view class="submit insert-btn" hover="true" hover-class="hover-active" bindtap="getArray" data-disableid="1">
+      插图
     </view>
+    <view class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
+      暂存
+    </view>
+    <form bindsubmit="pushContent" report-submit="true">
+      <button class="submit submit-btn" formType="submit" hover="true" hover-class="hover-active" data-disableid="3">
+        提交
+      </button>
+    </form>
+  </view>
   <view class="bottom-area dark-bottom" wx:elif="{{disable == true}}">
-          <view class="{{disableid == 1 ? 'submit submit-btn insert-btn' : 'submit insert-btn'}}">
-                    {{disabletip1}}
-          </view>
-          <view class="{{disableid == 2 ? 'submit save-btn disable-btn' : 'submit save-btn'}}">
-            {{disabletip2}}
-          </view>
-          <view class="{{disableid == 3 ? 'submit submit-btn disable-btn' : 'submit submit-btn'}}">
-                          {{disabletip3}}
-                </view>
-        </view>
+    <view class="{{disableid == 1 ? 'submit submit-btn insert-btn' : 'submit insert-btn'}}">
+      {{disabletip1}}
+    </view>
+    <view class="{{disableid == 2 ? 'submit save-btn disable-btn' : 'submit save-btn'}}">
+      {{disabletip2}}
+    </view>
+    <view class="{{disableid == 3 ? 'submit submit-btn disable-btn' : 'submit submit-btn'}}">
+      {{disabletip3}}
+    </view>
+  </view>
   <view class="prop-container">
-    <textarea class="input" auto-height placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
+    <textarea class="input" placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>
   <view class="prop-container content-container">
     <view class="input">正文:</view>
@@ -44,20 +44,42 @@
         <view class="media-del" bindtap="delMedia" data-cidx="{{idx}}"></view>
       </view>
       <view wx:elif="{{item.type == 'add'}}" class="content-media-add">
-              <view class="{{item.show ? 'add-btn add-rotate' : 'add-btn' }}" hover="true" hover-class="add-hover" bindtap="showFuns" data-cidx="{{idx}}">
-              </view>
-              <view class="media-add-area" wx:if="{{item.show}}">
-                <view class="img-add" hover="true" hover-class="media-hover" bindtap="uploadImg" data-cidx="{{idx}}"></view>
-                <view class="video-add" hover="true" hover-class="media-hover" bindtap="uploadVd" data-cidx="{{idx}}"></view>
-              </view>
-            </view>
+        <view class="{{item.show ? 'add-btn add-rotate' : 'add-btn' }}" hover="true" hover-class="add-hover" bindtap="showFuns" data-cidx="{{idx}}">
+        </view>
+        <view class="media-add-area" wx:if="{{item.show}}">
+          <view class="img-add" hover="true" hover-class="media-hover" bindtap="uploadImg" data-cidx="{{idx}}"></view>
+          <view class="video-add" hover="true" hover-class="media-hover" bindtap="uploadVd" data-cidx="{{idx}}"></view>
+        </view>
+      </view>
     </view>
   </view>
   <view class="prop-container">
-    <textarea class="input" auto-height value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
+    <textarea class="input" value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
   </view>
-<import src="../../src/wetoast.wxml"/>
 
-    <template is="wetoast" data="{{...__wetoast__}}"/>
+  <view class="prop-container">
+  <view class="switch-container">
+      <view class="switch-label">
+        是否发布到专题
+      </view>
+      <switch bindchange="setSpecial"/>
+  </view>
+    
+  </view>
+  <view class="prop-container" wx:if="{{is_special}}">
+    <picker bindchange="getSpecialTypes" range="{{specials}}" value="{{specialIndex}}" range-key="sname">
+      <view class="picker">专题：{{specials[specialIndex].sname}}</view>
+    </picker>
+  </view>
+
+  <view class="prop-container" wx:if="{{is_special && types.length > 0}}">
+    <picker bindchange="setSpecialType" range="{{types}}" value="{{typeIndex}}" range-key="scname">
+      <view class="picker">选择栏目：{{types[typeIndex].scname}}</view>
+    </picker>
+  </view>
+
+  <!-- <import src="../../src/wetoast.wxml"/> -->
+
+  <!-- <template is="wetoast" data="{{...__wetoast__}}"/> -->
 
 </view>

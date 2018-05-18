@@ -4,7 +4,10 @@ Page({
         'content':{},
         workflow:[],
         lineLength:0,
-        currentVoice:['','']
+        currentVoice:['',''],
+        is_special:false,
+        specialName:'',
+        specialType:''
     },
     onLoad:function(options){
         let that = this;
@@ -13,7 +16,7 @@ Page({
             cid: options.id
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -44,7 +47,7 @@ Page({
         });
         // 页面初始化 options为页面跳转所带来的参数
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -56,6 +59,18 @@ Page({
                     tempArr['content'] = JSON.parse(tempArr['content']) ;
                     that.setData({
                         content: tempArr
+                    });
+                    if (tempArr.is_special == 1) {
+                        that.setData({
+                            is_special: true
+                        });
+                    }
+
+                    that.setData({
+                        specialName: tempArr.sname
+                    });
+                    that.setData({
+                        specialType: tempArr.scname
                     });
                 } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
                     wx.showModal({

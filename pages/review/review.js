@@ -45,7 +45,7 @@ Page({
     onPullDownRefresh:function () {
         let that = this;
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -98,7 +98,7 @@ Page({
         let that = this;
         let change_time = wx.getStorageSync('slastupdate') || 0;
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=check_change', //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=check_change', //仅为示例，并非真实的接口地址
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -130,7 +130,7 @@ Page({
     getNews:function() {
         let that = this;
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -265,7 +265,7 @@ Page({
         let currentNews = this.data.shenhezhong;
         let that = this;
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=new_newslist&status=shenhezhong&offset='+currentLength+'&num=100', //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=shenhezhong&offset='+currentLength+'&num=100', //仅为示例，并非真实的接口地址
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {

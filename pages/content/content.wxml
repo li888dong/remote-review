@@ -50,6 +50,7 @@
       <text>{{content.username}}</text>
       <text class="info-copyfrom">{{content.copyfrom}}</text>
     </view>
+
     <view class="content-content">
       <view wx:for="{{content.content}}">
         <view wx:if="{{item.type == 'text'}}">
@@ -65,6 +66,11 @@
         </view>
       </view>
     </view>
+
+    <view class="content-info" wx:if="{{is_special}}">
+                 <text>本文发布于{{specialName}}专题下的{{specialType}}</text>
+            </view>
+
   </view>
   <view class="padding">
     <view class="flow">

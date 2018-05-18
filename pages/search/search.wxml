@@ -23,6 +23,6 @@
               </view>
 
 
-              <import src="../../src/wetoast.wxml"/>
+              <!-- <import src="../../src/wetoast.wxml"/> -->
 
-                  <template is="wetoast" data="{{...__wetoast__}}"/>
+                  <!-- <template is="wetoast" data="{{...__wetoast__}}"/> -->

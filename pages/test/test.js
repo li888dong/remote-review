@@ -28,7 +28,7 @@ Page({
         });
 
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
             method: 'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
@@ -302,7 +302,7 @@ Page({
                 'disableid':e.currentTarget.dataset.disableid
             });
             wx.request({
-                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=edit',
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=edit',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {
@@ -441,7 +441,7 @@ Page({
             this.setData(tempData);
             let that = this;
             wx.request({
-                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=edit',
+                url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=edit',
                 method: 'post',
                 header: {"content-type": "application/x-www-form-urlencoded"},
                 data: {

@@ -54,7 +54,7 @@ Page({
             loading: true
         });
         wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_new&param=login',
+            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=login',
             method:'post',
             header: {"content-type": "application/x-www-form-urlencoded"},
             data: {
