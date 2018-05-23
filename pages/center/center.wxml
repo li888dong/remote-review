@@ -2,8 +2,8 @@
 <!--pages/center/center.wxml-->
 <view class="center-page">
   <view class="userinfo">
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
-    <view class="name">{{xjuser.realusername}}</view>
+    <open-data class="userinfo-avatar" type="userAvatarUrl"></open-data>
+    <view class="name">{{userInfo.realname}}</view>
   </view>
   <view class="search-area">
     <navigator class="search" url="../search/search">搜索</navigator>
