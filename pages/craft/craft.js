@@ -1,4 +1,5 @@
 // pages/craft/craft.js
+var app = getApp();
 Page({
   data: {},
   onLoad: function (options) {
@@ -9,7 +10,7 @@ Page({
   },
   onShow: function () {
     // 页面显示
-    if (!wx.getStorageSync('xjuser')) {
+    if (!app.globalData.userInfo) {
       wx.redirectTo({
         url: '../login/login'
       });
@@ -19,7 +20,7 @@ Page({
     this.setData({
       'caogaoxiang': cgxData
     });
-    this.loadNews();
+    // this.loadNews();
   },
   onHide: function () {
     // 页面隐藏

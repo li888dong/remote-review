@@ -5,6 +5,7 @@ App({
     let logs = wx.getStorageSync('logs') || [];
     logs.unshift(Date.now());
     wx.setStorageSync('logs', logs.slice(0, 50));
+    this.globalData.userInfo = wx.getStorageSync('userInfo');
     this.getSessionId();
   },
   getSessionId: function (cb) {
@@ -12,24 +13,44 @@ App({
     //调用登录接口
     wx.login({
       success: function (res) {
-        console.log('code', res);
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=wx_login',
+            url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=wx_login',
             method: 'post',
             header: { "content-type": "application/x-www-form-urlencoded" },
             data: {
               code: res.code
             },
             success: function (response) {
-              console.log('login', response);
-              if (response.data.status == 0) {
-                wx.redirectTo({
-                  url: '../login/login'
+              // sessid获取成功，跳转至登陆
+              if (response.data.status == -1) {
+                wx.setStorage({
+                  key: "sessid",
+                  data: response.data.data.sessid,
+                  success: function () {
+                    that.globalData.sessid = response.data.data.sessid;
+                    wx.showModal({
+                      title: response.data.info,
+                      content: '',
+                      showCancel: false,
+                      complete: function (res) {
+                        wx.redirectTo({
+                          url: '../login/login'
+                        })
+                      }
+                    });
+                  }
                 })
+                // 已登陆，获取新的sessid
               } else {
-                wx.setStorageSync('sessid', response.data.sessid);
+                wx.setStorage({
+                  key: "sessid",
+                  data: response.data.data.sessid,
+                  success: function () {
+                    that.globalData.sessid = response.data.data.sessid;
+                  }
+                })
               }
             }
           });
@@ -41,9 +62,8 @@ App({
   //全局数据
   globalData: {
     baseUrl: 'https://rmtapi.hnsjb.cn/',
-    loginStatus: true,
     userInfo: null,
-    access_token: '',
+    sessid: '',
     mobile: '',
     nickname: '',
     avatarUrl: ''
