@@ -12,29 +12,29 @@
     <view class="section-title">我的发稿</view>
     <view class="user-figure">
       总发稿：
-      <text>{{stats.total_post}}</text> 条
+      <text>{{userInfo.total_post}}</text> 条
     </view>
     <view class="user-figure">
       已审核：
-      <text>{{stats.bepassed}}</text> 条
+      <text>{{userInfo.bepassed}}</text> 条
     </view>
     <view class="user-figure">
       草稿箱：
-      <text>{{stats.raw}}</text> 条
+      <text>{{userInfo.raw}}</text> 条
     </view>
   </view>
   <view class="user-stat">
     <view class="section-title">我的审稿</view>
     <view class="user-figure">
-      已审核：<text>{{stats.passed}}</text> 条
+      已审核：<text>{{userInfo.passed}}</text> 条
     </view>
     <view class="user-figure">
-      已驳回：<text>{{stats.rejected}}</text> 条
+      已驳回：<text>{{userInfo.rejected}}</text> 条
     </view>
   </view>
   <view class="link-area">
     <navigator url="../trash/trash" class="link">
-      已删除稿件: <text>{{stats.deleted}}</text>条
+      已删除稿件: <text>{{userInfo.deleted}}</text>条
     </navigator>
   </view>
   <view class="link-area">

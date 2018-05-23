@@ -1,9 +1,8 @@
 // pages/center/center.js
-
 let app = getApp();
 Page({
   data:{
-    userInfo:app.globalData.userInfo
+    userInfo:{}
   },
   onLoad: function () {
     console.log('enter center page')
@@ -13,8 +12,37 @@ Page({
       wx.redirectTo({
         url: '../login/login'
       })
-      return false
-    } 
+    }else{
+      this.fetchUserInfo()
+    }
+  },
+  fetchUserInfo:function(){
+    let that = this;
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=userlist',
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        sessid: app.globalData.sessid
+      },
+      success: function (response) {
+        if (response.data.status == 1) {
+          console.log('获取用户信息列表',response.data.data);
+          that.setData({
+            userInfo: response.data.data
+          })
+        } else {
+          wx.showModal({
+            title: response.data.info,
+            content: '',
+            showCancel: false,
+            complete: function () {
+              return false;
+            }
+          });
+        }
+      }
+    });
   },
   logout: function () {
     wx.request({

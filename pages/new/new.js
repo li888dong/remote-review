@@ -65,7 +65,7 @@ Page({
           'title': '图片上传中'
         });
         wx.uploadFile({
-          url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=photo',
+          url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=bs_photo',
           filePath: tempFilePaths[0],
           name: 'files',
           formData: {
@@ -74,11 +74,11 @@ Page({
           success: function (res) {
             wx.hideLoading();
             let data = JSON.parse(res.data);
-            console.log('图片上传', data)                  
+            console.log('图片上传', data)
             if (data.status == 1) {
               let imagedata = {
                 "type": "image",
-                "value": data.url,
+                "value": data.data.url,
                 "title": ""
               };
               tempArr.splice(cidx, 0, imagedata); // key 可以是任何字符串
@@ -97,7 +97,7 @@ Page({
             }
           },
           fail: function (res) {
-            wx.hideLoading();            
+            wx.hideLoading();
             wx.showModal({
               title: '网络状况差，请稍后再试',
               showCancel: false,
@@ -127,14 +127,15 @@ Page({
           'title': '视频上传中'
         });
         wx.uploadFile({
-          url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=video', 
+          url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=bs_video',
           filePath: tempFilePath,
           name: 'files',
           formData: {
             'user': 'test'
           },
           success: function (res) {
-            wx.hideLoading();            
+            wx.hideLoading();
+            console.log('视频上传', res);            
             let data = JSON.parse(res.data);
             if (data.status == 1) {
               let videodata = {
@@ -142,71 +143,33 @@ Page({
                 "value": data.data.filepath,
                 "title": ""
               };
-              tempArr.splice(cidx, 0, videodata); // key 可以是任何字符串
+              tempArr.splice(cidx, 0, videodata);
               that.setContent(tempArr);
-              data['content.content[' + (cidx + 1) + '].show'] = false; // key 可以是任何字符串
+              data['content.content[' + (cidx + 1) + '].show'] = false;
               that.setData(data);
-            } else if (data.status == '-1') {
+            } else {
               wx.showModal({
-                title: '视频错误，请重新上传',
+                title: data.info,
                 showCancel: false,
                 content: '',
-                complete: function (res) {
-                  // that.wetoast.hide()
-                  wx.hideLoading();
-                }
-              });
-            } else if (data.status == '-2') {
-              wx.showModal({
-                title: '视频大小超过限制，请重新上传',
-                showCancel: false,
-                content: '',
-                complete: function (res) {
-                  // that.wetoast.hide()
-                  wx.hideLoading();
-                }
-              });
-            } else if (data.status == '-3') {
-              wx.showModal({
-                title: '视频文件错误，请重新上传',
-                showCancel: false,
-                content: '',
-                complete: function (res) {
-                  // that.wetoast.hide()
-                  wx.hideLoading();
-                }
-              });
-            } else if (data.status == '-5' || data.status == '-6' || data.status == '-7' || data.status == '-8') {
-              wx.showModal({
-                title: '服务器错误，请稍后再试或联系管理员',
-                showCancel: false,
-                content: '',
-                complete: function (res) {
-                  // that.wetoast.hide()
-                  wx.hideLoading();
+                complete: function () {
+                  return false
                 }
               });
             }
           },
           fail: function (res) {
+            wx.hideLoading();
             wx.showModal({
               title: '网络状况差，请稍后再试',
               showCancel: false,
               content: '',
-              complete: function (res) {
-                // that.wetoast.hide()
-                wx.hideLoading();
+              complete: function () {
+                return false
               }
             });
-
           }
         });
-      },
-      fail: function () {
-        // fail
-      },
-      complete: function () {
-        // complete
       }
     })
   },
