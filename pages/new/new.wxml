@@ -58,13 +58,13 @@
   </view>
 
   <view class="prop-container">
-  <view class="switch-container">
+    <view class="switch-container">
       <view class="switch-label">
         是否发布到专题
       </view>
-      <switch bindchange="setSpecial"/>
-  </view>
-    
+      <switch bindchange="setSpecial" />
+    </view>
+
   </view>
   <view class="prop-container" wx:if="{{is_special}}">
     <picker bindchange="getSpecialTypes" range="{{specials}}" value="{{specialIndex}}" range-key="sname">

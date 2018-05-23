@@ -45,7 +45,7 @@ Page({
     })
 
   },
-
+  // 图片上传，成功后将图片地址存入content
   uploadImg: function (e) {
     let cidx = e.target.dataset.cidx;
     let that = this;
@@ -65,45 +65,54 @@ Page({
           'title': '图片上传中'
         });
         wx.uploadFile({
-          url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=photo', //仅为示例，非真实的接口地址
+          url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=photo',
           filePath: tempFilePaths[0],
           name: 'files',
           formData: {
             'user': 'test'
           },
           success: function (res) {
+            wx.hideLoading();
             let data = JSON.parse(res.data);
+            console.log('图片上传', data)                  
             if (data.status == 1) {
               let imagedata = {
                 "type": "image",
                 "value": data.url,
                 "title": ""
               };
-              wx.hideLoading();
-              // that.wetoast.hide();
               tempArr.splice(cidx, 0, imagedata); // key 可以是任何字符串
               that.setContent(tempArr);
               data['content.content[' + (cidx + 1) + '].show'] = false; // key 可以是任何字符串
               that.setData(data);
+            } else {
+              wx.showModal({
+                title: data.info,
+                showCancel: false,
+                content: '',
+                complete: function () {
+                  return false
+                }
+              });
             }
           },
           fail: function (res) {
+            wx.hideLoading();            
             wx.showModal({
               title: '网络状况差，请稍后再试',
               showCancel: false,
               content: '',
               complete: function (res) {
-                // that.wetoast.hide()
-                wx.hideLoading();
+                return false
               }
             });
 
           }
         });
-
       }
     })
   },
+  // 视频上传，成功后将视频地址存入content
   uploadVd: function (e) {
     let cidx = e.target.dataset.cidx;
     let that = this;
@@ -113,19 +122,19 @@ Page({
       maxDuration: 60, // 拍摄视频最长拍摄时间，单位秒。最长支持60秒
       camera: ['back'],
       success: function (res) {
-        // success
         let tempFilePath = res.tempFilePath;
         wx.showLoading({
           'title': '视频上传中'
         });
         wx.uploadFile({
-          url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=video', //仅为示例，非真实的接口地址
+          url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=video', 
           filePath: tempFilePath,
           name: 'files',
           formData: {
             'user': 'test'
           },
           success: function (res) {
+            wx.hideLoading();            
             let data = JSON.parse(res.data);
             if (data.status == 1) {
               let videodata = {
@@ -133,8 +142,6 @@ Page({
                 "value": data.data.filepath,
                 "title": ""
               };
-              // that.wetoast.hide();
-              wx.hideLoading();
               tempArr.splice(cidx, 0, videodata); // key 可以是任何字符串
               that.setContent(tempArr);
               data['content.content[' + (cidx + 1) + '].show'] = false; // key 可以是任何字符串
