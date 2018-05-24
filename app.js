@@ -6,7 +6,11 @@ App({
     logs.unshift(Date.now());
     wx.setStorageSync('logs', logs.slice(0, 50));
     this.globalData.userInfo = wx.getStorageSync('userInfo');
-    this.getSessionId();
+    if(!wx.getStorageSync('sessid')){
+      this.getSessionId();
+    }else{
+      this.globalData.sessid = wx.getStorageSync('sessid')
+    }
   },
   getSessionId: function (cb) {
     let that = this;

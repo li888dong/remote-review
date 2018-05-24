@@ -10,11 +10,10 @@ Page({
   },
   onShow: function () {
     // 页面显示
-    if (!app.globalData.userInfo) {
+    if (!app.globalData.sessid) {
       wx.redirectTo({
         url: '../login/login'
       });
-      return false;
     }
     let cgxData = wx.getStorageSync('caogaoxiang') || [];
     this.setData({

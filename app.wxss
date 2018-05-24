@@ -34,3 +34,6 @@ page {
     color: #3098e5;
     background-color: rgba(0, 0, 0, 0.1);
 }
+.fr{
+  float: right;
+}

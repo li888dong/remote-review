@@ -3,11 +3,13 @@ let util = require('../../utils/util.js');
 let app = getApp();
 Page({
   data: {
+    model: 'text',
     content: {
       title: '',
       content: [{
-        "type": "text",
-        "value": ""
+        "type": "add",
+        "value": "",
+        "text": ""
       }],
       copyfrom: '河南手机报'
     },
@@ -26,6 +28,9 @@ Page({
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
     // new app.WeToast();
+    // this.fetchSpecialList()
+  },
+  fetchSpecialList() {
     let that = this;
     wx.request({
       url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=special_list',
@@ -43,7 +48,6 @@ Page({
         }
       }
     })
-
   },
   // 图片上传，成功后将图片地址存入content
   uploadImg: function (e) {
@@ -79,7 +83,8 @@ Page({
               let imagedata = {
                 "type": "image",
                 "value": data.data.url,
-                "title": ""
+                "title": "",
+                "text": ""
               };
               tempArr.splice(cidx, 0, imagedata); // key 可以是任何字符串
               that.setContent(tempArr);
@@ -135,13 +140,14 @@ Page({
           },
           success: function (res) {
             wx.hideLoading();
-            console.log('视频上传', res);            
+            console.log('视频上传', res);
             let data = JSON.parse(res.data);
             if (data.status == 1) {
               let videodata = {
                 "type": "video",
                 "value": data.data.filepath,
-                "title": ""
+                "title": "",
+                "text": ""
               };
               tempArr.splice(cidx, 0, videodata);
               that.setContent(tempArr);
@@ -173,289 +179,169 @@ Page({
       }
     })
   },
+  // 文章暂存和提交
   getContent: function (e) {
-
-    if (this.data.content.title.replace(/\s+/g, "") == '') {
+    let url;
+    if (e.target.dataset.disableid == 2) {
+      url = 'bs_zancun'
+    } else if (e.target.dataset.disableid == 3) {
+      url = 'bs_tijiao'
+    }
+    let content = this.data.content;
+    if (content.title.replace(/\s+/g, "") == '') {
       wx.showModal({
         title: '标题不得为空',
         showCancel: false,
         content: '',
-        complete: function (res) {
+        complete: function () {
           return false;
         }
       })
-    } else if (this.data.content.copyfrom.replace(/\s+/g, "") == '') {
-      wx.showModal({
-        title: '来源不得为空',
-        showCancel: false,
-        content: '',
-        complete: function (res) {
-          return false;
+    }
+    // 文章来源
+    // else if (this.data.content.copyfrom.replace(/\s+/g, "") == '') {
+    //   wx.showModal({
+    //     title: '来源不得为空',
+    //     showCancel: false,
+    //     content: '',
+    //     complete: function (res) {
+    //       return false;
+    //     }
+    //   })
+    // } 
+    // else if (this.data.is_special && this.data.selectedType == 0) {
+    //   wx.showModal({
+    //     title: '专题栏目不能为空',
+    //     showCancel: false,
+    //     content: '',
+    //     complete: function (res) {
+    //       return false;
+    //     }
+    //   })
+    // } 
+    let tempArr;
+    if (this.data.model == 'text') {
+      tempArr = {
+        type: 'text',
+        value: ''
+      };
+      for (let i = 0; i < content.content.length; i++) {
+        if (content.content[i].type == 'text') {
+          content.content[i].value = content.content[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
+          tempArr.value += content.content[i].value;
         }
-      })
-    } else if (this.data.is_special && this.data.selectedType == 0) {
-      wx.showModal({
-        title: '请专题栏目',
-        showCancel: false,
-        content: '',
-        complete: function (res) {
-          return false;
-        }
-      })
+      }
     } else {
-      let tempArr = [];
-      let tempBarr = [];
-
-      for (let i = 0; i < this.data.content.content.length; i++) {
-        if (this.data.content.content[i].type != 'add') {
-          tempArr.push(this.data.content.content[i])
+      tempArr = [];
+      // 删去type=add的项
+      for (let i = 0; i < content.content.length; i++) {
+        if (content.content[i].type != 'add' && content.content[i].value) {
+          tempArr.push(content.content[i])
         }
       }
-
-
-      for (let i = 0; i < tempArr.length; i++) {
-        if (i < tempArr.length - 1 && tempArr[i].type == 'text' && tempArr[i + 1].type == 'text') {
-          tempArr[i + 1].value = tempArr[i].value + '\n' + tempArr[i + 1].value;
-          tempArr[i].value = '';
-        }
-
-      }
-
-      for (let i = 0; i < tempArr.length; i++) {
-        if (tempArr[i].value != '') {
-          tempBarr.push(tempArr[i])
-        }
-      }
-
-      for (let i = 0; i < tempBarr.length; i++) {
-        if (tempBarr[i].type == 'text') {
-          tempBarr[i].value = tempBarr[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
-        } else {
-          tempBarr[i].title = tempBarr[i].title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
-        }
-      }
-      this.setData({
-        'disable': true
-      });
-      let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
-      let tempData = {};
-      tempData[disabletip] = this.data[disabletip] + '中...';
-      this.setData(tempData);
-      let that = this;
-      this.setData({
-        'disableid': e.currentTarget.dataset.disableid
-      });
-
-      let is_special = 0;
-
-      if (this.data.is_special) {
-        is_special = 1;
-      }
-
-      wx.request({
-        url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=add',
-        method: 'post',
-        header: { "content-type": "application/x-www-form-urlencoded" },
-        data: {
-          title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
-          copyfrom: this.data.content.copyfrom.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
-          content: JSON.stringify(tempBarr),
-          way: 'zancun',
-          sessid: wx.getStorageSync('sessid'),
-          to_specialid: this.data.selectedSpecial,
-          to_specialcat: this.data.selectedType,
-          is_special: is_special
-        },
-        success: function (res) {
-          if (res.data.status == '1') {
-            wx.showModal({
-              title: '保存成功',
-              showCancel: false,
-              content: '',
-              complete: function (res) {
-                wx.navigateBack({
-                  delta: 1
-                })
-              }
-            })
-          } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-            wx.showModal({
-              title: '登录过期，请重新登录',
-              showCancel: false,
-              content: '',
-              complete: res => {
-                wx.redirectTo({
-                  url: '../login/login'
-                })
-              }
-            })
-
-          }
-        },
-        fail: function (res) {
-          wx.showModal({
-            title: '网络状况差，请稍后再试',
-            showCancel: false,
-            content: '',
-            complete: function (res) {
-              that.setData({
-                'disable': false
-              });
-              tempData = {};
-              tempData[disabletip] = that.data[disabletip].replace('中...', '');
-              that.setData(tempData);
-            }
-          });
-
-        }
-      });
     }
 
 
-  },
-  pushContent: function (e) {
 
-    if (this.data.content.title.replace(/\s+/g, "") == '') {
-      wx.showModal({
-        title: '标题不得为空',
-        showCancel: false,
-        content: '',
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else if (this.data.content.copyfrom.replace(/\s+/g, "") == '') {
-      wx.showModal({
-        title: '来源不得为空',
-        showCancel: false,
-        content: '',
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else if (this.data.is_special && this.data.selectedType == 0) {
-      wx.showModal({
-        title: '请专题栏目',
-        showCancel: false,
-        content: '',
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else {
-      let tempArr = [];
-      let tempBarr = [];
+    // for (let i = 0; i < tempArr.length; i++) {
+    //   if (i < tempArr.length - 1 && tempArr[i].type == 'text' && tempArr[i + 1].type == 'text') {
+    //     tempArr[i + 1].value = tempArr[i].value + '\n' + tempArr[i + 1].value;
+    //     tempArr[i].value = '';
+    //   }
 
-      for (let i = 0; i < this.data.content.content.length; i++) {
-        if (this.data.content.content[i].type != 'add') {
-          tempArr.push(this.data.content.content[i])
-        }
-      }
+    // }
 
+    // for (let i = 0; i < tempArr.length; i++) {
+    //   if (tempArr[i].value != '') {
+    //     tempBarr.push(tempArr[i])
+    //   }
+    // }
 
-      for (let i = 0; i < tempArr.length; i++) {
-        if (i < tempArr.length - 1 && tempArr[i].type == 'text' && tempArr[i + 1].type == 'text') {
-          tempArr[i + 1].value = tempArr[i].value + '\n' + tempArr[i + 1].value;
-          tempArr[i].value = '';
-        }
+    let is_special = 0;
 
-      }
-
-      for (let i = 0; i < tempArr.length; i++) {
-        if (tempArr[i].value != '') {
-          tempBarr.push(tempArr[i])
-        }
-      }
-
-      for (let i = 0; i < tempBarr.length; i++) {
-        if (tempBarr[i].type == 'text') {
-          tempBarr[i].value = tempBarr[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
-        } else {
-          tempBarr[i].title = tempBarr[i].title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
-        }
-      }
-      this.setData({
-        'disable': true
-      });
-      let disabletip = 'disabletip' + e.detail.target.dataset.disableid;
-      let tempData = {};
-      tempData[disabletip] = this.data[disabletip] + '中...';
-      this.setData(tempData);
-      let that = this;
-      this.setData({
-        'disableid': e.detail.target.dataset.disableid
-      });
-      let is_special = 0;
-
-      if (this.data.is_special) {
-        is_special = 1;
-      }
-      wx.request({
-        url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=add',
-        method: 'post',
-        header: { "content-type": "application/x-www-form-urlencoded" },
-        data: {
-          title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
-          copyfrom: this.data.content.copyfrom.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
-          content: JSON.stringify(tempBarr),
-          way: 'tijiao',
-          sessid: wx.getStorageSync('sessid'),
-          formId: e.detail.formId,
-          to_specialid: this.data.selectedSpecial,
-          to_specialcat: this.data.selectedType,
-          is_special: is_special
-        },
-        success: function (res) {
-          if (res.data.status == '1') {
-            wx.showModal({
-              title: '提交成功',
-              showCancel: false,
-              content: '',
-              complete: function (res) {
-                wx.navigateBack({
-                  delta: 1  //todo:change redirect url
-                })
-              }
-            })
-          } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-            wx.showModal({
-              title: '登录过期，请重新登录',
-              showCancel: false,
-              content: '',
-              complete: res => {
-                wx.redirectTo({
-                  url: '../login/login'
-                })
-              }
-            })
-
-          }
-        },
-        fail: function (res) {
+    if (this.data.is_special) {
+      is_special = 1;
+    }
+    wx.showLoading({
+      title: '暂存中...',
+    })
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param='+url,
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
+        content: JSON.stringify(tempArr),
+        sessid: app.globalData.sessid
+      },
+      success: function (res) {
+        wx.hideLoading()
+        if (res.data.status == '1') {
           wx.showModal({
-            title: '网络状况差，请稍后再试',
+            title: '保存成功',
             showCancel: false,
             content: '',
             complete: function (res) {
-              that.setData({
-                'disable': false
-              });
-              tempData = {};
-              tempData[disabletip] = that.data[disabletip].replace('中...', '');
-              that.setData(tempData);
+              wx.navigateBack({
+                delta: 1
+              })
             }
-          });
+          })
+        } else {
+          wx.showModal({
+            title: res.data.info,
+            showCancel: false,
+            content: ''
+          })
 
         }
-      });
-    }
+      },
+      fail: function (res) {
+        wx.hideLoading()
+        wx.showModal({
+          title: '网络状况差，请稍后再试',
+          showCancel: false,
+          content: '',
+          complete: function (res) {
+            that.setData({
+              'disable': false
+            });
+            tempData = {};
+            tempData[disabletip] = that.data[disabletip].replace('中...', '');
+            that.setData(tempData);
+          }
+        });
 
+      }
+    });
+  },
+  // 文章提交
+  pushContent: function () {
 
   },
+  // 确认文本框
+  confirmText(e) {
+    if (this.data.model == 'text') {
+      let tempArr = this.data.content.content;
+      let cidx = e.target.dataset.cidx;
+      let textdata = {
+        "type": "text",
+        "value": e.detail.value
+      };
+      tempArr.splice(cidx, 0, textdata);
+      this.setContent(tempArr);
+    } else {
+      let cidx = e.target.dataset.cidx;
+      let data = {};
+      data['content.content[' + cidx + '].text'] = e.detail.value;
+      this.setData(data);
+    }
+  },
+
   setText: function (e) {
     let cidx = e.target.dataset.cidx;
     let data = {};
-    data['content.content[' + cidx + '].value'] = e.detail.value; // key 可以是任何字符串
+    data['content.content[' + cidx + '].text'] = e.detail.value;
     this.setData(data);
     this.sepText(cidx);
   },
@@ -511,6 +397,12 @@ Page({
         }
       }
     });
+  },
+  switchModel(e) {
+    this.setData({
+      model: !e.detail.value ? 'text' : 'withImg'
+    });
+    console.log(this.data.model)
   },
   getArray: function (e) {
     this.setData({
