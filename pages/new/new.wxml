@@ -1,24 +1,11 @@
 <view>
-  <!-- 顶部插图、暂存、提交三个按钮 -->
-  <view class="bottom-area" wx:if="{{disable == false}}">
+  <!-- 顶部暂存、提交按钮 -->
+  <view class="bottom-area">
     <view class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
       暂存
     </view>
     <view class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="3">
       提交
-    </view>
-    <!-- <form bindsubmit="getContent" report-submit="true">
-      <button class="submit submit-btn" formType="submit" hover="true" hover-class="hover-active" data-disableid="3">
-        提交
-      </button>
-    </form> -->
-  </view>
-  <view class="bottom-area dark-bottom" wx:elif="{{disable == true}}">
-    <view class="{{disableid == 2 ? 'submit save-btn disable-btn' : 'submit save-btn'}}">
-      {{disabletip2}}
-    </view>
-    <view class="{{disableid == 3 ? 'submit submit-btn disable-btn' : 'submit submit-btn'}}">
-      {{disabletip3}}
     </view>
   </view>
   <!-- 顶部按钮结束 -->
@@ -59,7 +46,8 @@
         </view>
         <!-- 未插入视频图片结束 -->
       </view>
-      <textarea placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" />
+      <!-- 文本内容 -->
+      <textarea placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" />
     </view>
     <!-- 图文内容结束 -->
   </view>

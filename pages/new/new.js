@@ -8,15 +8,11 @@ Page({
       title: '',
       content: [{
         "type": "add",
-        "value": "",
-        "text": ""
+        "value": ""
       }],
       copyfrom: '河南手机报'
     },
     disable: false,
-    disabletip1: '插图',
-    disabletip2: '暂存',
-    disabletip3: '提交',
     is_special: false,
     specials: [],
     types: [],
@@ -37,7 +33,7 @@ Page({
       type: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
-        sessid: wx.getStorageSync('sessid')
+        sessid: app.globalData.sessid
       },
       success: function (res) {
         console.log(res);
@@ -83,12 +79,11 @@ Page({
               let imagedata = {
                 "type": "image",
                 "value": data.data.url,
-                "title": "",
-                "text": ""
+                "title": ""
               };
-              tempArr.splice(cidx, 0, imagedata); // key 可以是任何字符串
+              tempArr.splice(cidx, 0, imagedata); 
               that.setContent(tempArr);
-              data['content.content[' + (cidx + 1) + '].show'] = false; // key 可以是任何字符串
+              data['content.content[' + (cidx + 1) + '].show'] = false; 
               that.setData(data);
             } else {
               wx.showModal({
@@ -146,8 +141,7 @@ Page({
               let videodata = {
                 "type": "video",
                 "value": data.data.filepath,
-                "title": "",
-                "text": ""
+                "title": ""
               };
               tempArr.splice(cidx, 0, videodata);
               that.setContent(tempArr);
@@ -181,22 +175,25 @@ Page({
   },
   // 文章暂存和提交
   getContent: function (e) {
-    let url;
+    let url,
+      loadingTitle;
     if (e.target.dataset.disableid == 2) {
-      url = 'bs_zancun'
+      // 暂存地址
+      url = 'bs_zancun';
+      loadingTitle = '暂存';
     } else if (e.target.dataset.disableid == 3) {
-      url = 'bs_tijiao'
+      // 提交地址
+      url = 'bs_tijiao';
+      loadingTitle = '提交'
     }
     let content = this.data.content;
     if (content.title.replace(/\s+/g, "") == '') {
       wx.showModal({
         title: '标题不得为空',
         showCancel: false,
-        content: '',
-        complete: function () {
-          return false;
-        }
+        content: ''
       })
+      return
     }
     // 文章来源
     // else if (this.data.content.copyfrom.replace(/\s+/g, "") == '') {
@@ -221,14 +218,15 @@ Page({
     // } 
     let tempArr;
     if (this.data.model == 'text') {
-      tempArr = {
+      tempArr = [{
         type: 'text',
         value: ''
-      };
+      }];
+      
       for (let i = 0; i < content.content.length; i++) {
         if (content.content[i].type == 'text') {
           content.content[i].value = content.content[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
-          tempArr.value += content.content[i].value;
+          tempArr[0].value += content.content[i].value;
         }
       }
     } else {
@@ -262,11 +260,21 @@ Page({
     if (this.data.is_special) {
       is_special = 1;
     }
+
+    if(!tempArr[0].value){
+      wx.showModal({
+        showCancel: false,
+        title: '错误信息',
+        content:'内容不能为空，请检查是否文本编辑后是否点击确认按钮'
+      })
+      return
+    }
     wx.showLoading({
-      title: '暂存中...',
+      mask: true,
+      title: loadingTitle + '中...',
     })
     wx.request({
-      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param='+url,
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=' + url,
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
@@ -278,7 +286,7 @@ Page({
         wx.hideLoading()
         if (res.data.status == '1') {
           wx.showModal({
-            title: '保存成功',
+            title: loadingTitle + '成功',
             showCancel: false,
             content: '',
             complete: function (res) {
@@ -287,13 +295,18 @@ Page({
               })
             }
           })
-        } else {
+        } else if (res.data.status == '-1'){
           wx.showModal({
             title: res.data.info,
             showCancel: false,
             content: ''
           })
-
+        }else{
+          wx.showModal({
+            title: '网络错误',
+            showCancel: false,
+            content: ''
+          })
         }
       },
       fail: function (res) {
@@ -303,24 +316,16 @@ Page({
           showCancel: false,
           content: '',
           complete: function (res) {
-            that.setData({
-              'disable': false
-            });
-            tempData = {};
-            tempData[disabletip] = that.data[disabletip].replace('中...', '');
-            that.setData(tempData);
+
           }
         });
 
       }
     });
   },
-  // 文章提交
-  pushContent: function () {
-
-  },
   // 确认文本框
   confirmText(e) {
+    console.log(e)
     if (this.data.model == 'text') {
       let tempArr = this.data.content.content;
       let cidx = e.target.dataset.cidx;
@@ -331,10 +336,14 @@ Page({
       tempArr.splice(cidx, 0, textdata);
       this.setContent(tempArr);
     } else {
+      let tempArr = this.data.content.content;
       let cidx = e.target.dataset.cidx;
-      let data = {};
-      data['content.content[' + cidx + '].text'] = e.detail.value;
-      this.setData(data);
+      let textdata = {
+        "type": "text",
+        "value": e.detail.value
+      };
+      tempArr.splice(cidx+1, 0, textdata);
+      this.setContent(tempArr);
     }
   },
 
@@ -403,140 +412,6 @@ Page({
       model: !e.detail.value ? 'text' : 'withImg'
     });
     console.log(this.data.model)
-  },
-  getArray: function (e) {
-    this.setData({
-      'disable': true
-    });
-    let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
-    let tempData = {};
-    tempData[disabletip] = this.data[disabletip] + '中...';
-    this.setData(tempData);
-    this.setData({
-      'disableid': e.currentTarget.dataset.disableid
-    });
-    let dataArr = [];
-    for (let i = 0; i < this.data.content.content.length; i++) {
-      if (this.data.content.content[i].type != 'add') {
-        dataArr.push(this.data.content.content[i])
-      }
-    }
-    // let tempStr = this.data.content.content[0].value;
-    let addObj = {
-      "type": "add",
-      "show": false
-    };
-
-    let resultArr = [];
-    for (let i = 0; i < dataArr.length; i++) {
-
-      if (i + 1 < dataArr.length) {
-        if (dataArr[i].type == "text" && dataArr[i + 1].type == "add") {
-          let tempStr = dataArr[i].value;
-          tempStr = tempStr.replace(/(\n)+/g, '\n');
-          let tempRarr = [];
-          let tempArr = tempStr.split('\n');
-          for (let j = 0; j < tempArr.length; j++) {
-            let tempObj = [];
-            if (j == tempArr.length - 1) {
-              tempObj = [{
-                "type": "text",
-                "value": tempArr[j]
-              }];
-            } else {
-              tempObj = [{
-                "type": "text",
-                "value": tempArr[j]
-              }, {
-                "type": "add",
-                "show": false
-              }];
-            }
-
-            tempRarr = tempRarr.concat(tempObj);
-          }
-          resultArr = resultArr.concat(tempRarr);
-
-        } else if (dataArr[i].type == "text") {
-          let tempStr = dataArr[i].value;
-          tempStr = tempStr.replace(/(\n)+/g, '\n');
-          let tempRarr = [];
-          let tempArr = tempStr.split('\n');
-          for (let j = 0; j < tempArr.length; j++) {
-            let tempObj = [{
-              "type": "text",
-              "value": tempArr[j]
-            }, {
-              "type": "add",
-              "show": false
-            }];
-            tempRarr = tempRarr.concat(tempObj);
-          }
-          resultArr = resultArr.concat(tempRarr);
-        } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
-          let tempRarr = [];
-          if (dataArr[i + 1].type == "add") {
-            tempRarr = [dataArr[i]];
-          } else {
-            tempRarr = [dataArr[i], addObj];
-
-          }
-
-          resultArr = resultArr.concat(tempRarr)
-        }
-      } else {
-        if (dataArr[i].type == "text") {
-          let tempStr = dataArr[i].value;
-          tempStr = tempStr.replace(/(\n)+/g, '\n');
-          let tempRarr = [];
-          let tempArr = tempStr.split('\n');
-          for (let j = 0; j < tempArr.length; j++) {
-            let tempObj = [];
-            if (j == tempArr.length - 1) {
-              tempObj = [{
-                "type": "text",
-                "value": tempArr[j]
-              }];
-            } else {
-              tempObj = [{
-                "type": "text",
-                "value": tempArr[j]
-              }, {
-                "type": "add",
-                "show": false
-              }];
-            }
-
-            tempRarr = tempRarr.concat(tempObj);
-          }
-          resultArr = resultArr.concat(tempRarr);
-
-        } else if (dataArr[i].type == "image" || dataArr[i].type == "video") {
-          let tempRarr = [
-            dataArr[i],
-            addObj];
-          resultArr = resultArr.concat(tempRarr)
-        }
-      }
-
-
-    }
-
-    if (resultArr[0].type != 'add') {
-      resultArr = [{ "type": "add", "show": false }].concat(resultArr);
-    }
-    if (resultArr[resultArr.length - 1].type != 'text') {
-      resultArr = resultArr.concat([{ "type": "text", "value": "" }]);
-    }
-    this.setContent(resultArr);
-
-    tempData = {};
-    tempData[disabletip] = this.data[disabletip].replace('中...', '');
-    this.setData(tempData);
-    this.setData({
-      'disable': false
-    });
-
   },
   sepText: function (idx) {
     let dataArr = this.data.content.content;
