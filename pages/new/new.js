@@ -301,6 +301,17 @@ Page({
             showCancel: false,
             content: ''
           })
+        } else if (res.data.status == '-2') {
+          wx.showModal({
+            title: '登录过期，请重新登录',
+            showCancel: false,
+            complete:function(){
+              wx.redirectTo({
+                url: '../login/login',
+              })
+            }
+          })
+          
         }else{
           wx.showModal({
             title: '网络错误',
@@ -314,10 +325,7 @@ Page({
         wx.showModal({
           title: '网络状况差，请稍后再试',
           showCancel: false,
-          content: '',
-          complete: function (res) {
-
-          }
+          content: ''
         });
 
       }

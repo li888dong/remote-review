@@ -1,7 +1,11 @@
 // pages/craft/craft.js
 var app = getApp();
 Page({
-  data: {},
+  data: {
+    caogaoxiang:[],
+    page:1,
+    pageSize:20
+  },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
   },
@@ -15,109 +19,48 @@ Page({
         url: '../login/login'
       });
     }
-    let cgxData = wx.getStorageSync('caogaoxiang') || [];
-    this.setData({
-      'caogaoxiang': cgxData
-    });
-    // this.loadNews();
+    this.getNews();    
   },
-  onHide: function () {
-    // 页面隐藏
-  },
-  onUnload: function () {
-    // 页面关闭
+  onHide:function(){
+    this.data.page = 1;
+    this.data.caogaoxiang.length = 0;
   },
   onPullDownRefresh: function () {
-    console.log('refresh')
-    let that = this;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=caogaoxiang&offset=0&num=100', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-        if (res.data.status == 1) {
-          that.setData({
-            caogaoxiang: res.data.data
-          });
-          wx.setStorageSync('lastupdate', 0);
-          wx.setStorageSync('caogaoxiang', res.data.data);
-          wx.stopPullDownRefresh();
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
+    this.data.page = 1;
+    this.data.caogaoxiang.length = 0;
+    this.getNews();
   },
   gotoNews: function (e) {
     wx.navigateTo({
       url: '../content/content?id=' + e.currentTarget.dataset.newsid
     })
   },
-  loadNews: function () {
-    console.log('loadNews');
-    let that = this;
-    let change_time = wx.getStorageSync('lastupdate') || 0;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=check_change', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid'),
-        change_time: change_time
-      },
-      success: function (res) {
-        // res = JSON.parse(res);
-        if (res.data.status == 1) {
-          that.getNews();
-          wx.setStorageSync('lastupdate', res.data.change_time);
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
-  },
   getNews: function () {
     let that = this;
     wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=caogaoxiang&offset=0&num=100', //仅为示例，并非真实的接口地址
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=caogao_list', 
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
-        sessid: wx.getStorageSync('sessid')
+        sessid: app.globalData.sessid,
+        page:this.data.page,
+        num:this.data.pageSize
       },
       success: function (res) {
+        console.log('草稿箱',res);
+        wx.stopPullDownRefresh();
         if (res.data.status == 1) {
           that.setData({
-            caogaoxiang: res.data.data
+            caogaoxiang: that.data.caogaoxiang.concat(res.data.data.info)
           });
           wx.setStorageSync('caogaoxiang', res.data.data);
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
+        } else if (res.data.status == '-1'){
+          wx.showModal({
+            title: res.data.info,
+            showCancel: false,
+            content: '请尝试刷新'
+          })
+        } else if (res.data.status == '-2') {
           wx.showModal({
             title: '登录过期，请重新登录',
             showCancel: false,
@@ -128,43 +71,26 @@ Page({
               })
             }
           })
-
+        }else{
+          wx.showModal({
+            title: '网络错误',
+            showCancel: false,
+            content: '请尝试刷新'
+          })
         }
+      },
+      fail:function(){
+        wx.stopPullDownRefresh();
+        wx.showModal({
+          title: '网络错误',
+          showCancel: false,
+          content: '请尝试刷新'
+        })
       }
     });
   },
   onReachBottom: function () {
-    let currentLength = this.data.caogaoxiang.length;
-    let currentNews = this.data.caogaoxiang;
-    let that = this;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=caogaoxiang&offset=' + currentLength + '&num=100', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-        if (res.data.status == 1) {
-          that.setData({
-            caogaoxiang: currentNews.concat(res.data.data)
-          });
-          wx.setStorageSync('caogaoxiang', currentNews.concat(res.data.data));
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
+    this.data.page++;
+    this.getNews()
   }
 });

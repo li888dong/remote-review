@@ -4,8 +4,8 @@
         <view class="news-inner">
           <text class="news-title">{{item.title}}</text>
           <view class="news-info">
-            <view class="news-time">{{item.time}}</view>
-            <view class="news-author">{{item.realusername}}</view>
+            <view class="news-time">{{item.inputtime}}</view>
+            <view class="news-author">{{item.realname}}</view>
           </view>
         </view>
       </view>

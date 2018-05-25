@@ -28,7 +28,7 @@ App({
             },
             success: function (response) {
               // sessid获取成功，跳转至登陆
-              if (response.data.status == -1) {
+              if (response.data.status == -2) {
                 wx.setStorage({
                   key: "sessid",
                   data: response.data.data.sessid,
@@ -45,6 +45,11 @@ App({
                       }
                     });
                   }
+                })
+              } else if (response.data.status == -1){
+                wx.showModal({
+                  title: response.data.info,
+                  showCancel: false,
                 })
                 // 已登陆，获取新的sessid
               } else {
