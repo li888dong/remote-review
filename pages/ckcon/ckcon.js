@@ -53,11 +53,11 @@ Page({
     // 页面初始化 options为页面跳转所带来的参数
     this.setData({
       cid: options.id,
-      content: app.getNewsById(options.id,'shenhezhong')
+      content: app.getNewsById(options.id, 'shenhezhong')
     });
 
   },
-  fetchData(){
+  fetchData() {
     wx.request({
       url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
       method: 'post',
@@ -340,7 +340,7 @@ Page({
         content: '您确定要驳回这篇稿件吗？',
         success: function (res) {
           if (res.confirm) {
-            wx.showLoading();            
+            wx.showLoading();
             wx.request({
               url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_bohui',
               method: 'post',
@@ -384,7 +384,7 @@ Page({
                   showCancel: false,
                   content: '',
                   complete: function (res) {
-                    
+
                   }
                 });
 
@@ -438,133 +438,70 @@ Page({
 
     let that = this;
 
-    if (!this.data.is_special && this.data.currentCate == '') {
-      wx.showModal({
-        title: '请选择栏目',
-        content: '',
-        showCancel: false,
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else if (this.data.is_special && (this.data.currentCate == '' || this.data.currentCate == 0)) {
-      this.setData({
-        currentCate: '116'
-      })
-    } else if (!this.data.is_special && this.data.selection.length > 0 && this.data.subcate == '') {
-      wx.showModal({
-        title: '请选择子栏目',
-        content: '',
-        showCancel: false,
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else if (this.data.is_special && this.data.selectedType == 0) {
-      wx.showModal({
-        title: '请专题栏目',
-        content: '',
-        showCancel: false,
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else if (this.data.newsScore === 0) {
-      wx.showModal({
-        title: '请给这篇稿件打分',
-        content: '',
-        showCancel: false,
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else {
-
-      let is_special = 0;
-
-      if (this.data.is_special) {
-        is_special = 1;
-      }
-
-
-      wx.showModal({
-        title: '确认通过',
-        content: '您确定要通过这篇稿件吗？',
-        success: function (res) {
-          if (res.confirm) {
-            that.setData({
-              'disable': true
-            });
-            let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
-            let tempData = {};
-            tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
-            that.setData(tempData);
-            wx.request({
-              url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=pass",
-              method: 'post',
-              header: { "content-type": "application/x-www-form-urlencoded" },
-              data: {
-                sessid: wx.getStorageSync('sessid'),
-                id: that.data.cid,
-                catid: that.data.currentCate,
-                typefrom: that.data.editorauth,
-                news_grade: that.data.newsScore,
-                to_specialid: that.data.selectedSpecial,
-                to_specialcat: that.data.selectedType,
-                is_special: is_special
-              },
-              success: function (res) {
-                if (res.data.status == 1) {
-                  wx.showModal({
-                    title: '已通过',
-                    showCancel: false,
-                    content: '',
-                    complete: function (res) {
-                      wx.navigateBack({
-                        delta: 1
-                      })
-                    }
-                  })
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                  wx.setStorageSync('wentload', 'went');
-                  wx.showModal({
-                    title: '登录过期，请重新登录',
-                    showCancel: false,
-                    content: '',
-                    complete: res => {
-                      wx.redirectTo({
-                        url: '../login/login'
-                      })
-                    }
-                  })
-
-                }
-              },
-              fail: function (res) {
+    wx.showModal({
+      title: '确认通过',
+      content: '您确定要通过这篇稿件吗？',
+      success: function (res) {
+        if (res.confirm) {
+          wx.showLoading();
+          wx.request({
+            url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_pass",
+            method: 'post',
+            header: { "content-type": "application/x-www-form-urlencoded" },
+            data: {
+              sessid: wx.getStorageSync('sessid'),
+              id: that.data.cid,
+              steps: that.data.content.steps,
+              type:''
+            },
+            success: function (res) {
+              wx.hideLoading();
+              if (res.data.status == 1) {
                 wx.showModal({
-                  title: '网络状况差，请稍后再试',
+                  title: '已通过',
                   showCancel: false,
                   content: '',
                   complete: function (res) {
-                    that.setData({
-                      'disable': false
-                    });
-                    tempData = {};
-                    tempData[disabletip] = '确认' + that.data[disabletip].replace('中...', '');
-                    that.setData(tempData);
+                    wx.navigateBack({
+                      delta: 1
+                    })
                   }
-                });
+                })
+              } else if (res.data.status == '-2') {
+                wx.showModal({
+                  title: '登录过期，请重新登录',
+                  showCancel: false,
+                  content: '',
+                  complete: res => {
+                    wx.redirectTo({
+                      url: '../login/login'
+                    })
+                  }
+                })
 
               }
-            })
-          } else {
-            return false;
-          }
+            },
+            fail: function (res) {
+              wx.hideLoading();
+              wx.showModal({
+                title: '网络状况差，请稍后再试',
+                showCancel: false,
+                content: '',
+                complete: function (res) {
+                  
+                }
+              });
+
+            }
+          })
+        } else {
+          return false;
         }
+      }
 
-      });
+    });
 
-    }
+
 
   },
   forwardNews: function (e) {
