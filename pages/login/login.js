@@ -45,6 +45,8 @@ Page({
             data: response.data.data,
             success: function () {
               app.globalData.userInfo = response.data.data;
+              app.globalData.sessid = response.data.data.sessid;
+              wx.setStorageSync('sessid', response.data.data.sessid)
               wx.switchTab({
                 url: '../craft/craft'
               })

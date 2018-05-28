@@ -24,12 +24,13 @@ Page({
     });
     console.log(this.data.content)
   },
-
+  // 跳转至编辑页面
   editNews: function () {
     wx.navigateTo({
       url: '../new/new?id=' + this.data.cid + '&type='+ this.data.content.type
     })
   },
+  // 删除
   delNews: function (e) {
     let that = this;
     wx.showModal({
@@ -92,6 +93,7 @@ Page({
       }
     });
   },
+  // 提交
   pushContent: function (e) {
     let that = this;
     let content = this.data.content;

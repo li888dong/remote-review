@@ -1,60 +1,14 @@
 <view class="list">
   <block wx:for="{{shenhezhong}}" wx:key="{{item.time}}">
-    <block wx:if="{{item.typefrom == 'tosucheck' && item.is_self == '0'}}">
       <view class="{{item.forbidden == 0 ? 'forward news-item' : 'forward news-item forbid-item'}}" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
         <view class="news-inner">
           <text class="news-title">{{item.title}}</text>
           <view class="news-info">
-            <view class="news-time">{{item.time}}</view>
-            <view class="news-author">{{item.realusername}}</view>
+            <view class="news-time">{{item.inputtime}}</view>
+            <view class="news-author">{{item.realname}}</view>
           </view>
         </view>
       </view>
-    </block>
-    <block wx:if="{{item.typefrom == 'tosucheck' && item.is_self == '1'}}">
-      <view class="forward news-item grey-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
-        <view class="news-inner">
-          <text class="news-title">{{item.title}}</text>
-          <view class="news-info">
-            <view class="news-time">{{item.time}}</view>
-            <view class="news-author">{{item.realusername}}</view>
-          </view>
-        </view>
-      </view>
-    </block>
-    <block wx:elif="{{item.typefrom == 'rejected' && item.is_self == '0'}}">
-      <view class="reject news-item forbid-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
-        <view class="news-inner">
-          <text class="news-title">{{item.title}}</text>
-          <view class="news-info">
-            <view class="news-time">{{item.time}}</view>
-            <view class="news-author">{{item.realusername}}</view>
-          </view>
-        </view>
-      </view>
-    </block>
-    <block wx:elif="{{item.typefrom == 'tocheck' && item.is_self == '0'}}">
-      <view class="news-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
-        <view class="news-inner">
-          <text class="news-title">{{item.title}}</text>
-          <view class="news-info">
-            <view class="news-time">{{item.time}}</view>
-            <view class="news-author">{{item.realusername}}</view>
-          </view>
-        </view>
-      </view>
-    </block>
-    <block wx:elif="{{item.typefrom == 'tocheck' && item.is_self == '1'}}">
-      <view class="news-item grey-item" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
-        <view class="news-inner">
-          <text class="news-title">{{item.title}}</text>
-          <view class="news-info">
-            <view class="news-time">{{item.time}}</view>
-            <view class="news-author">{{item.realusername}}</view>
-          </view>
-        </view>
-      </view>
-    </block>
   </block>
   <view wx-if="{{shenhezhong.length == 0}}" class="empty-item">
     该类别下暂无内容

@@ -2,9 +2,11 @@
 let app = getApp();
 Page({
   data: {
+    dataList:[],
     shenhezhong: [],
     page: 1,
-    pageSize: 20
+    pageSize: 20,
+    currentType:''
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -136,19 +138,17 @@ Page({
         num: this.data.pageSize
       },
       success: function (res) {
-        console.log('审核中', res)
-        if (res.data.status == 1) {
-          that.setData({
-            shenhezhong: res.data.data
-          });
+        console.log('审核中', res.data.data)
+        if (res.data.status == 1) {         
           let pagestatus = wx.getStorageSync('pagestatus') || 'none';
           let self = wx.getStorageSync('pageself') || '0';
           let currentType = wx.getStorageSync('pagetype') || '全部';
-          that.filterNews(pagestatus, self);
           that.setData({
-            'currentType': currentType
+            'currentType': currentType,
+            dataList: res.data.data
           });
           wx.setStorageSync('shenhezhong', res.data.data);
+          that.reformNews(0)
         } else if (res.data.status == '-1'){
           wx.showModal({
             title: res.data.info,
@@ -186,7 +186,9 @@ Page({
   reformNews: function (idx) {
     switch (idx) {
       case 0:
-        this.getNews();
+        this.setData({
+          'shenhezhong': this.data.dataList.final_data.data
+        })
         wx.removeStorageSync('pagestatus');
         wx.removeStorageSync('pageself');
         wx.setStorageSync('pagetype', '全部');
@@ -195,7 +197,9 @@ Page({
         });
         break;
       case 1:
-        this.filterNews('tocheck', '0');
+        this.setData({
+          'shenhezhong': this.data.dataList.daishen_data.data
+        })
         wx.setStorageSync('pagestatus', 'tocheck');
         wx.setStorageSync('pageself', '0');
         wx.setStorageSync('pagetype', '待审稿件');
@@ -205,7 +209,9 @@ Page({
         });
         break;
       case 2:
-        this.filterNews('rejected', '0');
+        this.setData({
+          'shenhezhong': this.data.dataList.bohui_data.data
+        })
         wx.setStorageSync('pagestatus', 'rejected');
         wx.setStorageSync('pageself', '0');
         wx.setStorageSync('pagetype', '驳回稿件');
@@ -215,7 +221,9 @@ Page({
         });
         break;
       case 3:
-        this.filterNews('tosucheck', '0');
+        this.setData({
+          'shenhezhong': this.data.dataList.zhuanshen_data.data
+        })
         wx.setStorageSync('pagestatus', 'tosucheck');
         wx.setStorageSync('pagetype', '转审稿件');
         wx.setStorageSync('pageself', '0');
@@ -224,7 +232,9 @@ Page({
         });
         break;
       case 4:
-        this.filterNews('all', '1');
+        this.setData({
+          'shenhezhong': this.data.dataList.zicai_data.data
+        })
         wx.setStorageSync('pagestatus', 'all');
         wx.setStorageSync('pageself', '1');
         wx.setStorageSync('pagetype', '自采稿件');
@@ -239,29 +249,16 @@ Page({
 
   },
   filterNews: function (a, b) {
-
-    if (a == 'none') {
-      return false;
-    } else {
-      let tempArr = wx.getStorageSync('shenhezhong');
-      let newArr = [];
-      if (b == 0) {
-        for (let i = 0; i < tempArr.length; i++) {
-          if (tempArr[i].typefrom == a && tempArr[i].is_self == b) {
-            newArr.push(tempArr[i]);
-          }
-        }
-      } else {
-        for (let i = 0; i < tempArr.length; i++) {
-          if (tempArr[i].is_self == b) {
-            newArr.push(tempArr[i]);
-          }
-        }
-      }
-      this.setData({
-        'shenhezhong': newArr
-      })
+    console.log(a,b);
+    let tempArr = this.data.dataList;
+    let newArr = [];
+    if(a == 'final'){
+      newArr = tempArr.final_data.data
     }
+    console.log(newArr)
+    this.setData({
+      'shenhezhong': newArr
+    })
 
 
   },
