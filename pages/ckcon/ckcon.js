@@ -16,6 +16,7 @@ Page({
     categories: [],
     sucheckers: [],
     sucheck: '',
+    tocheckname:'',
     currentCate: '116',
     selection: [],
     rejectopen: false,
@@ -55,7 +56,7 @@ Page({
       cid: options.id,
       content: app.getNewsById(options.id, 'shenhezhong')
     });
-
+    this.getSu();
   },
   fetchData() {
     wx.request({
@@ -237,35 +238,7 @@ Page({
 
 
 
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=sulist',
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-        if (res.data.status == 1) {
-          that.setData({
-            sucheckers: res.data.data
-          });
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-
-      }
-    });
+   
     that.setData({
       lineLength: (this.data.workflow.length - 1) * 100
     });
@@ -425,15 +398,51 @@ Page({
       subcate: this.data.selection[tmp].catid
     })
   },
+  // 获取转审人员列表
+  getSu(){
+    let that = this;
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_zhuanshen_users',
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        sessid: wx.getStorageSync('sessid')
+      },
+      success: function (res) {
+        console.log('转审人员列表',res.data)
+      
+        if (res.data) {
+          that.setData({
+            sucheckers: res.data,
+            sucheck:res.data[that.data.suindex].userid,
+            tocheckname: res.data[that.data.suindex].realname
+          });
+        } else if (res.status == '-2') {
+          wx.showModal({
+            title: '登录过期，请重新登录',
+            showCancel: false,
+            content: '',
+            complete: res => {
+              wx.redirectTo({
+                url: '../login/login'
+              })
+            }
+          })
+
+        }
+
+      }
+    });
+  },
   setSu: function (e) {
     let tmp = e.detail.value;
     this.setData({
-      suindex: tmp
-    });
-    this.setData({
-      sucheck: this.data.sucheckers[tmp].userid
+      suindex: tmp,
+      sucheck: this.data.sucheckers[tmp].userid,
+      tocheckname: this.data.sucheckers[tmp].realname
     });
   },
+  // 通过审核
   confirmNews: function (e) {
 
     let that = this;
@@ -504,6 +513,7 @@ Page({
 
 
   },
+  // 转审
   forwardNews: function (e) {
 
     let that = this;
@@ -517,63 +527,28 @@ Page({
           return false;
         }
       })
-    } else if (this.data.is_special && (this.data.currentCate == '' || this.data.currentCate == 0)) {
-      this.setData({
-        currentCate: '116'
-      })
-    } else if (!this.data.is_special && this.data.selection.length > 0 && this.data.subcate == '') {
-      wx.showModal({
-        title: '请选择子栏目',
-        content: '',
-        showCancel: false,
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else if (this.data.is_special && this.data.selectedType == 0) {
-      wx.showModal({
-        title: '请专题栏目',
-        content: '',
-        showCancel: false,
-        complete: function (res) {
-          return false;
-        }
-      })
-    } else {
-
-      let is_special = 0;
-
-      if (this.data.is_special) {
-        is_special = 1;
-      }
+    }  else {
 
       wx.showModal({
         title: '确认转审',
         content: '您确定要转审这篇稿件吗？',
         success: function (res) {
           if (res.confirm) {
-            that.setData({
-              'disable': true
-            });
-            let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
-            let tempData = {};
-            tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
-            that.setData(tempData);
+            wx.showLoading({
+              title: '转审中...',
+            })
             wx.request({
-              url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=transcheck",
+              url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_zhuanshen",
               method: 'post',
               header: { "content-type": "application/x-www-form-urlencoded" },
               data: {
                 sessid: wx.getStorageSync('sessid'),
-                id: that.data.cid,
-                catid: that.data.currentCate,
-                typefrom: that.data.editorauth,
-                userid: that.data.sucheck,
-                to_specialid: that.data.selectedSpecial,
-                to_specialcat: that.data.selectedType,
-                is_special: is_special
+                zhuanshen_id: that.data.cid,
+                tocheckid: that.data.sucheck,
+                tocheckname:that.data.tocheckname
               },
               success: function (res) {
+                wx.hideLoading();
                 if (res.data.status == 1) {
                   wx.showModal({
                     title: '已转审',
@@ -585,8 +560,8 @@ Page({
                       })
                     }
                   })
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                  wx.setStorageSync('wentload', 'went');
+                } else if (res.data.status == '-2') {
+                  
                   wx.showModal({
                     title: '登录过期，请重新登录',
                     showCancel: false,
@@ -601,17 +576,13 @@ Page({
                 }
               },
               fail: function (res) {
+                wx.hideLoading();
                 wx.showModal({
                   title: '网络状况差，请稍后再试',
                   showCancel: false,
                   content: '',
                   complete: function (res) {
-                    that.setData({
-                      'disable': false
-                    });
-                    tempData = {};
-                    tempData[disabletip] = '确认' + that.data[disabletip].replace('中...', '');
-                    that.setData(tempData);
+                    
                   }
                 });
 
@@ -721,461 +692,11 @@ Page({
       url: '../edit/edit?id=' + this.data.cid + '&type=editor'
     })
   },
-  startRecord: function (e) {
-    touchstarttime = e.timeStamp;
-    let that = this;
-    tout = setTimeout(function () {
-      let tempVoice = {
-        "duration": 1,
-        "filepath": '',
-        "playing": false,
-        'src': ''
-      };
-      let tempArr = that.data.rejectaudio;
-      tempArr.push(tempVoice);
-      that.setData({
-        'recording': true
-      });
-      that.setData({
-        "rejectaudio": tempArr
-      });
-      interval = setInterval(that.updateRecord, 1000);
-      wx.startRecord({
-        success: function (res) {
-          console.log(res);
-          let tempFilePath = res.tempFilePath;
-          that.setData({
-            'recording': false
-          });
-          let idx = that.data.rejectaudio.length - 1;
-          let data = {};
-          data['rejectaudio[' + idx + '].filepath'] = tempFilePath;
-          console.log(tempFilePath);
-          wx.uploadFile({
-            url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=audio',
-            filePath: tempFilePath,
-            name: 'files',
-            success: res => {
-              res.data = JSON.parse(res.data);
-              if (res.data.status == 1) {
-                let data = {};
-                console.log(res);
-                data['rejectaudio[' + idx + '].src'] = res.data.url;
-                that.setData(data);
-              }
-            }
-          });
-          that.setData(data);
-          clearInterval(interval);
-        },
-        fail: function (res) {
-          //录音失败
-          console.log('failed');
-          that.cancelRecord();
-        }
-      });
-      console.log('setted');
-    }, 300);
-  },
-  updateRecord: function () {
-    let idx = this.data.rejectaudio.length - 1;
-    console.log(this.data.rejectaudio[idx]);
-    let data = {};
-    data['rejectaudio[' + idx + '].duration'] = this.data.rejectaudio[idx].duration + 1;
-    this.setData(data);
-  },
-  completeRecord: function (e) {
-    let timegap = e.timeStamp - touchstarttime;
-    if (timegap > 300) {
-      console.log(e);
-      console.log('triggered');
-      if (this.data.recording) {
-        console.log('cstro');
-        wx.stopRecord();
-      } else {
-        console.log('complete');
-        this.cancelRecord();
-      }
-    } else {
-      clearTimeout(tout)
-    }
-  },
-  cancelRecord: function () {
-    console.log('touchcanceled');
-    let that = this;
-    if (this.data.recording) {
-      console.log('first?');
-      let idx = this.data.rejectaudio.length - 1;
-      console.log(idx);
-      let tempArr = this.data.rejectaudio;
-      console.log(tempArr);
-      tempArr.splice(idx, 1);
-
-      that.setData({
-        "rejectaudio": tempArr
-      });
-
-      console.log(tempArr);
-
-      this.setData({
-        "recording": false
-      });
-    }
-    wx.stopRecord();
-    clearTimeout(tout);
-    clearInterval(interval);
-    console.log('canceled');
-  },
-  playRecord: function (e) {
-    let i = e.currentTarget.dataset.vid;
-    let that = this;
-    if (i == this.data.currentRecord) {
-      if (that.data.rejectaudio[i].playing) {
-        wx.pauseVoice();
-        let data = {};
-        data['rejectaudio[' + i + '].playing'] = false;
-        this.setData(data);
-      } else {
-        let pdata = {};
-        pdata['rejectaudio[' + i + '].playing'] = true;
-        that.setData(pdata);
-        that.setData({
-          'currentRecord': i
-        });
-        setTimeout(function () {
-          wx.playVoice({
-            filePath: that.data.rejectaudio[i].filepath,
-            success: function () {
-              let data = {};
-              data['rejectaudio[' + i + '].playing'] = false;
-              that.setData(data);
-            }
-          });
-        }, 500);
-
-      }
-    } else {
-      wx.stopVoice();
-      let tempVarr = this.data.rejectaudio;
-      for (let i = 0; i < tempVarr.length; i++) {
-        tempVarr[i].playing = false;
-      }
-      let data = {};
-      data['rejectaudio'] = tempVarr;
-      this.setData(data);
-      let pdata = {};
-      pdata['rejectaudio[' + i + '].playing'] = true;
-      that.setData(pdata);
-      that.setData({
-        'currentRecord': i
-      });
-      setTimeout(function () {
-        wx.playVoice({
-          filePath: that.data.rejectaudio[i].filepath,
-          success: function () {
-            let data = {};
-            data['rejectaudio[' + i + '].playing'] = false;
-            that.setData(data);
-          }
-        });
-      }, 500);
-    }
-
-  },
-  delRecord: function (e) {
-    let that = this;
-    wx.showModal({
-      title: '确认删除',
-      content: '您确定要删除这块内容吗？',
-      success: function (res) {
-        if (res.confirm) {
-          let i = e.currentTarget.dataset.vid;
-          let tempArr = that.data.rejectaudio;
-          tempArr.splice(i, 1);
-          that.setData({
-            'rejectaudio': tempArr
-          })
-        } else {
-          return false;
-        }
-      }
-    });
-  },
-  playVoice: function (e) {
-
-    let currentRid = this.data.currentVoice[0];
-    let currentVid = this.data.currentVoice[1];
-
-
-    let src = e.currentTarget.dataset.src;
-    let i = e.currentTarget.dataset.vid;
-    let rid = e.currentTarget.dataset.rid;
-    let that = this;
-
-    if (currentRid == rid && currentVid == i) {
-      if (that.data.content.reject_reason[rid].reject_audio[i].playing) {
-        wx.pauseVoice();
-        let data = {};
-        data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
-        that.setData(data);
-      } else {
-        if (that.data.content.reject_reason[rid].reject_audio[i].filepath != '') {
-          let data = {};
-          data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = true;
-          that.setData(data);
-          that.setData({
-            'currentVoice': [rid, i]
-          });
-          setTimeout(function () {
-            wx.playVoice({
-              filePath: that.data.content.reject_reason[rid].reject_audio[i].filepath,
-              success: function () {
-                let data = {};
-                data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
-                that.setData(data);
-              }
-            });
-          }, 500);
-
-        } else {
-          wx.downloadFile({
-            url: src,
-            success: function (res) {
-              wx.stopVoice();
-              let data = {};
-              data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = true;
-              that.setData(data);
-              let pathdata = {};
-              pathdata['content.reject_reason[' + rid + '].reject_audio[' + i + '].filepath'] = res.tempFilePath;
-              that.setData(pathdata);
-              that.setData({
-                'currentVoice': [rid, i]
-              });
-              setTimeout(function () {
-                wx.playVoice({
-                  filePath: res.tempFilePath,
-                  success: function () {
-                    let data = {};
-                    data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
-                    that.setData(data);
-                  }
-                });
-              }, 500);
-            }
-          })
-        }
-      }
-    } else {
-      wx.stopVoice();
-      for (let i = 0; i < this.data.content.reject_reason.length; i++) {
-        // tempVarr.concat(this.data.content.reject_reason[i].reject_audio)
-        let tempVarr = this.data.content.reject_reason[i].reject_audio;
-        for (let j = 0; j < tempVarr.length; j++) {
-          tempVarr[j].playing = false;
-        }
-        let data = {};
-        data['content.reject_reason[' + i + '].reject_audio'] = tempVarr;
-        this.setData(data);
-      }
-
-      console.log(that.data.content.reject_reason[rid]);
-      if (that.data.content.reject_reason[rid].reject_audio[i].filepath != '') {
-        let data = {};
-        data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = true;
-        that.setData(data);
-        that.setData({
-          'currentVoice': [rid, i]
-        });
-
-        setTimeout(function () {
-          wx.playVoice({
-            filePath: that.data.content.reject_reason[rid].reject_audio[i].filepath,
-            success: function () {
-              let data = {};
-              data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
-              that.setData(data);
-            }
-          });
-        }, 500);
-      } else {
-        wx.downloadFile({
-          url: src,
-          success: function (res) {
-            let data = {};
-            data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = true;
-            that.setData(data);
-            let pathdata = {};
-            pathdata['content.reject_reason[' + rid + '].reject_audio[' + i + '].filepath'] = res.tempFilePath;
-            that.setData(pathdata);
-            that.setData({
-              'currentVoice': [rid, i]
-            });
-            setTimeout(function () {
-              wx.playVoice({
-                filePath: res.tempFilePath,
-                success: function () {
-                  let data = {};
-                  data['content.reject_reason[' + rid + '].reject_audio[' + i + '].playing'] = false;
-                  console.log('triggered');
-                  that.setData(data);
-                }
-              });
-            }, 500);
-          }
-        })
-      }
-    }
-  },
-  toggleAudio: function (e) {
-    let rtype = e.currentTarget.dataset.rtype;
-    if (rtype == 'audio') {
-      this.setData({
-        'audioarea': true
-      })
-    } else {
-      this.setData({
-        'audioarea': false
-      })
-    }
-  },
+  
   setScore: function (e) {
     console.log(e.target.dataset.score);
     this.setData({
       'newsScore': e.target.dataset.score
-    })
-  },
-  confirmGrade: function (e) {
-    let that = this;
-    if (that.data.newsScore == that.data.content.news_grade) {
-      wx.showModal({
-        title: '分值无改动！',
-        content: "",
-        showCancel: false,
-        complete: function () {
-          return false;
-        }
-      })
-    } else if (that.data.grade_message == '') {
-      wx.showModal({
-        title: '请填写修改理由！',
-        content: "",
-        showCancel: false,
-        complete: function () {
-          return false;
-        }
-      })
-    } else {
-      wx.showModal({
-        title: '确认修改',
-        content: '您确定要修改这篇稿件的分数吗？',
-        success: function (res) {
-          if (res.confirm) {
-            that.setData({
-              'disable': true
-            });
-            let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
-            let tempData = {};
-
-            tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
-            that.setData(tempData);
-            wx.request({
-              url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=edit_grade",
-              method: 'post',
-              header: { "content-type": "application/x-www-form-urlencoded" },
-              data: {
-                sessid: wx.getStorageSync('sessid'),
-                id: that.data.cid,
-                news_grade: that.data.newsScore,
-                grade_message: that.data.grade_message
-              },
-              success: function (res) {
-                if (res.data.status == 1) {
-                  wx.showModal({
-                    title: '修改成功',
-                    showCancel: false,
-                    content: '',
-                    complete: function (res) {
-                      wx.navigateBack({
-                        delta: 1
-                      })
-                    }
-                  })
-                } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-                  wx.setStorageSync('wentload', 'went');
-                  wx.showModal({
-                    title: '登录过期，请重新登录',
-                    showCancel: false,
-                    content: '',
-                    complete: res => {
-                      wx.redirectTo({
-                        url: '../login/login'
-                      })
-                    }
-                  })
-
-                }
-              },
-              fail: function (res) {
-                wx.showModal({
-                  title: '网络状况差，请稍后再试',
-                  showCancel: false,
-                  content: '',
-                  complete: function (res) {
-                    that.setData({
-                      'disable': false
-                    });
-                    tempData = {};
-                    tempData[disabletip] = '确认' + that.data[disabletip].replace('中...', '');
-                    that.setData(tempData);
-                  }
-                });
-
-              }
-            })
-          } else {
-            return false;
-          }
-        }
-      });
-    }
-  },
-
-  setSpecial(e) {
-    // console.log(e.detail.value);
-    this.setData({
-      is_special: e.detail.value
-    })
-  },
-  getSpecialTypes(e) {
-    let cid = e.detail.value;
-    let that = this;
-    console.log(cid);
-    console.log(this.data.specialIndex);
-    // console.log(this.specials[2]);
-
-    // console.log(that.specials[cid]);
-    this.setData({
-      specialIndex: cid
-    });
-    this.setData({
-      selectedSpecial: that.data.specials[cid].sid
-    });
-    this.setData({
-      types: that.data.specials[cid].category
-    });
-    this.setData({
-      selectedType: 0
-    })
-  },
-
-  setSpecialType(e) {
-    let tid = e.detail.value;
-    this.setData({
-      typeIndex: tid
-    });
-    let that = this;
-    this.setData({
-      selectedType: that.data.types[tid].scid
     })
   }
 
