@@ -68,8 +68,13 @@ App({
     })
 
   },
-  getNewsById(id){
-    let contents = wx.getStorageSync('caogaoxiang').info;
+  getNewsById(id,type){
+    let contents;
+    if(type == 'shenhezhong'){
+      contents = wx.getStorageSync(type);
+    }else{
+      contents = wx.getStorageSync(type).info;
+    }
     let content = null;
     contents.map(item=>{
       item.content = JSON.parse(item.content)

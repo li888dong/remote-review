@@ -19,7 +19,7 @@ Page({
   onLoad: function (options) {
     let that = this;
     this.setData({
-      content: app.getNewsById(options.id),
+      content: app.getNewsById(options.id,'caogaoxiang'),
       cid: options.id
     });
     console.log(this.data.content)
