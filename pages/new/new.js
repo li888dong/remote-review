@@ -3,7 +3,9 @@ let util = require('../../utils/util.js');
 let app = getApp();
 Page({
   data: {
-    model: 'text',
+    // 纯文本模式和图文模式
+    model: 'withImg',
+    // 文章内容
     content: {
       title: '',
       content: [{
@@ -12,6 +14,11 @@ Page({
       }],
       copyfrom: '河南手机报'
     },
+    // 判断暂存情况(新建|草稿|驳回)
+    type: '',
+    // 文章列表所属id，用以在storage里取值
+    cid: '',
+
     disable: false,
     is_special: false,
     specials: [],
@@ -25,6 +32,21 @@ Page({
     // 页面初始化 options为页面跳转所带来的参数
     // new app.WeToast();
     // this.fetchSpecialList()
+    // 如果是编辑页，初始化页面数据
+    this.initEditData(options)
+  },
+  // 初始化新建稿件页  判断暂存状态和取值
+  initEditData(options) {
+    this.setData({
+      type: options.type,
+      cid: options.id
+    })
+    if (this.data.type == 'caogao') {
+      this.setData({
+        content: app.getNewsById(this.data.cid)
+      })
+    }
+
   },
   fetchSpecialList() {
     let that = this;
@@ -81,9 +103,9 @@ Page({
                 "value": data.data.url,
                 "title": ""
               };
-              tempArr.splice(cidx, 0, imagedata); 
+              tempArr.splice(cidx, 0, imagedata);
               that.setContent(tempArr);
-              data['content.content[' + (cidx + 1) + '].show'] = false; 
+              data['content.content[' + (cidx + 1) + '].show'] = false;
               that.setData(data);
             } else {
               wx.showModal({
@@ -175,7 +197,8 @@ Page({
   },
   // 文章暂存和提交
   getContent: function (e) {
-    let url,
+    let that = this,
+      url,
       loadingTitle;
     if (e.target.dataset.disableid == 2) {
       // 暂存地址
@@ -222,7 +245,7 @@ Page({
         type: 'text',
         value: ''
       }];
-      
+
       for (let i = 0; i < content.content.length; i++) {
         if (content.content[i].type == 'text') {
           content.content[i].value = content.content[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
@@ -238,50 +261,50 @@ Page({
         }
       }
     }
-
-
-
-    // for (let i = 0; i < tempArr.length; i++) {
-    //   if (i < tempArr.length - 1 && tempArr[i].type == 'text' && tempArr[i + 1].type == 'text') {
-    //     tempArr[i + 1].value = tempArr[i].value + '\n' + tempArr[i + 1].value;
-    //     tempArr[i].value = '';
-    //   }
-
-    // }
-
-    // for (let i = 0; i < tempArr.length; i++) {
-    //   if (tempArr[i].value != '') {
-    //     tempBarr.push(tempArr[i])
-    //   }
-    // }
-
     let is_special = 0;
 
     if (this.data.is_special) {
       is_special = 1;
     }
-
-    if(!tempArr[0].value){
+    // 检查上传文章是否为空
+    if (!tempArr[0].value) {
       wx.showModal({
         showCancel: false,
         title: '错误信息',
-        content:'内容不能为空，请检查是否文本编辑后是否点击确认按钮'
+        content: '内容不能为空，请检查是否文本编辑后是否点击确认按钮'
       })
       return
     }
+
     wx.showLoading({
       mask: true,
       title: loadingTitle + '中...',
-    })
+    });
+
+    // 请求携带的参数
+    // title 文章标题
+    // content 文章内容
+    // sessid 保持登录状态
+    // type 判断暂存情况(新建 | 草稿 | 驳回)
+    // caogao_id bohui_id
+    let reqData = {
+      title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
+      content: JSON.stringify(tempArr),
+      sessid: app.globalData.sessid,
+      type: this.data.type
+    }
+
+    if(this.data.type == 'caogao'){
+      reqData.caogao_id = this.data.cid;
+    }else if(this.data.type == 'bohui'){
+      reqData.bohui_id = this.data.cid
+    }
+    
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=' + url,
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
-        content: JSON.stringify(tempArr),
-        sessid: app.globalData.sessid
-      },
+      data: reqData,
       success: function (res) {
         wx.hideLoading()
         if (res.data.status == '1') {
@@ -295,7 +318,7 @@ Page({
               })
             }
           })
-        } else if (res.data.status == '-1'){
+        } else if (res.data.status == '-1') {
           wx.showModal({
             title: res.data.info,
             showCancel: false,
@@ -305,14 +328,14 @@ Page({
           wx.showModal({
             title: '登录过期，请重新登录',
             showCancel: false,
-            complete:function(){
+            complete: function () {
               wx.redirectTo({
                 url: '../login/login',
               })
             }
           })
-          
-        }else{
+
+        } else {
           wx.showModal({
             title: '网络错误',
             showCancel: false,
@@ -350,7 +373,7 @@ Page({
         "type": "text",
         "value": e.detail.value
       };
-      tempArr.splice(cidx+1, 0, textdata);
+      tempArr.splice(cidx + 1, 0, textdata);
       this.setContent(tempArr);
     }
   },
@@ -540,7 +563,7 @@ Page({
       specialIndex: cid
     });
     this.setData({
-      selectedSpecial: that.data.specials[cid].sid
+      selectedSpecial: that.data.specials[cid].cid
     });
     this.setData({
       types: that.data.specials[cid].category

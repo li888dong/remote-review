@@ -1,5 +1,5 @@
 <view class="list">
-  <block wx:for="{{shenhezhong}}">
+  <block wx:for="{{shenhezhong}}" wx:key="{{item.time}}">
     <block wx:if="{{item.typefrom == 'tosucheck' && item.is_self == '0'}}">
       <view class="{{item.forbidden == 0 ? 'forward news-item' : 'forward news-item forbid-item'}}" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
         <view class="news-inner">

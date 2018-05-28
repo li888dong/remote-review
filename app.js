@@ -68,6 +68,17 @@ App({
     })
 
   },
+  getNewsById(id){
+    let contents = wx.getStorageSync('caogaoxiang').info;
+    let content = null;
+    contents.map(item=>{
+      item.content = JSON.parse(item.content)
+      if(item.id == id){
+        content = item;
+      }
+    })
+    return content
+  },
   //全局数据
   globalData: {
     baseUrl: 'https://rmtapi.hnsjb.cn/',

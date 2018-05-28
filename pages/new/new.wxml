@@ -17,7 +17,7 @@
   <!-- 正文输入框 -->
   <view class="prop-container content-container">
     <view class="input">正文:
-      <switch class="fr" bindchange='switchModel'>图文模式</switch>
+      <switch class="fr" bindchange='switchModel' checked>{{model == 'text'?'纯文本':'图文模式'}}</switch>
     </view>
     <!-- 图文内容 -->
     <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">
@@ -48,7 +48,9 @@
       </view>
       <!-- 文本内容 -->
       <!-- 模拟器上没有确认按钮 手机上用bindconfirm  模拟器用bindblur -->
-      <textarea placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" />
+      <textarea wx:if="{{model=='text'&&item.type == 'text'}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
+      <textarea wx:if="{{model=='withImg'&&item.type == 'text'}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
+      <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" />
     </view>
     <!-- 图文内容结束 -->
   </view>
