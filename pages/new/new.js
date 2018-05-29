@@ -43,7 +43,7 @@ Page({
     })
     if (this.data.type == 'caogao') {
       this.setData({
-        content: app.getNewsById(this.data.cid)
+        content: app.getNewsById(this.data.cid,'caogaoxiang')
       })
     }
 

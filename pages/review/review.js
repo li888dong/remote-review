@@ -43,43 +43,9 @@ Page({
   },
   onPullDownRefresh: function () {
     let that = this;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=shenhezhong&offset=0&num=100', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-        if (res.data.status == 1) {
-          that.setData({
-            shenhezhong: res.data.data
-          });
-          wx.setStorageSync('slastupdate', 0);
-          wx.setStorageSync('shenhezhong', res.data.data);
-          wx.stopPullDownRefresh();
-          that.setData({
-            'currentType': '全部'
-          });
-          wx.removeStorageSync('pagestatus');
-          wx.removeStorageSync('pageself');
-          wx.removeStorageSync('pagetype');
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
+    this.data.shenhezhong.length = 0;
+    this.data.page = 1;
+    this.getNews();
   },
   gotoNews: function (e) {
     if (e.currentTarget.dataset.forbid == 1) {
@@ -93,39 +59,7 @@ Page({
     }
 
   },
-  loadNews: function () {
-    let that = this;
-    let change_time = wx.getStorageSync('slastupdate') || 0;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=check_change', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid'),
-        change_time: change_time
-      },
-      success: function (res) {
-        // res = JSON.parse(res);
-        if (res.data.status == 1) {
-          that.getNews();
-          wx.setStorageSync('slastupdate', res.data.change_time);
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
 
-        }
-      }
-    });
-  },
   getNews: function () {
     let that = this;
     wx.request({
@@ -134,17 +68,18 @@ Page({
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
         sessid: app.globalData.sessid,
-        page: this.data.page,
-        num: this.data.pageSize
+        page: that.data.page,
+        num: that.data.pageSize
       },
       success: function (res) {
-        console.log('审核中', res.data.data)
+        console.log('审核中', res.data.data);
+        wx.stopPullDownRefresh();
         if (res.data.status == 1) {
           let pagestatus = wx.getStorageSync('pagestatus') || 'none';
           let self = wx.getStorageSync('pageself') || '0';
           let currentType = wx.getStorageSync('pagetype') || '全部';
           that.setData({
-            'currentType': currentType,
+            currentType: currentType,
             dataList: res.data.data
           });
           that.reformNews(0)
@@ -186,7 +121,7 @@ Page({
     switch (idx) {
       case 0:
         this.setData({
-          'shenhezhong': this.data.dataList.final_data.data,
+          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.final_data.data),
           'currentType': '全部'
         })
         wx.removeStorageSync('pagestatus');
@@ -197,7 +132,7 @@ Page({
       case 1:
         this.setData({
           'currentType': '待审稿件',
-          'shenhezhong': this.data.dataList.daishen_data.data
+          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.daishen_data.data)
         })
         wx.setStorageSync('pagestatus', 'tocheck');
         wx.setStorageSync('pageself', '0');
@@ -208,7 +143,8 @@ Page({
         break;
       case 2:
         this.setData({
-          'shenhezhong': this.data.dataList.bohui_data.data
+          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.bohui_data.data),
+          currentType: '驳回稿件'
         })
         wx.setStorageSync('pagestatus', 'rejected');
         wx.setStorageSync('pageself', '0');
@@ -217,7 +153,7 @@ Page({
         break;
       case 3:
         this.setData({
-          'shenhezhong': this.data.dataList.zhuanshen_data.data,
+          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.zhuanshen_data.data),
           'currentType': '转审稿件'
         })
         wx.setStorageSync('pagestatus', 'tosucheck');
@@ -227,7 +163,7 @@ Page({
         break;
       case 4:
         this.setData({
-          'shenhezhong': this.data.dataList.zicai_data.data,
+          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.zicai_data.data),
           'currentType': '自采稿件'
         })
         wx.setStorageSync('pagestatus', 'all');
@@ -256,37 +192,7 @@ Page({
 
   },
   onReachBottom: function () {
-    let currentLength = this.data.shenhezhong.length;
-    let currentNews = this.data.shenhezhong;
-    let that = this;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=shenhezhong&offset=' + currentLength + '&num=100', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-        if (res.data.status == 1) {
-          that.setData({
-            shenhezhong: currentNews.concat(res.data.data)
-          });
-          wx.setStorageSync('shenhezhong', currentNews.concat(res.data.data));
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
+    this.data.page++;
+    this.getNews()
   }
 });

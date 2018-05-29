@@ -48,9 +48,9 @@
       </view>
       <!-- 文本内容 -->
       <!-- 模拟器上没有确认按钮 手机上用bindconfirm  模拟器用bindblur -->
-      <textarea wx:if="{{model=='text'&&item.type == 'text'}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
-      <textarea wx:if="{{model=='withImg'&&item.type == 'text'}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
-      <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" />
+      <textarea wx:if="{{model=='text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
+      <textarea wx:if="{{model=='withImg'&&item.type == 'text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
+      <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" />
     </view>
     <!-- 图文内容结束 -->
   </view>
