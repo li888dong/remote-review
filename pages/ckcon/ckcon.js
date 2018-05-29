@@ -411,13 +411,13 @@ Page({
       success: function (res) {
         console.log('转审人员列表',res.data)
       
-        if (res.data) {
+        if (res.data.status==1) {
           that.setData({
-            sucheckers: res.data,
-            sucheck:res.data[that.data.suindex].userid,
-            tocheckname: res.data[that.data.suindex].realname
+            sucheckers: res.data.data,
+            sucheck:res.data.data[that.data.suindex].userid,
+            tocheckname: res.data.data[that.data.suindex].realname
           });
-        } else if (res.status == '-2') {
+        } else if (res.data.status == '-2') {
           wx.showModal({
             title: '登录过期，请重新登录',
             showCancel: false,

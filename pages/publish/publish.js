@@ -136,6 +136,7 @@ Page({
         num: that.data.num
       },
       success: function (res) {
+        console.log('已审核',res)
         wx.hideLoading();
         if (res.data.status == 1) {
           that.setData({

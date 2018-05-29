@@ -2,11 +2,18 @@
 let app = getApp();
 Page({
   data: {
-    dataList: [],
+
+    bohui_data: [],
+    daishen_data: [],
+    final_data: [],
+    zhuanshen_data: [],
+    zicai_data: [],
+
     shenhezhong: [],
     page: 1,
     pageSize: 20,
-    currentType: ''
+    currentType: '',
+    currentTypeIndex:0
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -80,9 +87,13 @@ Page({
           let currentType = wx.getStorageSync('pagetype') || '全部';
           that.setData({
             currentType: currentType,
-            dataList: res.data.data
-          });
-          that.reformNews(0)
+            bohui_data: that.data.bohui_data.concat(res.data.data.bohui_data.data),
+            daishen_data: that.data.daishen_data.concat(res.data.data.daishen_data.data),
+            final_data: that.data.final_data.concat(res.data.data.final_data.data),
+            zhuanshen_data: that.data.zhuanshen_data.concat(res.data.data.zhuanshen_data.data),
+            zicai_data: that.data.zicai_data.concat(res.data.data.zicai_data.data)
+          })
+          that.reformNews(that.currentTypeIndex)
         } else if (res.data.status == '-1') {
           wx.showModal({
             title: res.data.info,
@@ -111,6 +122,9 @@ Page({
       itemList: ['全部', '待审稿件', '驳回稿件', '转审稿件', '自采稿件'],
       success: function (res) {
         that.reformNews(res.tapIndex);
+        that.setData({
+          currentTypeIndex: res.tapIndex
+        })
       },
       fail: function (res) {
         console.log(res.errMsg)
@@ -121,55 +135,53 @@ Page({
     switch (idx) {
       case 0:
         this.setData({
-          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.final_data.data),
-          'currentType': '全部'
+          shenhezhong: this.data.final_data,
+          currentType: '全部'
         })
         wx.removeStorageSync('pagestatus');
         wx.removeStorageSync('pageself');
         wx.setStorageSync('pagetype', '全部');
-        wx.setStorageSync('shenhezhong', this.data.dataList.final_data.data);
+        wx.setStorageSync('shenhezhong', this.data.final_data);
         break;
       case 1:
         this.setData({
-          'currentType': '待审稿件',
-          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.daishen_data.data)
+          currentType: '待审稿件',
+          shenhezhong: this.data.daishen_data
         })
         wx.setStorageSync('pagestatus', 'tocheck');
         wx.setStorageSync('pageself', '0');
         wx.setStorageSync('pagetype', '待审稿件');
-
-        this.setData({
-        });
+        wx.setStorageSync('shenhezhong', this.data.daishen_data);
         break;
       case 2:
         this.setData({
-          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.bohui_data.data),
+          shenhezhong: this.data.bohui_data,
           currentType: '驳回稿件'
         })
         wx.setStorageSync('pagestatus', 'rejected');
         wx.setStorageSync('pageself', '0');
         wx.setStorageSync('pagetype', '驳回稿件');
-        wx.setStorageSync('shenhezhong', this.data.dataList.bohui_data.data);
+        wx.setStorageSync('shenhezhong', this.data.bohui_data);
         break;
       case 3:
         this.setData({
-          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.zhuanshen_data.data),
-          'currentType': '转审稿件'
+          shenhezhong: this.data.zhuanshen_data,
+          currentType: '转审稿件'
         })
         wx.setStorageSync('pagestatus', 'tosucheck');
         wx.setStorageSync('pagetype', '转审稿件');
         wx.setStorageSync('pageself', '0');
-        wx.setStorageSync('shenhezhong', this.data.dataList.zhuanshen_data.data);
+        wx.setStorageSync('shenhezhong', this.data.zhuanshen_data);
         break;
       case 4:
         this.setData({
-          'shenhezhong': this.data.shenhezhong.concat(this.data.dataList.zicai_data.data),
-          'currentType': '自采稿件'
+          shenhezhong: this.data.zicai_data,
+          currentType: '自采稿件'
         })
         wx.setStorageSync('pagestatus', 'all');
         wx.setStorageSync('pageself', '1');
         wx.setStorageSync('pagetype', '自采稿件');
-        wx.setStorageSync('shenhezhong', this.data.dataList.zicai_data.data);
+        wx.setStorageSync('shenhezhong', this.data.zicai_data);
         break;
       default:
         // this.getNews();
