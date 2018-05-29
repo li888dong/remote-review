@@ -6,7 +6,9 @@ let interval,
   tout;
 Page({
   data: {
+    // 文章内容
     content: {},
+    // 文章id
     cid: 0,
     workflow: [],
     lineLength: 0,
@@ -14,9 +16,12 @@ Page({
     category: '116',
     subcate: '',
     categories: [],
+    // 转审人员列表
     sucheckers: [],
+    // 选定转审人员id
     sucheck: '',
-    tocheckname:'',
+    // 选定转审人员姓名
+    tocheckname: '',
     currentCate: '116',
     selection: [],
     rejectopen: false,
@@ -238,7 +243,7 @@ Page({
 
 
 
-   
+
     that.setData({
       lineLength: (this.data.workflow.length - 1) * 100
     });
@@ -399,7 +404,7 @@ Page({
     })
   },
   // 获取转审人员列表
-  getSu(){
+  getSu() {
     let that = this;
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_zhuanshen_users',
@@ -409,12 +414,12 @@ Page({
         sessid: wx.getStorageSync('sessid')
       },
       success: function (res) {
-        console.log('转审人员列表',res.data)
-      
-        if (res.data.status==1) {
+        console.log('转审人员列表', res.data)
+
+        if (res.data.status == 1) {
           that.setData({
             sucheckers: res.data.data,
-            sucheck:res.data.data[that.data.suindex].userid,
+            sucheck: res.data.data[that.data.suindex].userid,
             tocheckname: res.data.data[that.data.suindex].realname
           });
         } else if (res.data.status == '-2') {
@@ -461,7 +466,7 @@ Page({
               sessid: wx.getStorageSync('sessid'),
               id: that.data.cid,
               steps: that.data.content.steps,
-              type:''
+              type: ''
             },
             success: function (res) {
               wx.hideLoading();
@@ -497,7 +502,7 @@ Page({
                 showCancel: false,
                 content: '',
                 complete: function (res) {
-                  
+
                 }
               });
 
@@ -527,7 +532,7 @@ Page({
           return false;
         }
       })
-    }  else {
+    } else {
 
       wx.showModal({
         title: '确认转审',
@@ -545,7 +550,7 @@ Page({
                 sessid: wx.getStorageSync('sessid'),
                 zhuanshen_id: that.data.cid,
                 tocheckid: that.data.sucheck,
-                tocheckname:that.data.tocheckname
+                tocheckname: that.data.tocheckname
               },
               success: function (res) {
                 wx.hideLoading();
@@ -561,7 +566,7 @@ Page({
                     }
                   })
                 } else if (res.data.status == '-2') {
-                  
+
                   wx.showModal({
                     title: '登录过期，请重新登录',
                     showCancel: false,
@@ -582,7 +587,7 @@ Page({
                   showCancel: false,
                   content: '',
                   complete: function (res) {
-                    
+
                   }
                 });
 
@@ -692,7 +697,7 @@ Page({
       url: '../edit/edit?id=' + this.data.cid + '&type=editor'
     })
   },
-  
+
   setScore: function (e) {
     console.log(e.target.dataset.score);
     this.setData({
