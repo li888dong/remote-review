@@ -12,8 +12,7 @@ Page({
     shenhezhong: [],
     page: 1,
     pageSize: 20,
-    currentType: '',
-    currentTypeIndex:0
+    currentType: ''
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -44,14 +43,23 @@ Page({
     // 页面隐藏
     this.data.page = 1;
     this.data.shenhezhong.length = 0;
+    this.data.bohui_data.length = 0;
+    this.data.daishen_data.length = 0;
+    this.data.final_data.length = 0;
+    this.data.zhuanshen_data.length = 0;
+    this.data.zicai_data.length = 0;
   },
   onUnload: function () {
     // 页面关闭
   },
   onPullDownRefresh: function () {
-    let that = this;
-    this.data.shenhezhong.length = 0;
     this.data.page = 1;
+    this.data.shenhezhong.length = 0;
+    this.data.bohui_data.length = 0;
+    this.data.daishen_data.length = 0;
+    this.data.final_data.length = 0;
+    this.data.zhuanshen_data.length = 0;
+    this.data.zicai_data.length = 0;
     this.getNews();
   },
   gotoNews: function (e) {
@@ -93,7 +101,7 @@ Page({
             zhuanshen_data: that.data.zhuanshen_data.concat(res.data.data.zhuanshen_data.data),
             zicai_data: that.data.zicai_data.concat(res.data.data.zicai_data.data)
           })
-          that.reformNews(that.currentTypeIndex)
+          that.reformNews(wx.getStorageSync('currentTypeIndex'))
         } else if (res.data.status == '-1') {
           wx.showModal({
             title: res.data.info,
@@ -122,9 +130,7 @@ Page({
       itemList: ['全部', '待审稿件', '驳回稿件', '转审稿件', '自采稿件'],
       success: function (res) {
         that.reformNews(res.tapIndex);
-        that.setData({
-          currentTypeIndex: res.tapIndex
-        })
+        wx.setStorageSync('currentTypeIndex', res.tapIndex)
       },
       fail: function (res) {
         console.log(res.errMsg)
