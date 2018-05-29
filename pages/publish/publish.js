@@ -1,8 +1,14 @@
 // pages/craft/craft.js
 Page({
   data: {
-    page: 0,
-    num: 20
+    page: 1,
+    num: 20,
+    final_data: [],
+    yishen_data: [],
+    zicai_data: [],
+
+    yishenhe: [],
+    currentType: ''
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -18,64 +24,32 @@ Page({
       });
       return false;
     }
-    let yshData = wx.getStorageSync('yishenhe') || [];
-    this.setData({
-      'yishenhe': yshData
-    });
-    // this.loadNews();
     let pagestatus = wx.getStorageSync('ysstatus') || 'none';
     let self = wx.getStorageSync('ysself') || '0';
     let currentType = wx.getStorageSync('ystype') || '全部';
-    this.filterNews(pagestatus, self);
     this.setData({
-      'currentType': currentType
+      currentType: currentType
     })
+    this.getNews();
   },
   onHide: function () {
     // 页面隐藏
+    this.data.page = 1;
+    this.data.yishenhe.length = 0;
+    this.data.final_data.length = 0;
+    this.data.yishen_data.length = 0;
+    this.data.zicai_data.length = 0;
   },
   onUnload: function () {
     // 页面关闭
   },
   onPullDownRefresh: function () {
-    let that = this;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=yishenhe&offset=0&num=100', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-        if (res.data.status == 1) {
-          that.setData({
-            yishenhe: res.data.data
-          });
-          wx.setStorageSync('ylastupdate', 0);
-          wx.setStorageSync('yishenhe', res.data.data);
-          that.setData({
-            'currentType': '全部'
-          });
-          wx.stopPullDownRefresh();
-          wx.removeStorageSync('ysstatus');
-          wx.removeStorageSync('ysself');
-          wx.removeStorageSync('ystype');
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
+    this.data.page = 1;
+    this.data.yishenhe.length = 0;
+    this.data.final_data.length = 0;
+    this.data.yishen_data.length = 0;
+    this.data.zicai_data.length = 0;
+    this.getNews()
   },
   viewNews: function (e) {
     if (e.currentTarget.dataset.forbid == 1) {
@@ -87,39 +61,6 @@ Page({
         url: '../ckcon/ckcon?id=' + e.currentTarget.dataset.newsid + '&onlycheck=1'
       })
     }
-  },
-  loadNews: function () {
-    let that = this;
-    let change_time = wx.getStorageSync('ylastupdate') || 0;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=check_change', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid'),
-        change_time: change_time
-      },
-      success: function (res) {
-        // res = JSON.parse(res);
-        if (res.data.status == 1) {
-          that.getNews();
-          wx.setStorageSync('ylastupdate', res.data.change_time);
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
   },
   getNews: function () {
     let that = this;
@@ -136,20 +77,22 @@ Page({
         num: that.data.num
       },
       success: function (res) {
-        console.log('已审核',res)
+        wx.stopPullDownRefresh();
+        console.log('已审核', res)
         wx.hideLoading();
         if (res.data.status == 1) {
           that.setData({
-            yishenhe: res.data.data
+            final_data: that.data.final_data.concat(res.data.data.final_data.data),
+            yishen_data: that.data.yishen_data.concat(res.data.data.yishen_data.data),
+            zicai_data: that.data.zicai_data.concat(res.data.data.zicai_data.data)
           });
           let pagestatus = wx.getStorageSync('ysstatus') || 'none';
           let self = wx.getStorageSync('ysself') || '0';
           let currentType = wx.getStorageSync('ystype') || '全部';
-          that.filterNews(pagestatus, self);
           that.setData({
-            'currentType': currentType
+            currentType: currentType
           });
-          wx.setStorageSync('yishenhe', res.data.data);
+          that.reformNews(wx.getStorageSync('publishTypeIndex'))
         } else if (res.data.status == '-2') {
 
           wx.showModal({
@@ -172,9 +115,10 @@ Page({
   showFilter: function () {
     let that = this;
     wx.showActionSheet({
-      itemList: ['全部', '自采稿件', '我通过的稿件'],
+      itemList: ['全部', '自采稿件', '已审核的稿件'],
       success: function (res) {
         that.reformNews(res.tapIndex);
+        wx.setStorageSync('publishTypeIndex', res.tapIndex)
       },
       fail: function (res) {
         console.log(res.errMsg)
@@ -184,30 +128,30 @@ Page({
   reformNews: function (idx) {
     switch (idx) {
       case 0:
-        this.getNews();
         wx.removeStorageSync('ysstatus');
         wx.removeStorageSync('ysself');
         wx.setStorageSync('ystype', '全部');
         this.setData({
-          'currentType': '全部'
+          currentType: '全部',
+          yishenhe: this.data.final_data
         });
         break;
       case 1:
-        this.filterNews('all', '1');
         wx.setStorageSync('ysstatus', 'all');
         wx.setStorageSync('ysself', '1');
         wx.setStorageSync('ystype', '自采稿件');
         this.setData({
-          'currentType': '自采稿件'
+          currentType: '自采稿件',
+          yishenhe: this.data.zicai_data
         });
         break;
       case 2:
-        this.filterNews('self_check', '1');
         wx.setStorageSync('ysstatus', 'self_check');
         wx.setStorageSync('ysself', '1');
-        wx.setStorageSync('ystype', '我通过的稿件');
+        wx.setStorageSync('ystype', '已审核的稿件');
         this.setData({
-          'currentType': '我通过的稿件'
+          currentType: '已审核的稿件',
+          yishenhe: this.data.yishen_data
         });
         break;
       default:

@@ -72,7 +72,6 @@ Page({
         url: '../ckcon/ckcon?id=' + e.currentTarget.dataset.newsid
       })
     }
-
   },
 
   getNews: function () {

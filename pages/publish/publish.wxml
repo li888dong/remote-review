@@ -1,28 +1,28 @@
 <view class="list">
-    <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-forbid="{{item.forbidden}}" data-newsid="{{item.id}}">
-      <view class="news-inner">
-        <text class="news-title">{{item.title}}</text>
-        <view class="news-info">
-          <view class="news-time">{{item.time}}</view>
-          <view class="news-author">{{item.realusername}}</view>
-        </view>
+  <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-newsid="{{item.id}}">
+    <view class="news-inner">
+      <text class="news-title">{{item.title}}</text>
+      <view class="news-info">
+        <view class="news-time">{{item.inputtime}}</view>
+        <view class="news-author">{{item.realname}}</view>
       </view>
     </view>
-    <view wx-if="{{yishenhe.length == 0}}" class="empty-item">
-        该类别下暂无内容
-    </view>
   </view>
-  <view class="bottom-area">
-    <navigator hover-class="hover-active" url="../new/new">
-      <view class="r-btn new-btn"></view>
-      新建稿件
-    </navigator>
-    <navigator hover-class="hover-active" url="../center/center">
-      <view class="r-btn center-btn"></view>
-      个人中心
-    </navigator>
-    <view hover-class="hover-active" class="bottom-view" hover="true" bindtap="showFilter">
-        <view class="r-btn filter-btn"></view>
-            {{currentType}}
-      </view>
+  <view wx-if="{{yishenhe.length == 0}}" class="empty-item">
+    该类别下暂无内容
   </view>
+</view>
+<view class="bottom-area">
+  <navigator hover-class="hover-active" url="../new/new">
+    <view class="r-btn new-btn"></view>
+    新建稿件
+  </navigator>
+  <navigator hover-class="hover-active" url="../center/center">
+    <view class="r-btn center-btn"></view>
+    个人中心
+  </navigator>
+  <view hover-class="hover-active" class="bottom-view" hover="true" bindtap="showFilter">
+    <view class="r-btn filter-btn"></view>
+    {{currentType}}
+  </view>
+</view>

@@ -27,7 +27,7 @@ Page({
   // 跳转至编辑页面
   editNews: function () {
     wx.navigateTo({
-      url: '../new/new?id=' + this.data.cid + '&type='+ this.data.content.type
+      url: '../edit/edit?id=' + this.data.cid + '&type='+ this.data.content.type
     })
   },
   // 删除

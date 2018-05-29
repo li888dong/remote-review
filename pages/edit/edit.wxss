@@ -32,12 +32,14 @@ page {
 
 .content-input {
     color: #000;
-    line-height: 55rpx;
+    min-height: 24rpx;
     font-size: 34rpx;
     z-index: 1;
     width:100%;
 }
-
+.input-withImg{
+  margin-top: 12rpx;
+}
 .content-media {
     padding: 12rpx;
     border: 1px dashed #b2b2b2;
