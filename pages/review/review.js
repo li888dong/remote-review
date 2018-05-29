@@ -100,7 +100,7 @@ Page({
             zhuanshen_data: that.data.zhuanshen_data.concat(res.data.data.zhuanshen_data.data),
             zicai_data: that.data.zicai_data.concat(res.data.data.zicai_data.data)
           })
-          that.reformNews(wx.getStorageSync('currentTypeIndex'))
+          that.reformNews(wx.getStorageSync('currentTypeIndex')||0)
         } else if (res.data.status == '-1') {
           wx.showModal({
             title: res.data.info,

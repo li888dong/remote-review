@@ -52,15 +52,9 @@ Page({
     this.getNews()
   },
   viewNews: function (e) {
-    if (e.currentTarget.dataset.forbid == 1) {
-      wx.navigateTo({
-        url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
-      })
-    } else {
-      wx.navigateTo({
-        url: '../ckcon/ckcon?id=' + e.currentTarget.dataset.newsid + '&onlycheck=1'
-      })
-    }
+    wx.navigateTo({
+      url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
+    })
   },
   getNews: function () {
     let that = this;
@@ -92,9 +86,8 @@ Page({
           that.setData({
             currentType: currentType
           });
-          that.reformNews(wx.getStorageSync('publishTypeIndex'))
+          that.reformNews(wx.getStorageSync('publishTypeIndex')||0)
         } else if (res.data.status == '-2') {
-
           wx.showModal({
             title: '登录过期，请重新登录',
             showCancel: false,
@@ -135,6 +128,7 @@ Page({
           currentType: '全部',
           yishenhe: this.data.final_data
         });
+        wx.setStorageSync('yishenhe', this.data.final_data)
         break;
       case 1:
         wx.setStorageSync('ysstatus', 'all');
@@ -144,6 +138,7 @@ Page({
           currentType: '自采稿件',
           yishenhe: this.data.zicai_data
         });
+        wx.setStorageSync('yishenhe', this.data.zicai_data)
         break;
       case 2:
         wx.setStorageSync('ysstatus', 'self_check');
@@ -153,6 +148,7 @@ Page({
           currentType: '已审核的稿件',
           yishenhe: this.data.yishen_data
         });
+        wx.setStorageSync('yishenhe', this.data.zicai_data)
         break;
       default:
         // this.getNews();

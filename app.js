@@ -69,12 +69,7 @@ App({
 
   },
   getNewsById(id,type){
-    let contents;
-    if(type == 'shenhezhong'){
-      contents = wx.getStorageSync(type);
-    }else{
-      contents = wx.getStorageSync(type).info;
-    }
+    let contents = wx.getStorageSync(type);
     let content = null;
     contents.map(item=>{
       item.content = JSON.parse(item.content)

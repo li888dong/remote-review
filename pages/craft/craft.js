@@ -53,7 +53,7 @@ Page({
           that.setData({
             caogaoxiang: that.data.caogaoxiang.concat(res.data.data.info)
           });
-          wx.setStorageSync('caogaoxiang', res.data.data);
+          wx.setStorageSync('caogaoxiang', res.data.data.info);
         } else if (res.data.status == '-1'){
           wx.showModal({
             title: res.data.info,

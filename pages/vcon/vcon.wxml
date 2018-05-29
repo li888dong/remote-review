@@ -5,8 +5,7 @@
     </view>
     <view class="content-info">
       <text>{{content.inputtime}}</text>
-      <text>{{content.username}}</text>
-      <text class="info-copyfrom">{{content.copyfrom}}</text>
+      <text>{{content.realname}}</text>
     </view>
 
     <view class="content-content">
@@ -24,16 +23,6 @@
         </view>
       </view>
 
-      <view class="content-info" wx:if="{{is_special}}">
-               <text>本文发布于{{specialName}}专题下的{{specialType}}</text>
-          </view>
-      <view class="slider-container">
-        <view class="star-container">
-        <view wx:for="{{[1, 2, 3, 4, 5, 6, 7]}}" class="{{content.news_grade > item - 1 ? 'star star-gold':'star star-grey'}}">
-        </view>
-        </view>
-        <view class="score">{{content.news_grade}}</view>
-     </view>
     </view>
   </view>
   <view class="content-reason" wx:if="{{content.reject_reason != ''}}">
