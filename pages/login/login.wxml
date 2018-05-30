@@ -1,5 +1,5 @@
 <!--pages/login/login.wxml-->
-<view class="login-page">
+<view class="login-page" id='login-page'>
   <view class="avatar-container">
   <open-data class="userinfo-avatar" type="userAvatarUrl"></open-data>
   </view>
@@ -8,13 +8,13 @@
       <view class="section">
         <view class="input-label">用户名</view>
         <view class="input">
-          <input name="username" placeholder="请输入用户名" type="text" />
+          <input name="username" cursor-spacing='20' placeholder="请输入用户名" type="text" />
         </view>
       </view>
       <view class="section">
         <view class="input-label">密码</view>
         <view class="input">
-          <input name="password" password type="text" placeholder="请输入密码" />
+          <input name="password" cursor-spacing='20' password type="text" placeholder="请输入密码" bindfocus='scrollBottom'/>
         </view>
       </view>
       <view class="btn-area">

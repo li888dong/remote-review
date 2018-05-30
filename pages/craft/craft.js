@@ -8,6 +8,12 @@ Page({
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
+    if (!app.globalData.sessid) {
+      wx.redirectTo({
+        url: '../login/login'
+      });
+      return
+    }
   },
   onReady: function () {
     // 页面渲染完成
@@ -18,6 +24,7 @@ Page({
       wx.redirectTo({
         url: '../login/login'
       });
+      return
     }
     this.getNews();    
   },

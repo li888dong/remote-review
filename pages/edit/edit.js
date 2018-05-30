@@ -41,9 +41,14 @@ Page({
       type: options.type,
       cid: options.id
     })
-    if (this.data.type == 'caogao') {
+    console.log(options)
+    if (this.data.type == 'caogao' || this.data.type == 'bohui') {
       this.setData({
         content: app.getNewsById(this.data.cid,'caogaoxiang')
+      })
+    }else {
+      this.setData({
+        content: app.getNewsById(this.data.cid, 'shenhezhong')
       })
     }
 
@@ -218,27 +223,7 @@ Page({
       })
       return
     }
-    // 文章来源
-    // else if (this.data.content.copyfrom.replace(/\s+/g, "") == '') {
-    //   wx.showModal({
-    //     title: '来源不得为空',
-    //     showCancel: false,
-    //     content: '',
-    //     complete: function (res) {
-    //       return false;
-    //     }
-    //   })
-    // } 
-    // else if (this.data.is_special && this.data.selectedType == 0) {
-    //   wx.showModal({
-    //     title: '专题栏目不能为空',
-    //     showCancel: false,
-    //     content: '',
-    //     complete: function (res) {
-    //       return false;
-    //     }
-    //   })
-    // } 
+    
     let tempArr;
     if (this.data.model == 'text') {
       tempArr = [{

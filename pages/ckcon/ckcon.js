@@ -248,38 +248,7 @@ Page({
       lineLength: (this.data.workflow.length - 1) * 100
     });
   },
-  getSpecials: function () {
-
-    let that = this;
-
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=special_list',
-      type: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-        if (res.data.status == 1) {
-          that.setData({
-            specials: res.data.data
-          });
-          if (that.data.content.sid !== 0) {
-            that.setData({
-              'specialIndex': util.getArrayindx(that.data.content.sid, that.data.specials, 'sid')
-            });
-            // console.log(util.getArrayindx(that.data.content.parentid,that.data.categories,'catid'));
-            that.setData({
-              types: that.data.specials[that.data.specialIndex].category
-            });
-            that.setData({
-              'typeIndex': util.getArrayindx(that.data.content.scid, that.data.types, 'scid')
-            })
-          }
-        }
-      }
-    });
-  },
+  
   openOp: function (e) {
     let opid = e.target.dataset.opid;
     this.setData({
@@ -694,7 +663,7 @@ Page({
   },
   editNews: function () {
     wx.navigateTo({
-      url: '../edit/edit?id=' + this.data.cid + '&type=editor'
+      url: '../edit/edit?id=' + this.data.cid + '&type=shenhe'
     })
   },
 

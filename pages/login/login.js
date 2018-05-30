@@ -64,5 +64,22 @@ Page({
         }
       }
     });
+  },
+  scrollBottom(){
+    wx.createSelectorQuery().select('#login-page').boundingClientRect((rect) => {
+
+      // 使页面滚动到底部  
+
+      wx.pageScrollTo({
+
+        scrollTop: rect.bottom,//rect.height
+
+        duration: 10//设置滚动时间
+
+      })
+
+      //功能代码
+
+    }).exec()
   }
 });

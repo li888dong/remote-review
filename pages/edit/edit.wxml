@@ -1,7 +1,7 @@
 <view>
   <!-- 顶部暂存、提交按钮 -->
   <view class="bottom-area">
-    <view class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
+    <view wx:if="{{type!='shenhe'}}" class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
       暂存
     </view>
     <view class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="3">
