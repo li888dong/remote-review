@@ -9,14 +9,15 @@ Page({
     reject_reason:[]
   },
   onLoad: function (options) {
+    app.getWorkFlowData(options.id, this);
+    app.getBohuiContent(options.id, this)
     let that = this;
     this.setData({
       content: app.getNewsById(options.id, 'caogaoxiang'),
       cid: options.id
     });
     console.log(this.data.content)
-    app.getWorkFlowData(options.id,this);
-    app.getBohuiContent(options.id, this)
+    
   },
   
   // 跳转至编辑页面

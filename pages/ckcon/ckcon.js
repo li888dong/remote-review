@@ -36,6 +36,10 @@ Page({
     newsScore: 1
   },
   onLoad: function (options) {
+    // 获取工作流数据
+    app.getWorkFlowData(options.id, this);
+    // 获取驳回数据
+    app.getBohuiContent(options.id, this)
     let that = this;
     // 页面初始化 options为页面跳转所带来的参数
     this.setData({
@@ -43,10 +47,7 @@ Page({
       content: app.getNewsById(options.id, 'shenhezhong')
     });
     this.getSu();
-    // 获取工作流数据
-    app.getWorkFlowData(options.id,this);
-    // 获取驳回数据
-    app.getBohuiContent(options.id, this)
+    
   },
   
 

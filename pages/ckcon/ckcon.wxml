@@ -5,17 +5,7 @@
       编辑
     </view>
   </view>
-  <view class="content-reason" wx:if="{{reject_reason.length>0}}">
-    <view wx:for="{{reject_reason}}" class="reason-item" wx:for-index="{{index}}">
-      <view class="reason-content">
-        {{item.comment}}
-      </view>
-      <view class="reason-info">
-        <text class="reason-name">{{item.checkname}}</text>
-        <text class="reason-time">{{item.inputtime}}</text>
-      </view>
-    </view>
-  </view>
+ 
   <view class="content-area">
     <view>
       <text class="content-title">{{content.title}}</text>
@@ -78,7 +68,17 @@
   </view>
 
 
-
+ <view class="content-reason" wx:if="{{reject_reason.length>0}}">
+    <view wx:for="{{reject_reason}}" class="reason-item" wx:for-index="{{index}}">
+      <view class="reason-content">
+        {{item.comment}}
+      </view>
+      <view class="reason-info">
+        <text class="reason-name">{{item.checkname}}</text>
+        <text class="reason-time">{{item.inputtime}}</text>
+      </view>
+    </view>
+  </view>
   <view class="padding">
     <view class="flow">
       <view class="line-left" style="height:{{lineLength}}rpx"></view>
