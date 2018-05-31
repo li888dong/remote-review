@@ -53,25 +53,7 @@ Page({
     }
 
   },
-  fetchSpecialList() {
-    let that = this;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=special_list',
-      type: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: app.globalData.sessid
-      },
-      success: function (res) {
-        console.log(res);
-        if (res.data.status == 1) {
-          that.setData({
-            specials: res.data.data
-          })
-        }
-      }
-    })
-  },
+  
   // 图片上传，成功后将图片地址存入content
   uploadImg: function (e) {
     let cidx = e.target.dataset.cidx;
@@ -241,7 +223,7 @@ Page({
       tempArr = [];
       // 删去type=add的项
       for (let i = 0; i < content.content.length; i++) {
-        if (content.content[i].type != 'add' && content.content[i].value) {
+        if (content.content[i].type != 'add' && content.content[i].value.trim()) {
           tempArr.push(content.content[i])
         }
       }
@@ -283,6 +265,8 @@ Page({
       reqData.caogao_id = this.data.cid;
     }else if(this.data.type == 'bohui'){
       reqData.bohui_id = this.data.cid
+    }else if(this.data.type == 'shenhe'){
+      reqData.shenhe_id = this.data.cid
     }
     
     wx.request({
@@ -299,7 +283,7 @@ Page({
             content: '',
             complete: function (res) {
               wx.navigateBack({
-                delta: 1
+                delta: 2
               })
             }
           })

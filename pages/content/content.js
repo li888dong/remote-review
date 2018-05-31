@@ -6,33 +6,41 @@ Page({
     cid: 0,
     workflow: [],
     lineLength: 0,
-    disable: false,
-    disabletip1: '提交',
-    disabletip2: '删除',
-    currentVoice: ['', ''],
-    is_special: false,
-    specialName: '',
-    specialType: '',
-    selectedSpecial: 0,
-    selectedType: 0
+    reject_reason:[]
   },
   onLoad: function (options) {
     let that = this;
     this.setData({
-      content: app.getNewsById(options.id,'caogaoxiang'),
+      content: app.getNewsById(options.id, 'caogaoxiang'),
       cid: options.id
     });
     console.log(this.data.content)
+    app.getWorkFlowData(options.id,this);
+    app.getBohuiContent(options.id, this)
   },
+  
   // 跳转至编辑页面
   editNews: function () {
     wx.navigateTo({
-      url: '../edit/edit?id=' + this.data.cid + '&type='+ this.data.content.type
+      url: '../edit/edit?id=' + this.data.cid + '&type=' + this.data.content.type
     })
   },
   // 删除
   delNews: function (e) {
     let that = this;
+    let reqData;
+    if (this.data.content.type == 'bohui') {
+      reqData = {
+        sessid: wx.getStorageSync('sessid'),
+        bohui_id: that.data.cid
+      }
+    }else{
+      reqData = {
+        sessid: wx.getStorageSync('sessid'),
+        type:'caogao',
+        caogao_id: that.data.cid
+      }
+    }
     wx.showModal({
       title: '确认删除',
       content: '您确定要删除这篇稿件吗？',
@@ -43,11 +51,7 @@ Page({
             url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_delete",
             method: 'post',
             header: { "content-type": "application/x-www-form-urlencoded" },
-            data: {
-              sessid: wx.getStorageSync('sessid'),
-              type:'caogao',
-              caogao_id: that.data.cid
-            },
+            data: reqData,
             success: function (res) {
               wx.hideLoading();
               if (res.data.status == 1) {
@@ -81,7 +85,7 @@ Page({
                 showCancel: false,
                 content: '',
                 complete: function (res) {
-                  
+
                 }
               });
 
@@ -105,27 +109,7 @@ Page({
       })
       return
     }
-    // 文章来源
-    // else if (this.data.content.copyfrom.replace(/\s+/g, "") == '') {
-    //   wx.showModal({
-    //     title: '来源不得为空',
-    //     showCancel: false,
-    //     content: '',
-    //     complete: function (res) {
-    //       return false;
-    //     }
-    //   })
-    // } 
-    // else if (this.data.is_special && this.data.selectedType == 0) {
-    //   wx.showModal({
-    //     title: '专题栏目不能为空',
-    //     showCancel: false,
-    //     content: '',
-    //     complete: function (res) {
-    //       return false;
-    //     }
-    //   })
-    // } 
+    
     let tempArr;
     if (this.data.model == 'text') {
       tempArr = [{
@@ -143,7 +127,7 @@ Page({
       tempArr = [];
       // 删去type=add的项
       for (let i = 0; i < content.content.length; i++) {
-        if (content.content[i].type != 'add' && content.content[i].value) {
+        if (content.content[i].type != 'add' && content.content[i].value.trim()) {
           tempArr.push(content.content[i])
         }
       }
@@ -174,12 +158,31 @@ Page({
     // sessid 保持登录状态
     // type 判断暂存情况(新建 | 草稿 | 驳回)
     // caogao_id bohui_id
-    let reqData = {
-      title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
-      content: JSON.stringify(tempArr),
-      sessid: app.globalData.sessid,
-      type: 'caogao',
-      caogao_id:this.data.cid
+    let reqData;
+    if (that.data.content.type == 'bohui') {
+      reqData = {
+        title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
+        content: JSON.stringify(tempArr),
+        sessid: app.globalData.sessid,
+        type: 'bohui',
+        bohui_id: this.data.cid
+      }
+    } else if (that.data.content.type == 'shenhe') {
+      reqData = {
+        title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
+        content: JSON.stringify(tempArr),
+        sessid: app.globalData.sessid,
+        type: 'shenhe',
+        shenhe_id: this.data.cid
+      }
+    } else {
+      reqData = {
+        title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
+        content: JSON.stringify(tempArr),
+        sessid: app.globalData.sessid,
+        type: 'caogao',
+        caogao_id: this.data.cid
+      }
     }
 
     wx.request({

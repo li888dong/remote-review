@@ -1,4 +1,5 @@
 // pages/craft/craft.js
+let app = getApp();
 Page({
   data: {
     page: 1,
@@ -114,7 +115,7 @@ Page({
   showFilter: function () {
     let that = this;
     wx.showActionSheet({
-      itemList: ['全部', '自采稿件', '已审核的稿件'],
+      itemList: ['全部', '自采稿件', '我审核的稿件'],
       success: function (res) {
         that.reformNews(res.tapIndex);
         wx.setStorageSync('publishTypeIndex', res.tapIndex)
@@ -149,9 +150,9 @@ Page({
       case 2:
         wx.setStorageSync('ysstatus', 'self_check');
         wx.setStorageSync('ysself', '1');
-        wx.setStorageSync('ystype', '已审核的稿件');
+        wx.setStorageSync('ystype', '我审核的稿件');
         this.setData({
-          currentType: '已审核的稿件',
+          currentType: '我审核的稿件',
           yishenhe: this.data.yishen_data
         });
         wx.setStorageSync('yishenhe', this.data.zicai_data)

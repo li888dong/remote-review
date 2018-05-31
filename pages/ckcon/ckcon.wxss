@@ -199,6 +199,7 @@ page {
 .content-options button {
     width: 190rpx;
     height: 80rpx;
+    line-height: 80rpx;
     box-sizing: border-box;
 }
 
@@ -219,7 +220,6 @@ page {
     font-size:18px;
     text-align:center;
     text-decoration:none;
-    line-height:2.55555556;
     border-radius:5px;
     -webkit-tap-highlight-color:transparent;
     overflow:hidden;

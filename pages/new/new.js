@@ -43,29 +43,10 @@ Page({
     })
     if (this.data.type == 'caogao') {
       this.setData({
-        content: app.getNewsById(this.data.cid,'caogaoxiang')
+        content: app.getNewsById(this.data.cid, 'caogaoxiang')
       })
     }
 
-  },
-  fetchSpecialList() {
-    let that = this;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=special_list',
-      type: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: app.globalData.sessid
-      },
-      success: function (res) {
-        console.log(res);
-        if (res.data.status == 1) {
-          that.setData({
-            specials: res.data.data
-          })
-        }
-      }
-    })
   },
   // 图片上传，成功后将图片地址存入content
   uploadImg: function (e) {
@@ -218,27 +199,7 @@ Page({
       })
       return
     }
-    // 文章来源
-    // else if (this.data.content.copyfrom.replace(/\s+/g, "") == '') {
-    //   wx.showModal({
-    //     title: '来源不得为空',
-    //     showCancel: false,
-    //     content: '',
-    //     complete: function (res) {
-    //       return false;
-    //     }
-    //   })
-    // } 
-    // else if (this.data.is_special && this.data.selectedType == 0) {
-    //   wx.showModal({
-    //     title: '专题栏目不能为空',
-    //     showCancel: false,
-    //     content: '',
-    //     complete: function (res) {
-    //       return false;
-    //     }
-    //   })
-    // } 
+    
     let tempArr;
     if (this.data.model == 'text') {
       tempArr = [{
@@ -254,9 +215,9 @@ Page({
       }
     } else {
       tempArr = [];
-      // 删去type=add的项
+      // 删去type=add的项 和值为空的项
       for (let i = 0; i < content.content.length; i++) {
-        if (content.content[i].type != 'add' && content.content[i].value) {
+        if (content.content[i].type != 'add' && content.content[i].value.trim()) {
           tempArr.push(content.content[i])
         }
       }
@@ -294,12 +255,12 @@ Page({
       type: this.data.type
     }
 
-    if(this.data.type == 'caogao'){
+    if (this.data.type == 'caogao') {
       reqData.caogao_id = this.data.cid;
-    }else if(this.data.type == 'bohui'){
+    } else if (this.data.type == 'bohui') {
       reqData.bohui_id = this.data.cid
     }
-    
+
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=' + url,
       method: 'post',

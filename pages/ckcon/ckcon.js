@@ -11,11 +11,10 @@ Page({
     // 文章id
     cid: 0,
     workflow: [],
+    // 驳回理由前面的小圆点
     lineLength: 0,
-    editorauth: '',
-    category: '116',
-    subcate: '',
-    categories: [],
+    // 驳回信息
+    reject_reason:[],
     // 转审人员列表
     sucheckers: [],
     // 选定转审人员id
@@ -31,28 +30,10 @@ Page({
     mainindex: 0,
     subindex: 0,
     suindex: 0,
-    disable: false,
-    onlyreject: false,
-    tocatid: 0,
-    parentid: 0,
-    disabletip4: '确认修改',
-    disabletip3: '确认转审',
-    disabletip2: '确认通过',
-    disabletip1: '确认驳回',
-    rejectaudio: [],
     currentVoice: ['', ''],
     currentRecord: '',
     audioarea: false,
-    newsScore: 1,
-    autheditors: [],
-    supereditors: [],
-    is_special: false,
-    specials: [],
-    types: [],
-    selectedType: 0,
-    selectedSpecial: 0,
-    specialIndex: -1,
-    typeIndex: -1
+    newsScore: 1
   },
   onLoad: function (options) {
     let that = this;
@@ -62,193 +43,13 @@ Page({
       content: app.getNewsById(options.id, 'shenhezhong')
     });
     this.getSu();
-  },
-  fetchData() {
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=show_workflow&id=' + options.id, //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-
-        if (res.data.status == 1) {
-          that.setData({
-            workflow: res.data.data
-          });
-          that.setData({
-            lineLength: (res.data.data.length - 1) * 100
-          });
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=get_article&id=' + options.id, //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-
-        if (res.data.status == 1) {
-          let tempArr = res.data.data;
-          tempArr['content'] = JSON.parse(tempArr['content']);
-          that.setData({
-            content: tempArr
-          });
-
-          if (tempArr.is_special == 1) {
-            that.setData({
-              is_special: true
-            });
-          }
-
-          that.setData({
-            selectedSpecial: tempArr.sid
-          });
-          that.setData({
-            selectedType: tempArr.scid
-          });
-
-          that.setData({
-            specialName: tempArr.sname
-          });
-          that.setData({
-            specialType: tempArr.scname
-          });
-
-          if (tempArr.news_grade != 0) {
-            that.setData({
-              newsScore: tempArr.news_grade
-            })
-          }
-
-          that.getSpecials();
-
-
-
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-
-
-      }
-    });
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=cats',
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-
-        if (res.data.status == 1) {
-          that.setData({
-            categories: res.data.data
-          });
-          that.setData({
-            currentCate: that.data.content.tocatid
-          });
-          if (that.data.content.parentid != 0) {
-            // console.log(that.data.content.parentid);
-
-            that.setData({
-              'mainindex': util.getArrayindx(that.data.content.parentid, that.data.categories, 'catid')
-            });
-            // console.log(util.getArrayindx(that.data.content.parentid,that.data.categories,'catid'));
-            that.setData({
-              selection: that.data.categories[that.data.mainindex].subcats
-            });
-            that.setData({
-              'subindex': util.getArrayindx(that.data.content.tocatid, that.data.categories[that.data.mainindex].subcats, 'catid')
-            })
-          } else {
-            that.setData({
-              'mainindex': util.getArrayindx(that.data.content.tocatid, that.data.categories, 'catid')
-            })
-          }
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-        }
-      }
-    });
-
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=set_checkers',
-      type: 'get',
-      // header: { "content-type": "application/x-www-form-urlencoded"},
-      success: function (res) {
-        // console.log(res);
-        if (res.data.status === 1) {
-          that.setData({
-            'supereditors': res.data.data.sucheckers
-          });
-          that.setData({
-            'autheditors': res.data.data.checkers
-          });
-          let tempID = parseInt(that.data.xjuser.roleid);
-          if (that.data.autheditors.indexOf(tempID) > -1) {
-            // console.log('true');
-            that.setData({
-              editorauth: 'tocheck'
-            })
-          } else if (that.data.supereditors.indexOf(tempID) > -1) {
-            // console.log('sutrue');
-
-            that.setData({
-              editorauth: 'tosucheck'
-            })
-          }
-          // console.log(that.data.xjuser.roleid);
-        }
-      }
-    });
-
-
-
-
-    that.setData({
-      lineLength: (this.data.workflow.length - 1) * 100
-    });
+    // 获取工作流数据
+    app.getWorkFlowData(options.id,this);
+    // 获取驳回数据
+    app.getBohuiContent(options.id, this)
   },
   
+
   openOp: function (e) {
     let opid = e.target.dataset.opid;
     this.setData({
@@ -435,7 +236,7 @@ Page({
               sessid: wx.getStorageSync('sessid'),
               id: that.data.cid,
               steps: that.data.content.steps,
-              type: ''
+              type: that.data.content.type
             },
             success: function (res) {
               wx.hideLoading();
@@ -590,14 +391,6 @@ Page({
       content: '您确定要通过这篇稿件吗？',
       success: function (res) {
         if (res.confirm) {
-          that.setData({
-            'disable': true
-          });
-          let disabletip = 'disabletip' + e.currentTarget.dataset.disableid;
-          let tempData = {};
-
-          tempData[disabletip] = that.data[disabletip].replace('确认', '') + '中...';
-          that.setData(tempData);
           wx.request({
             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=pass",
             method: 'post',

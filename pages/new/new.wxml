@@ -48,6 +48,7 @@
       </view>
       <!-- 文本内容 -->
       <!-- 模拟器上没有确认按钮 手机上用bindconfirm  模拟器用bindblur -->
+      <!-- //type 判断暂存情况(新建|草稿|驳回) -->
       <textarea wx:if="{{model=='text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
       <textarea wx:if="{{model=='withImg'&&item.type == 'text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
       <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" />
