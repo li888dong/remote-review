@@ -182,7 +182,8 @@ Page({
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
-        sessid: wx.getStorageSync('sessid')
+        sessid: wx.getStorageSync('sessid'),
+        newsid:that.data.cid
       },
       success: function (res) {
         console.log('转审人员列表', res.data)

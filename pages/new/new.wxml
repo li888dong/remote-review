@@ -51,7 +51,7 @@
       <!-- //type 判断暂存情况(新建|草稿|驳回) -->
       <textarea wx:if="{{model=='text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
       <textarea wx:if="{{model=='withImg'&&item.type == 'text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
-      <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" />
+      <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg edit-success" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" />
     </view>
     <!-- 图文内容结束 -->
   </view>

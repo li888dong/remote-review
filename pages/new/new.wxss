@@ -260,3 +260,6 @@ view.submit.disable-btn, button.submit.disable-btn {
     justify-content: space-between;
     box-sizing: border-box;
 }
+.edit-success{
+  
+}

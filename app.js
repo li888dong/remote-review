@@ -6,9 +6,9 @@ App({
     logs.unshift(Date.now());
     wx.setStorageSync('logs', logs.slice(0, 50));
     this.globalData.userInfo = wx.getStorageSync('userInfo');
-    if(!wx.getStorageSync('sessid')){
+    if (!wx.getStorageSync('sessid')) {
       this.getSessionId();
-    }else{
+    } else {
       this.globalData.sessid = wx.getStorageSync('sessid')
     }
   },
@@ -46,7 +46,7 @@ App({
                     });
                   }
                 })
-              } else if (response.data.status == -1){
+              } else if (response.data.status == -1) {
                 wx.showModal({
                   title: response.data.info,
                   showCancel: false,
@@ -68,19 +68,19 @@ App({
     })
 
   },
-  getNewsById(id,type){
+  getNewsById(id, type) {
     let contents = wx.getStorageSync(type);
     let content = null;
-    contents.map(item=>{
+    contents.map(item => {
       item.content = JSON.parse(item.content)
-      if(item.id == id){
+      if (item.id == id) {
         content = item;
       }
     })
     return content
   },
   // 获取文章驳回理由
-  getBohuiContent(id,_this){
+  getBohuiContent(id, _this) {
     let that = _this;
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_bohui_content',
@@ -90,8 +90,8 @@ App({
         sessid: wx.getStorageSync('sessid'),
         bohui_id: id
       },
-      success(res){
-        if (res.data.status == 1&&res.data.data) {
+      success(res) {
+        if (res.data.status == 1 && res.data.data) {
           let resArr = Object.values(res.data.data);
           let tempArr = [];
           for (let i = 0; i < resArr.length; i++) {
@@ -101,7 +101,7 @@ App({
           that.setData({
             reject_reason: tempArr
           });
-        } else if (res.data.status == -2){
+        } else if (res.data.status == -2) {
           wx.showModal({
             title: '登录过期，请重新登录',
             showCancel: false,
@@ -112,23 +112,23 @@ App({
               })
             }
           })
-        }else if(!res.data.data){
+        } else if (!res.data.data) {
           return
-        }else{
+        } else {
           wx.showModal({
-            title:res.data.info
+            title: res.data.info
           })
         }
       },
-      fail(err){
+      fail(err) {
         wx.showModal({
-          title:err
+          title: err
         })
       }
     })
   },
   // 获取文章工作流
-  getWorkFlowData(id,_this) {
+  getWorkFlowData(id, _this) {
     let that = _this;
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_content_progress',
@@ -140,12 +140,12 @@ App({
       },
       success: function (res) {
         if (res.data.status == 1) {
-          let resArr =  Object.values(res.data.data);
+          let resArr = Object.values(res.data.data);
           let tempArr = [];
-          for(let i = 0;i<resArr.length;i++){
-            if(resArr[i]) tempArr = tempArr.concat(resArr[i])
+          for (let i = 0; i < resArr.length; i++) {
+            if (resArr[i]) tempArr = tempArr.concat(resArr[i])
           }
-          console.log('工作流',tempArr)
+          console.log('工作流', tempArr)
           that.setData({
             workflow: tempArr,
             lineLength: (tempArr.length - 1) * 100
@@ -161,7 +161,7 @@ App({
               })
             }
           })
-        } else{
+        } else {
           wx.showModal({
             title: res.data.info
           })
@@ -173,7 +173,7 @@ App({
   globalData: {
     baseUrl: 'https://rmtapi.hnsjb.cn/',
     userInfo: null,
-    sessid: '',
+    sessid: null,
     mobile: '',
     nickname: '',
     avatarUrl: ''

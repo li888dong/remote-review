@@ -8,7 +8,7 @@ Page({
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
-    if (!app.globalData.sessid) {
+    if (!wx.getStorageSync('sessid')) {
       wx.redirectTo({
         url: '../login/login'
       });
@@ -20,7 +20,7 @@ Page({
   },
   onShow: function () {
     // 页面显示
-    if (!app.globalData.sessid) {
+    if (!wx.getStorageSync('sessid')) {
       wx.redirectTo({
         url: '../login/login'
       });

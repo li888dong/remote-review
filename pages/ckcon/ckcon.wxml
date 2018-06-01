@@ -1,5 +1,5 @@
 <view class="{{recording ? 'recording' : '' }}">
-  <view class="bottom-area" wx:if="{{!onlyreject}}">
+  <view class="bottom-area" wx:if="{{content.type != 'mybohui'&&content.type != 'myzhuanshen'}}">
     <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
       <view class="r-btn edit-btn"></view>
       编辑
