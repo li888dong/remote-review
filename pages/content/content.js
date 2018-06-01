@@ -6,20 +6,60 @@ Page({
     cid: 0,
     workflow: [],
     lineLength: 0,
-    reject_reason:[]
+    reject_reason: []
   },
   onLoad: function (options) {
-    app.getWorkFlowData(options.id, this);
-    app.getBohuiContent(options.id, this)
+
     let that = this;
     this.setData({
       content: app.getNewsById(options.id, 'caogaoxiang'),
       cid: options.id
     });
     console.log(this.data.content)
-    
+
+    if (this.data.content.type == 'bohui') {
+      app.getWorkFlowData(options.id, this);
+      app.getBohuiContent(options.id, this)
+    } else {
+      this.getCaogaoWorkflow(options.id)
+    }
+
   },
-  
+  getCaogaoWorkflow(id) {
+    let that = this;
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_draft_progress',
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        sessid: wx.getStorageSync('sessid'),
+        caogao_id: id
+      },
+      success: function (res) {
+        if (res.data.status == 1) {
+          console.log('草稿工作流',[res.data.data]);
+          that.setData({
+            workflow:[res.data.data]
+          })
+        } else if (res.data.status == '-2') {
+          wx.showModal({
+            title: '登录过期，请重新登录',
+            showCancel: false,
+            content: '',
+            complete: res => {
+              wx.redirectTo({
+                url: '../login/login'
+              })
+            }
+          })
+        } else {
+          wx.showModal({
+            title: res.data.info
+          })
+        }
+      }
+    })
+  },
   // 跳转至编辑页面
   editNews: function () {
     wx.navigateTo({
@@ -35,10 +75,10 @@ Page({
         sessid: wx.getStorageSync('sessid'),
         bohui_id: that.data.cid
       }
-    }else{
+    } else {
       reqData = {
         sessid: wx.getStorageSync('sessid'),
-        type:'caogao',
+        type: 'caogao',
         caogao_id: that.data.cid
       }
     }
@@ -110,7 +150,7 @@ Page({
       })
       return
     }
-    
+
     let tempArr;
     if (this.data.model == 'text') {
       tempArr = [{

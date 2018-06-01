@@ -25,7 +25,7 @@ Page({
   },
   onShow: function () {
     // 页面显示
-    if (!wx.getStorageSync('sessid')) {
+    if (!app.globalData.sessid) {
       wx.redirectTo({
         url: '../login/login'
       });

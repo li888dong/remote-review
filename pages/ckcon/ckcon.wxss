@@ -194,6 +194,7 @@ page {
     flex-direction: row;
     width: 100%;
     margin-top: 60rpx;
+    margin-bottom: 60rpx;
 }
 
 .content-options button {
