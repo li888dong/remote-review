@@ -69,7 +69,7 @@ Page({
       title: '加载中...',
     });
     wx.request({
-      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=yishenhe_list', //仅为示例，并非真实的接口地址
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=yiwancheng_list', //仅为示例，并非真实的接口地址
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
@@ -93,8 +93,8 @@ Page({
           that.setData({
             currentType: currentType
           });
-          that.reformNews(wx.getStorageSync('publishTypeIndex')||0)
-        } else if (res.data.status == '-2') {
+          that.reformNews(wx.getStorageSync('publishTypeIndex') || 0)
+        } else if (res.data.status == -2) {
           wx.showModal({
             title: '登录过期，请重新登录',
             showCancel: false,
@@ -106,6 +106,16 @@ Page({
             }
           })
 
+        } else if(res.data.status == -1){
+          wx.showModal({
+            title: '',
+            showCancel: false,
+            content: res.data.info
+          })
+        }else{
+          wx.showModal({
+            content: '网络错误，请尝试刷新',
+          })
         }
       }
     });
@@ -185,37 +195,7 @@ Page({
   },
 
   onReachBottom: function () {
-    let currentLength = this.data.yishenhe.length;
-    let currentNews = this.data.yishenhe;
-    let that = this;
-    wx.request({
-      url: 'https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=new_newslist&status=yishenhe&offset=' + currentLength + '&num=100', //仅为示例，并非真实的接口地址
-      method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
-      data: {
-        sessid: wx.getStorageSync('sessid')
-      },
-      success: function (res) {
-        if (res.data.status == 1) {
-          that.setData({
-            yishenhe: currentNews.concat(res.data.data)
-          });
-          wx.setStorageSync('yishenhe', currentNews.concat(res.data.data));
-        } else if (res.data.status == '100' && wx.getStorageSync('wentload') == '') {
-          wx.setStorageSync('wentload', 'went');
-          wx.showModal({
-            title: '登录过期，请重新登录',
-            showCancel: false,
-            content: '',
-            complete: res => {
-              wx.redirectTo({
-                url: '../login/login'
-              })
-            }
-          })
-
-        }
-      }
-    });
+    this.data.page++;
+    this.getNews()
   }
 });

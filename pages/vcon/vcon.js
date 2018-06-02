@@ -23,11 +23,22 @@ Page({
     app.getBohuiContent(options.id, this)
     let that = this;
     // 页面初始化 options为页面跳转所带来的参数
-    this.setData({
-      cid: options.id,
-      content: app.getNewsById(options.id, 'yishenhe')
-    });
-    
+    if(options.from == 'search'){
+      this.setData({
+        cid: options.id,
+        content: app.getNewsById(options.id, 'searchData')
+      });
+    }else if(options.from == 'delete'){
+      this.setData({
+        cid: options.id,
+        content: app.getNewsById(options.id, 'delete')
+      });
+    }else{
+      this.setData({
+        cid: options.id,
+        content: app.getNewsById(options.id, 'yishenhe')
+      });
+    } 
   }
 
 });

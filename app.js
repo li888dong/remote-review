@@ -71,6 +71,7 @@ App({
   getNewsById(id, type) {
     let contents = wx.getStorageSync(type);
     let content = null;
+    console.log('内容',type)
     contents.map(item => {
       item.content = JSON.parse(item.content)
       if (item.id == id) {

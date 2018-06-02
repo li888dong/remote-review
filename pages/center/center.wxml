@@ -14,10 +14,7 @@
       总发稿：
       <text>{{userInfo.fagao.zongshu}}</text> 条
     </view>
-    <view class="user-figure">
-      已审核：
-      <text>{{userInfo.fagao.yishenhe}}</text> 条
-    </view>
+    
     <view class="user-figure">
       草稿箱：
       <text>{{userInfo.fagao.caogao}}</text> 条
@@ -27,6 +24,9 @@
     <view class="section-title">我的审稿</view>
     <view class="user-figure">
       已审核：<text>{{userInfo.shengao.yishenhe}}</text> 条
+    </view>
+    <view class="user-figure">
+      已转审：<text>{{userInfo.shengao.yizhuanshen}}</text> 条
     </view>
     <view class="user-figure">
       已驳回：<text>{{userInfo.shengao.yibohui}}</text> 条

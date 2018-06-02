@@ -11,7 +11,7 @@
   <!-- 顶部按钮结束 -->
   <!-- 文章标题输入框 -->
   <view class="prop-container">
-    <textarea class="input" placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
+    <textarea class="input" placeholder="文章标题" maxlength="-1" data-prop="title" bindblur="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>
   <!-- 标题输入框结束 -->
   <!-- 正文输入框 -->
@@ -49,41 +49,10 @@
       <!-- 文本内容 -->
       <!-- 模拟器上没有确认按钮 手机上用bindconfirm  模拟器用bindblur -->
       <!-- //type 判断暂存情况(新建|草稿|驳回) -->
-      <textarea wx:if="{{model=='text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
-      <textarea wx:if="{{model=='withImg'&&item.type == 'text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
-      <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg edit-success" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" />
+      <textarea wx:if="{{model=='text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
+      <textarea wx:if="{{model=='withImg'&&item.type == 'text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
+      <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg edit-success" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" />
     </view>
     <!-- 图文内容结束 -->
   </view>
 </view>
-<!-- 新闻来源 -->
-<!-- <view class="prop-container">
-    <textarea class="input" value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
-  </view> -->
-
-<!-- <view class="prop-container">
-    <view class="switch-container">
-      <view class="switch-label">
-        是否发布到专题
-      </view>
-      <switch bindchange="setSpecial" />
-    </view>
-
-  </view> -->
-<!-- <view class="prop-container" wx:if="{{is_special}}">
-  <picker bindchange="getSpecialTypes" range="{{specials}}" value="{{specialIndex}}" range-key="sname">
-    <view class="picker">专题：{{specials[specialIndex].sname}}</view>
-  </picker>
-</view>
-
-<view class="prop-container" wx:if="{{is_special && types.length > 0}}">
-  <picker bindchange="setSpecialType" range="{{types}}" value="{{typeIndex}}" range-key="scname">
-    <view class="picker">选择栏目：{{types[typeIndex].scname}}</view>
-  </picker>
-</view> -->
-
-<!-- <import src="../../src/wetoast.wxml"/> -->
-
-<!-- <template is="wetoast" data="{{...__wetoast__}}"/> -->
-
-<!-- </view> -->

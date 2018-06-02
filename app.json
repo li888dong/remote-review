@@ -27,7 +27,7 @@
       "text": "审核中"
     },{
       "pagePath": "pages/publish/publish",
-      "text": "已审核"
+      "text": "已完成"
     }],
     "position":"top",
     "color":"#353535",

@@ -33,13 +33,13 @@ page {
 .reject.news-item .news-inner {
     padding-left: 80rpx;
     background: url("https://www.hnsjb.cn/static/img/wxapp/warn.png") left center no-repeat;
-    background-size: 50rpx 50rpx;
+    background-size: 40rpx 40rpx;
 }
 
 .forward.news-item .news-inner {
     padding-left: 80rpx;
-    background: url("https://www.hnsjb.cn/static/img/wxapp/trans.png") left center no-repeat;
-    background-size: 50rpx 50rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/daiban.png") left center no-repeat;
+    background-size: 40rpx 40rpx;
 }
 
 .news-info {

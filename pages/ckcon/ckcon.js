@@ -46,8 +46,6 @@ Page({
       cid: options.id,
       content: app.getNewsById(options.id, 'shenhezhong')
     });
-    this.getSu();
-    
   },
   
 
@@ -56,6 +54,9 @@ Page({
     this.setData({
       optionopen: opid
     })
+    if(opid == 3){
+      this.getSu()
+    }
   },
   closeOp: function () {
     this.setData({
@@ -194,7 +195,12 @@ Page({
             sucheck: res.data.data[that.data.suindex].userid,
             tocheckname: res.data.data[that.data.suindex].realname
           });
-        } else if (res.data.status == '-2') {
+        }else if(res.data.status == -1){
+          wx.showModal({
+            title: '',
+            content: res.data.info,
+          })
+        } else if (res.data.status == -2) {
           wx.showModal({
             title: '登录过期，请重新登录',
             showCancel: false,

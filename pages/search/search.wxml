@@ -7,22 +7,17 @@
 
 
 <view class="list">
-      <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{results}}" bindtap="gotoNews" data-status="{{item.forbidden}}" data-newsid="{{item.id}}">
-        <view class="news-inner">
-        <text class="news-title">{{item.title}}</text>
-        <view class="news-info">
-          <view class="news-time">{{item.inputtime}}</view>
-          <view class="news-author">{{item.realusername}}</view>
-        </view>
-        </view>
+  <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{results}}" bindtap="gotoNews" data-status="0" data-newsid="{{item.id}}">
+    <view class="news-inner">
+      <text class="news-title">{{item.title}}</text>
+      <view class="news-info">
+        <view class="news-time">{{item.inputtime}}</view>
+        <view class="news-author">{{item.realname}}</view>
       </view>
-
     </view>
-    <view wx:if="{{results.length == 0}}" class="empty-item">
-                  暂无结果
-              </view>
+  </view>
 
-
-              <!-- <import src="../../src/wetoast.wxml"/> -->
-
-                  <!-- <template is="wetoast" data="{{...__wetoast__}}"/> -->
+</view>
+<view wx:if="{{results.length == 0}}" class="empty-item">
+  暂无结果
+</view>
