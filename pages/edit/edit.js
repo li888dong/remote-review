@@ -41,14 +41,23 @@ Page({
       type: options.type,
       cid: options.id
     })
-    console.log(options)
     if (this.data.type == 'caogao' || this.data.type == 'bohui') {
-      this.setData({
-        content: app.getNewsById(this.data.cid,'caogaoxiang')
+      var tempArr = app.getNewsById(this.data.cid, 'caogaoxiang');
+      tempArr.content.push({
+        "type": "add",
+        "value": ""
       })
-    }else {
       this.setData({
-        content: app.getNewsById(this.data.cid, 'shenhezhong')
+        content: tempArr
+      });
+    }else {
+      var tempArr = app.getNewsById(this.data.cid, 'shenhezhong');
+      tempArr.content.push({
+        "type": "add",
+        "value": ""
+      })
+      this.setData({
+        content: tempArr
       })
     }
 
@@ -517,42 +526,5 @@ Page({
       data['content.content[' + tempCArr[j].id + '].value'] = tempCArr[j].strA + tempCArr[j].strB; // key 可以是任何字符串
       this.setData(data);
     }
-  },
-  setSpecial(e) {
-    // console.log(e.detail.value);
-    this.setData({
-      is_special: e.detail.value
-    })
-  },
-  getSpecialTypes(e) {
-    let cid = e.detail.value;
-    let that = this;
-
-    this.setData({
-      specialIndex: cid
-    });
-    this.setData({
-      selectedSpecial: that.data.specials[cid].cid
-    });
-    this.setData({
-      types: that.data.specials[cid].category
-    });
-    this.setData({
-      selectedType: 0
-    });
-    this.setData({
-      typeIndex: -1
-    })
-  },
-
-  setSpecialType(e) {
-    let tid = e.detail.value;
-    this.setData({
-      typeIndex: tid
-    });
-    let that = this;
-    this.setData({
-      selectedType: that.data.types[tid].scid
-    })
   }
 });
