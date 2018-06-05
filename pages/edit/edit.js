@@ -225,7 +225,7 @@ Page({
       for (let i = 0; i < content.content.length; i++) {
         if (content.content[i].type == 'text') {
           content.content[i].value = content.content[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
-          tempArr[0].value += content.content[i].value;
+          tempArr[0].value += content.content[i].value.trim();
         }
       }
     } else {
@@ -233,6 +233,7 @@ Page({
       // 删去type=add的项
       for (let i = 0; i < content.content.length; i++) {
         if (content.content[i].type != 'add' && content.content[i].value.trim()) {
+          content.content[i].value = content.content[i].value.trim();
           tempArr.push(content.content[i])
         }
       }
