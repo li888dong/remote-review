@@ -34,6 +34,10 @@ view {
     font-size: 36rpx;
     margin-left: 154rpx;
 }
+.bianji-switch{
+  float: right;
+  font-size: 24rpx;
+}
 .role {
     color: #999999;
     font-size: 26rpx;

@@ -1,0 +1,31 @@
+<view wx:if="{{role == 'bianji'}}" class='top-area'>
+  <view class='top-btn active'>审核中</view>
+  <view class='top-btn' bindtap='gotoYishenhe'>已审核</view>
+</view>
+
+<view class="list">
+  <block wx:for="{{shenhezhong}}" wx:key="{{item.time}}">
+      <view class="{{item.type == 'daishen'?'forward news-item ':item.type == 'zhuanshen'?'forward news-item ':'forbid-item news-item'}}" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
+        <view class="news-inner">
+          <text class="news-title">{{item.title}}</text>
+          <view class="news-info">
+            <view class="news-time">{{item.inputtime}}</view>
+            <view class="news-author">{{item.realname}}</view>
+          </view>
+        </view>
+      </view>
+  </block>
+  <view wx-if="{{shenhezhong.length == 0}}" class="empty-item">
+    该类别下暂无内容
+  </view>
+</view>
+<view class="bottom-area">
+  <navigator hover-class="hover-active" url="../center/center">
+    <view class="r-btn center-btn"></view>
+    个人中心
+  </navigator>
+  <view hover-class="hover-active" class="bottom-view" hover="true" bindtap="showFilter">
+    <view class="r-btn filter-btn"></view>
+    {{currentType}}
+  </view>
+</view>

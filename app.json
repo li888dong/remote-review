@@ -16,6 +16,8 @@
     "pages/changepwd/changepwd",
     "pages/index/index",
     "pages/about/about",
+    "pages/shenhezhong/shenhezhong",
+    "pages/yishenhe/yishenhe",
     "pages/test/test"
   ],
   "tabBar": {

@@ -1,5 +1,5 @@
 <view wx:if="{{role == 'bianji'}}" class='top-area'>
-  <view class='top-btn' bindtap='gotoReview'>审核中</view>
+  <view class='top-btn' bindtap='gotoShenhezhong'>审核中</view>
   <view class='top-btn active'>已审核</view>
 </view>
 <view class="list">
@@ -17,10 +17,6 @@
   </view>
 </view>
 <view class="bottom-area">
-  <navigator  wx:if="{{role != 'bianji'}}" hover-class="hover-active" url="../new/new">
-    <view class="r-btn new-btn"></view>
-    新建稿件
-  </navigator>
   <navigator hover-class="hover-active" url="../center/center">
     <view class="r-btn center-btn"></view>
     个人中心

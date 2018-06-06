@@ -2,7 +2,9 @@
 let app = getApp();
 Page({
   data:{
-    userInfo:{}
+    userInfo:{},
+    is_bianji:0,
+    role:''
   },
   onLoad: function () {
     console.log('enter center page')
@@ -15,6 +17,10 @@ Page({
     }else{
       this.fetchUserInfo()
     }
+    this.setData({
+      is_bianji:wx.getStorageSync('is_bianji'),
+      role:wx.getStorageSync('role')||'jizhe'
+    })
   },
   fetchUserInfo:function(){
     let that = this;
@@ -71,5 +77,19 @@ Page({
         }
       }
     });
+  },
+  switch2bianji(e){
+    if(e.detail.value){
+      wx.setStorage({
+        key: 'role',
+        data: 'bianji',
+      })
+      
+    }else{
+      wx.setStorage({
+        key: 'role',
+        data: 'jizhe',
+      })
+    }
   }
 });

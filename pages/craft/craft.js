@@ -26,6 +26,14 @@ Page({
       });
       return
     }
+    // 编辑角色隐藏tab条，用自定义替代
+    if (wx.getStorageSync('role') == 'bianji') {
+      wx.hideTabBar();
+      wx.redirectTo({
+        url: '../shenhezhong/shenhezhong',
+      })
+      return
+    }
     this.getNews();    
   },
   onHide:function(){
