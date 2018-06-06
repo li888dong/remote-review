@@ -3,7 +3,7 @@
     <view class="edit edit-btn" hover="true" hover-class="hover-active" bindtap="editNews">
       编辑
     </view>
-    <form bindsubmit="pushContent" report-submit="true">
+    <form bindsubmit="pushContent" report-submit="true" data-disableid="1">
       <button class="submit submit-btn" formType="submit" hover="true" hover-class="hover-active" data-disableid="1">
         提交
       </button>

@@ -38,7 +38,7 @@ Page({
   // 初始化新建稿件页  判断暂存状态和取值
   initEditData(options) {
     this.setData({
-      type: options.type,
+      type: options.type||'',
       cid: options.id
     })
     if (this.data.type == 'caogao' || this.data.type == 'bohui') {
@@ -268,7 +268,8 @@ Page({
       title: this.data.content.title.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
       content: JSON.stringify(tempArr),
       sessid: app.globalData.sessid,
-      type: this.data.type
+      type: this.data.type,
+      formId: e.detail.formId
     }
 
     if(this.data.type == 'caogao'){

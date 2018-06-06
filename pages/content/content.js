@@ -161,7 +161,7 @@ Page({
       for (let i = 0; i < content.content.length; i++) {
         if (content.content[i].type == 'text') {
           content.content[i].value = content.content[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
-          tempArr[0].value += content.content[i].value;
+          tempArr[0].value += content.content[i].value.trim();
         }
       }
     } else {
@@ -169,15 +169,12 @@ Page({
       // 删去type=add的项
       for (let i = 0; i < content.content.length; i++) {
         if (content.content[i].type != 'add' && content.content[i].value.trim()) {
+          content.content[i].value = content.content[i].value.trim();
           tempArr.push(content.content[i])
         }
       }
     }
-    let is_special = 0;
-
-    if (this.data.is_special) {
-      is_special = 1;
-    }
+   
     // 检查上传文章是否为空
     if (!tempArr[0].value) {
       wx.showModal({
@@ -206,7 +203,8 @@ Page({
         content: JSON.stringify(tempArr),
         sessid: app.globalData.sessid,
         type: 'bohui',
-        bohui_id: this.data.cid
+        bohui_id: this.data.cid,
+        formId:e.detail.formId
       }
     } else if (that.data.content.type == 'shenhe') {
       reqData = {
@@ -214,7 +212,8 @@ Page({
         content: JSON.stringify(tempArr),
         sessid: app.globalData.sessid,
         type: 'shenhe',
-        shenhe_id: this.data.cid
+        shenhe_id: this.data.cid,
+        formId: e.detail.formId
       }
     } else {
       reqData = {
@@ -222,7 +221,8 @@ Page({
         content: JSON.stringify(tempArr),
         sessid: app.globalData.sessid,
         type: 'caogao',
-        caogao_id: this.data.cid
+        caogao_id: this.data.cid,
+        formId: e.detail.formId
       }
     }
 

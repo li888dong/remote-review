@@ -4,9 +4,11 @@
     <view wx:if="{{type!='shenhe'}}" class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="2">
       暂存
     </view>
-    <view class="submit save-btn" hover="true" hover-class="hover-active" bindtap="getContent" data-disableid="3">
-      提交
-    </view>
+     <form bindsubmit="getContent" report-submit="true" data-disableid="3">
+      <button class="submit submit-btn" formType="submit" hover="true" hover-class="hover-active" data-disableid="3">
+        提交
+      </button>
+    </form>
   </view>
   <!-- 顶部按钮结束 -->
   <!-- 文章标题输入框 -->
