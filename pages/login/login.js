@@ -4,7 +4,11 @@ Page({
   onLoad: function () {
     console.log('enter login page')
     // 页面初始化 options为页面跳转所带来的参数
-    //调用应用实例的方法获取全局数据
+    if (!wx.getStorageSync('sessid')) {
+      app.getSessionId();
+    } else {
+      app.globalData.sessid = wx.getStorageSync('sessid')
+    }
   },
 
   formSubmit: function (e) {
@@ -39,6 +43,7 @@ Page({
         password: tempobj.password
       },
       success: function (response) {
+        console.log('登录',response)
         if (response.data.status == 1) {
           wx.setStorage({
             key: 'userInfo',

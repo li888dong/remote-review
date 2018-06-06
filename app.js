@@ -27,6 +27,8 @@ App({
               code: res.code
             },
             success: function (response) {
+              console.log('code',res.code)
+              console.log('openid',response)
               // sessid获取成功，跳转至登陆
               if (response.data.status == -2) {
                 wx.setStorage({

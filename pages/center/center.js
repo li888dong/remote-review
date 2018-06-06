@@ -8,7 +8,7 @@ Page({
     console.log('enter center page')
     let that = this;
     // 未登录跳转回登陆页
-    if (!app.globalData.userInfo) {
+    if (!wx.getStorageSync('sessid')) {
       wx.redirectTo({
         url: '../login/login'
       })
