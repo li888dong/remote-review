@@ -18,6 +18,7 @@
     "pages/about/about",
     "pages/shenhezhong/shenhezhong",
     "pages/yishenhe/yishenhe",
+    "pages/newscontent/newscontent",
     "pages/test/test"
   ],
   "tabBar": {

@@ -1,5 +1,6 @@
 page {
     padding-bottom: 120rpx;
+    padding-top: 86rpx;
 
 }
 .top-area{
@@ -79,15 +80,17 @@ page {
 .news-info {
     color: #b9b9b9;
     font-size: 28rpx;
-    margin-top: 26rpx;
-    padding-bottom: 30rpx;
+  
 }
 
-.news-time, .news-author {
+.news-time, 
+.news-author,
+.news-copyfrom,
+.news-catname {
     display: inline-block;
 }
 
-.news-author {
+.news-copyfrom,.news-catname {
     margin-left: 30rpx;
 }
 

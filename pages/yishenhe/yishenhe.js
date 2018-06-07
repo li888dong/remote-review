@@ -74,7 +74,7 @@ Page({
       title: '加载中...',
     });
     wx.request({
-      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=yiwancheng_list', //仅为示例，并非真实的接口地址
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=yiwancheng_list', //仅为示例，并非真实的接口地址
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
@@ -88,9 +88,7 @@ Page({
         wx.hideLoading();
         if (res.data.status == 1) {
           that.setData({
-            final_data: that.data.final_data.concat(res.data.data.final_data.data),
-            yishen_data: that.data.yishen_data.concat(res.data.data.yishen_data.data),
-            zicai_data: that.data.zicai_data.concat(res.data.data.zicai_data.data)
+            final_data: that.data.final_data.concat(res.data.data.final_data.data)
           });
           let pagestatus = wx.getStorageSync('ysstatus') || 'none';
           let self = wx.getStorageSync('ysself') || '0';

@@ -74,21 +74,24 @@ Page({
     this.getNews();
   },
   gotoNews: function (e) {
-    if (e.currentTarget.dataset.forbid == 1) {
       wx.navigateTo({
-        url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
+        url: '../newscontent/newscontent?id=' + e.currentTarget.dataset.newsid
       })
-    } else {
-      wx.navigateTo({
-        url: '../ckcon/ckcon?id=' + e.currentTarget.dataset.newsid
-      })
-    }
+    // if (e.currentTarget.dataset.forbid == 1) {
+    //   wx.navigateTo({
+    //     url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
+    //   })
+    // } else {
+    //   wx.navigateTo({
+    //     url: '../ckcon/ckcon?id=' + e.currentTarget.dataset.newsid
+    //   })
+    // }
   },
 
   getNews: function () {
     let that = this;
     wx.request({
-      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=shenhezhong_list', //仅为示例，并非真实的接口地址
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=shenhezhong_list', //仅为示例，并非真实的接口地址
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {

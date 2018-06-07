@@ -1,0 +1,48 @@
+
+<import src="../../wxParse/wxParse.wxml"/> 
+
+<view>文章</view>
+<view class="wxParse">
+    <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+</view>
+
+<button wx:if="{{!zhuanyiStatus}}" type='primary' class="zhuanyi-btn" bindtap='zhuanyilanmu'>转移栏目</button>
+<view wx:else class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}">
+    <button type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="2">通过</button>
+    <button type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="3">转审</button>
+  </view>
+
+  <view class="content-option" wx:if="{{optionopen == 2}}">
+    <view class="btn-container">
+      <button type="warn" bindtap="confirmNews" data-disableid="2">确认通过</button>
+      <button type="default" bindtap="closeOp">取消</button>
+    </view>
+  </view>
+
+  <!-- 选择转审人 -->
+  <view class="content-option" wx:elif="{{optionopen == 3}}">
+    <picker bindchange="setSu" value="{{suindex}}" range-key="realname" range="{{sucheckers}}">
+      <view class="picker">
+        选择总编辑：{{sucheckers[suindex].realname}}
+      </view>
+    </picker>
+
+    <view class="btn-container">
+      <button type="warn" bindtap="forwardNews" data-disableid="3">确认转审</button>
+      <button type="default" bindtap="closeOp">取消</button>
+    </view>
+  </view>
+
+<!-- 选择栏目 -->
+<view class="content-option" wx:if="{{zhuanyiList.length>0}}">
+    <picker bindchange="setZhuanyi" value="{{zhuanyiIndex}}" range-key="catname" range="{{zhuanyiList}}">
+      <view class="picker">
+        选择栏目：{{zhuanyiList[zhuanyiIndex].catname}}
+      </view>
+    </picker>
+
+    <view class="btn-container">
+      <button type="warn" bindtap="confirmZhuanyi" data-disableid="3">确认转移</button>
+      <button type="default" bindtap="closeOp">取消</button>
+    </view>
+  </view>
