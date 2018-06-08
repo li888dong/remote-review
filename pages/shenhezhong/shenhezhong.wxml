@@ -1,6 +1,6 @@
 <view wx:if="{{role == 'bianji'}}" class='top-area'>
   <view class='top-btn active'>审核中</view>
-  <view class='top-btn' bindtap='gotoYishenhe'>已审核</view>
+  <view class='top-btn' bindtap='gotoYishenhe'>已完成</view>
 </view>
 
 <view class="list">
@@ -8,15 +8,16 @@
       <view class="{{item.type == 'daishen'?'forward news-item ':item.type == 'zhuanshen'?'forward news-item ':'forbid-item news-item'}}" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
         <view class="news-inner">
           <text class="news-title">{{item.title}}</text>
-          <view class="news-info">
-            <view class="news-time">{{item.inputtime}}</view>
-            
-          </view>
+          
           <view class="news-info">
           
             <view class="news-author">{{item.realname}}</view>
             <view class="news-copyfrom">{{item.copyfrom}}</view>
             <view class="news-catname">{{item.catname}}</view>
+          </view>
+          <view class="news-info">
+            <view class="news-time">{{item.inputtime}}</view>
+            
           </view>
         </view>
       </view>

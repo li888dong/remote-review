@@ -1,16 +1,23 @@
 <view wx:if="{{role == 'bianji'}}" class='top-area'>
   <view class='top-btn' bindtap='gotoShenhezhong'>审核中</view>
-  <view class='top-btn active'>已审核</view>
+  <view class='top-btn active'>已完成</view>
 </view>
 <view class="list">
   <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{yishenhe}}" bindtap="viewNews" data-newsid="{{item.id}}">
     <view class="news-inner">
-      <text class="news-title">{{item.title}}</text>
-      <view class="news-info">
-        <view class="news-time">{{item.inputtime}}</view>
-        <view class="news-author">{{item.realname}}</view>
-      </view>
-    </view>
+          <text class="news-title">{{item.title}}</text>
+          
+          <view class="news-info">
+          
+            <view class="news-author">{{item.realname}}</view>
+            <view class="news-copyfrom">{{item.copyfrom}}</view>
+            <view class="news-catname">{{item.catname}}</view>
+          </view>
+          <view class="news-info">
+            <view class="news-time">{{item.inputtime}}</view>
+            
+          </view>
+        </view>
   </view>
   <view wx-if="{{yishenhe.length == 0}}" class="empty-item">
     该类别下暂无内容

@@ -62,9 +62,13 @@ Page({
         if (response.data.status == 1) {
           wx.clearStorage();
           app.globalData.userInfo = null;
-          wx.redirectTo({
-            url: '../login/login'
+          wx.showModal({
+            title: '',
+            content: '退出成功,请手动退出小程序',
           })
+          // wx.redirectTo({
+          //   url: '../login/login'
+          // })
         }else{
           wx.showModal({
             title: response.data.info,

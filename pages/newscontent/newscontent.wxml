@@ -1,15 +1,25 @@
+<import src="../../wxParse/wxParse.wxml" />
 
-<import src="../../wxParse/wxParse.wxml"/> 
-
-<view>文章</view>
-<view class="wxParse">
-    <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+<view class="content-container">
+  <view>
+    <text class="content-title">{{content.title}}</text>
+  </view>
+  <view class="content-info">
+    <text>{{content.realname}}</text>
+    <text>{{content.catname}}</text>
+    <text>{{content.inputtime}}</text>
+  </view>
+  <view class='wxParse'>
+    <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+  </view>
 </view>
 
-<button wx:if="{{!zhuanyiStatus}}" type='primary' class="zhuanyi-btn" bindtap='zhuanyilanmu'>转移栏目</button>
-<view wx:else class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}">
-    <button type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="2">通过</button>
-    <button type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="3">转审</button>
+<view wx:if="{{content.type != 'yicaozuo'}}">
+  <button wx:if="{{!zhuanyiStatus}}" type='primary' class="zhuanyi-btn" bindtap='zhuanyilanmu'>转移栏目</button>
+
+  <view wx:else class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}">
+    <button wx:if="{{content.type == 'daishen'||content.status<99}}" type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="2">通过</button>
+    <button wx:if="{{content.type == 'daishen'||content.status < 98}}" type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="3">转审</button>
   </view>
 
   <view class="content-option" wx:if="{{optionopen == 2}}">
@@ -33,8 +43,8 @@
     </view>
   </view>
 
-<!-- 选择栏目 -->
-<view class="content-option" wx:if="{{zhuanyiList.length>0}}">
+  <!-- 选择栏目 -->
+  <view class="content-option" wx:if="{{zhuanyiList.length>0}}">
     <picker bindchange="setZhuanyi" value="{{zhuanyiIndex}}" range-key="catname" range="{{zhuanyiList}}">
       <view class="picker">
         选择栏目：{{zhuanyiList[zhuanyiIndex].catname}}
@@ -46,3 +56,4 @@
       <button type="default" bindtap="closeOp">取消</button>
     </view>
   </view>
+</view>

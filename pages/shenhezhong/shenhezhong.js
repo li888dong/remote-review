@@ -74,9 +74,9 @@ Page({
     this.getNews();
   },
   gotoNews: function (e) {
-      wx.navigateTo({
-        url: '../newscontent/newscontent?id=' + e.currentTarget.dataset.newsid
-      })
+    wx.navigateTo({
+      url: '../newscontent/newscontent?id=' + e.currentTarget.dataset.newsid
+    })
     // if (e.currentTarget.dataset.forbid == 1) {
     //   wx.navigateTo({
     //     url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid

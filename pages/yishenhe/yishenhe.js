@@ -65,7 +65,7 @@ Page({
   },
   viewNews: function (e) {
     wx.navigateTo({
-      url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid
+      url: '../newscontent/newscontent?id=' + e.currentTarget.dataset.newsid+'&status=99'
     })
   },
   getNews: function () {

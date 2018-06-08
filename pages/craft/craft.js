@@ -33,6 +33,8 @@ Page({
         url: '../shenhezhong/shenhezhong',
       })
       return
+    }else{
+      wx.showTabBar()
     }
     this.getNews();    
   },

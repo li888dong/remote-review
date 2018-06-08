@@ -14,7 +14,7 @@ Page({
     optionopen: '0',
 
     // 转审
-    suindex:0,
+    suindex: 0,
     // 转审人员列表
     sucheckers: [],
     // 选定转审人员id
@@ -30,13 +30,18 @@ Page({
   },
   onLoad: function (options) {
     var that = this;
-     
-    var content = this.getNewsById(options.id, 'shenhezhong');
+    var content;
+    if(options.status==99){
+      content = this.getNewsById(options.id, 'yishenhe');
+    }else{
+      content = this.getNewsById(options.id, 'shenhezhong');
+    }
     console.log('内容...', content)
     this.setData({
       newsId: options.id,
       content: content
-    })
+    });
+    this.zhuanyiStatus();
     var article = `${content.content}`;
 
     WxParse.wxParse('article', 'html', article, that, 5);
@@ -65,6 +70,7 @@ Page({
       optionopen: 0
     })
   },
+  // 获取所有的栏目列表
   zhuanyilanmu() {
     let that = this;
     wx.request({
@@ -108,6 +114,7 @@ Page({
       }
     })
   },
+  // 设置要转移的栏目
   setZhuanyi(e) {
     console.log(e.detail.value);
     this.setData({
@@ -115,6 +122,7 @@ Page({
       zhuanyiId: this.data.zhuanyiList[e.detail.value].id
     })
   },
+  // 确认转移栏目
   confirmZhuanyi() {
     let that = this;
     wx.request({
@@ -167,6 +175,48 @@ Page({
       }
     })
   },
+  zhuanyiStatus(){
+    let that = this;
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=switch_catid_status',
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        sessid: app.globalData.sessid,
+        newsid: that.data.newsId
+      },
+      success: function (res) {
+        console.log('转移栏目', res);
+        if (res.data.status == 1) {
+          that.setData({
+            zhuanyiStatus:true
+          });
+          
+        } else if (res.data.status == -1) {
+          console.log(res.data.info)
+        } else if (res.data.status == -2) {
+          wx.clearStorageSync();
+          wx.showModal({
+            title: '',
+            content: '登录过期,请重新登录',
+            success: function () {
+              wx.redirectTo({
+                url: '../login/login',
+              })
+            }
+          })
+        } else {
+          wx.showModal({
+            title: '',
+            content: '网络错误，请尝试刷新'
+          })
+        }
+      },
+      fail: function (err) {
+        console.log('转移错误', err)
+      }
+    })
+  },
   // 通过审核
   confirmNews: function (e) {
 
@@ -174,7 +224,7 @@ Page({
 
     wx.showLoading();
     wx.request({
-      url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=news_pass",
+      url: "https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=news_pass",
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
@@ -261,12 +311,12 @@ Page({
               title: '转审中...',
             })
             wx.request({
-              url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_zhuanshen",
+              url: "https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=news_zhuanshen",
               method: 'post',
               header: { "content-type": "application/x-www-form-urlencoded" },
               data: {
                 sessid: wx.getStorageSync('sessid'),
-                zhuanshen_id: that.data.cid,
+                zhuanshen_id: that.data.newsId,
                 tocheckid: that.data.sucheck,
                 tocheckname: that.data.tocheckname
               },
@@ -324,7 +374,7 @@ Page({
   getSu() {
     let that = this;
     wx.request({
-      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=news_zhuanshen_users',
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=news_zhuanshen_users',
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
