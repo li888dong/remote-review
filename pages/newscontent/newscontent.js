@@ -26,14 +26,17 @@ Page({
     zhuanyiList: [],
     zhuanyiIndex: 0,
     zhuanyiId: '',
-    newsId: ''
+    newsId: '',
+
+    // 工作流
+    workflow: [],
   },
   onLoad: function (options) {
     var that = this;
     var content;
-    if(options.status==99){
+    if (options.status == 99) {
       content = this.getNewsById(options.id, 'yishenhe');
-    }else{
+    } else {
       content = this.getNewsById(options.id, 'shenhezhong');
     }
     console.log('内容...', content)
@@ -42,7 +45,9 @@ Page({
       content: content
     });
     this.zhuanyiStatus();
-    var article = `${content.content}`;
+    this.getWorkFlow();
+    // this.addImgDomain(content.url, content.content);
+    var article = `${this.addImgDomain(content.url, content.content)}`;
 
     WxParse.wxParse('article', 'html', article, that, 5);
   },
@@ -175,8 +180,12 @@ Page({
       }
     })
   },
-  zhuanyiStatus(){
+  // 栏目是否已转移
+  zhuanyiStatus() {
     let that = this;
+    wx.showLoading({
+      title: '网络请求中',
+    })
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=switch_catid_status',
       method: 'post',
@@ -187,11 +196,12 @@ Page({
       },
       success: function (res) {
         console.log('转移栏目', res);
+        wx.hideLoading();
         if (res.data.status == 1) {
           that.setData({
-            zhuanyiStatus:true
+            zhuanyiStatus: true
           });
-          
+
         } else if (res.data.status == -1) {
           console.log(res.data.info)
         } else if (res.data.status == -2) {
@@ -213,7 +223,11 @@ Page({
         }
       },
       fail: function (err) {
-        console.log('转移错误', err)
+        wx.hideLoading();
+        wx.showModal({
+          title: '',
+          content: '网络错误，请尝试刷新'
+        })
       }
     })
   },
@@ -420,4 +434,56 @@ Page({
       tocheckname: this.data.sucheckers[tmp].realname
     });
   },
+  // 获取工作流
+  getWorkFlow() {
+    let that = this;
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=news_content_progress',
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        sessid: wx.getStorageSync('sessid'),
+        newsid: that.data.newsId
+      },
+      success: function (res) {
+        console.log('文章进度', res.data)
+
+        if (res.data.status == 1) {
+          that.setData({
+            workflow: res.data.data
+          })
+        } else if (res.data.status == -1) {
+          wx.showModal({
+            title: '',
+            content: res.data.info,
+          })
+        } else if (res.data.status == -2) {
+          wx.clearStorageSync();
+          wx.showModal({
+            title: '登录过期，请重新登录',
+            showCancel: false,
+            content: '',
+            complete: res => {
+              wx.redirectTo({
+                url: '../login/login'
+              })
+            }
+          })
+
+        }
+
+      }
+    });
+  },
+  // 拼接图片的地址
+  addImgDomain(domain, str) {
+    if(!domain){
+      return str
+    }
+    var newDomain = domain.match(/^http(s)?:\/\/(.*?)\//)[0];
+    var newStr = str.replace(/src=['"]([^'"]+)/gi, function (match, capture) {
+      return 'src="' + newDomain + capture
+    });
+    return newStr
+  }
 })

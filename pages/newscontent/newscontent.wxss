@@ -132,3 +132,71 @@
   width: 33%;
   margin-top: 40rpx;
 }
+.padding {
+  padding: 0 30rpx;
+}
+
+.flow {
+  width: 100%;
+  font-size: 36rpx;
+  color: #acacac;
+  position: relative;
+  margin-top: 40rpx;
+}
+
+.flow .line-left {
+  display: block;
+  position: absolute;
+  width: 4rpx;
+  left: 18rpx;
+  top: 40rpx;
+  background: #e5e5e5;
+}
+
+.workflow-item {
+  padding-left: 77rpx;
+  position: relative;
+  line-height: 100rpx;
+}
+
+.workflow-item::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.workflow-item::before {
+  left: -1rpx;
+  content: '';
+  display: block;
+  position: absolute;
+  width: 39rpx;
+  height: 39rpx;
+  top: 32.5rpx;
+  background: url("https://www.hnsjb.cn/static/img/wxapp/grey-dot.png") center center no-repeat;
+    background-size: 35rpx 35rpx;
+}
+
+.workflow-item.last-item {
+  color: #ff004a;
+}
+
+.workflow-item.last-item::before {
+    left:0;
+    width: 39rpx;
+    height: 39rpx;
+    top: 32.5rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/red-dot.png") center center no-repeat;
+    background-size: 39rpx 39rpx;
+
+}
+
+
+
+.workflow-item view {
+  display: inline;
+}
+
+.workflow-time {
+  float: right;
+}

@@ -23,10 +23,7 @@ Page({
       });
       return
     }
-    // 编辑角色隐藏tab条，用自定义替代
-    if (wx.getStorageSync('role') == 'bianji') {
-      wx.hideTabBar()
-    }
+    
 
   },
   onReady: function () {
@@ -39,6 +36,10 @@ Page({
         url: '../login/login'
       });
       return false;
+    }
+    // 编辑角色隐藏tab条，用自定义替代
+    if (wx.getStorageSync('role') == 'bianji') {
+      wx.hideTabBar()
     }
     this.getNews();
     let pagestatus = wx.getStorageSync('pagestatus') || 'none';

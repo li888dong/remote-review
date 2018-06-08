@@ -20,10 +20,7 @@ Page({
       });
       return
     }
-    // 编辑角色隐藏tab条，用自定义替代
-    if (wx.getStorageSync('role') == 'bianji') {
-      wx.hideTabBar()
-    }
+    
   },
   onReady: function () {
     // 页面渲染完成
@@ -35,6 +32,10 @@ Page({
         url: '../login/login'
       });
       return false;
+    }
+    // 编辑角色隐藏tab条，用自定义替代
+    if (wx.getStorageSync('role') == 'bianji') {
+      wx.hideTabBar()
     }
     let pagestatus = wx.getStorageSync('ysstatus') || 'none';
     let self = wx.getStorageSync('ysself') || '0';

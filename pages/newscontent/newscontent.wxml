@@ -18,8 +18,8 @@
   <button wx:if="{{!zhuanyiStatus}}" type='primary' class="zhuanyi-btn" bindtap='zhuanyilanmu'>转移栏目</button>
 
   <view wx:else class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}">
-    <button wx:if="{{content.type == 'daishen'||content.status<99}}" type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="2">通过</button>
-    <button wx:if="{{content.type == 'daishen'||content.status < 98}}" type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="3">转审</button>
+    <button wx:if="{{content.type == 'daishen'||content.steps<99}}" type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="2">通过</button>
+    <button wx:if="{{content.type == 'daishen'||content.steps < 98}}" type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="3">转审</button>
   </view>
 
   <view class="content-option" wx:if="{{optionopen == 2}}">
@@ -57,3 +57,12 @@
     </view>
   </view>
 </view>
+<view class="padding">
+    <view class="flow">
+      <view class="line-left" style="height:{{lineLength}}rpx"></view>
+      <view class="{{index == workflow.length-1 ? 'workflow-item last-item' : 'workflow-item'}}" wx:for="{{workflow}}">
+        <view class="workflow-action">{{item.name}}:{{item.status}}</view>
+        <view class="workflow-time">{{item.inputtime}}</view>
+      </view>
+    </view>
+  </view>
