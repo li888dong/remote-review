@@ -52,7 +52,8 @@ Page({
               app.globalData.userInfo = response.data.data;
               app.globalData.sessid = response.data.data.sessid;
               wx.setStorageSync('sessid', response.data.data.sessid);
-              wx.setStorageSync('is_bianji', response.data.data.is_bianji)
+              wx.setStorageSync('is_bianji', response.data.data.is_bianji);
+              wx.setStorageSync('role', response.data.data.is_bianji);
               wx.switchTab({
                 url: '../craft/craft'
               })

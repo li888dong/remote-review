@@ -12,8 +12,7 @@ Page({
     shenhezhong: [],
     page: 1,
     pageSize: 20,
-    currentType: '',
-    role: 'bianji'
+    currentType: ''
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -23,13 +22,12 @@ Page({
       });
       return
     }
-    
-
   },
   onReady: function () {
     // 页面渲染完成
   },
   onShow: function () {
+    let that = this;    
     // 页面显示
     if (!wx.getStorageSync('sessid')) {
       wx.redirectTo({
@@ -38,8 +36,12 @@ Page({
       return false;
     }
     // 编辑角色隐藏tab条，用自定义替代
-    if (wx.getStorageSync('role') == 'bianji') {
-      wx.hideTabBar()
+    if (wx.getStorageSync('is_bianji') == '1') {
+      wx.hideTabBar();
+    } else {
+      wx.switchTab({
+        url: '../craft/craft',
+      })
     }
     this.getNews();
     let pagestatus = wx.getStorageSync('pagestatus') || 'none';

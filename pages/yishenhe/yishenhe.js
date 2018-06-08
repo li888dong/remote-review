@@ -9,8 +9,7 @@ Page({
     zicai_data: [],
 
     yishenhe: [],
-    currentType: '',
-    role: 'bianji'
+    currentType: ''
   },
   onLoad: function (options) {
     // 页面初始化 options为页面跳转所带来的参数
@@ -34,8 +33,12 @@ Page({
       return false;
     }
     // 编辑角色隐藏tab条，用自定义替代
-    if (wx.getStorageSync('role') == 'bianji') {
-      wx.hideTabBar()
+    if (wx.getStorageSync('is_bianji') == '1') {
+      wx.hideTabBar();
+    } else {
+      wx.switchTab({
+        url: '../craft/craft',
+      })
     }
     let pagestatus = wx.getStorageSync('ysstatus') || 'none';
     let self = wx.getStorageSync('ysself') || '0';

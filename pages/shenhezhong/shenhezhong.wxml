@@ -1,4 +1,4 @@
-<view wx:if="{{role == 'bianji'}}" class='top-area'>
+<view class='top-area'>
   <view class='top-btn active'>审核中</view>
   <view class='top-btn' bindtap='gotoYishenhe'>已完成</view>
 </view>

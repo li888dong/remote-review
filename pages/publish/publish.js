@@ -31,6 +31,13 @@ Page({
       });
       return false;
     }
+    // 编辑角色隐藏tab条，用自定义替代
+    if (wx.getStorageSync('is_bianji') == 1) {
+      wx.redirectTo({
+        url: '../shenhezhong/shenhezhong',
+      })
+      return
+    }
     let pagestatus = wx.getStorageSync('ysstatus') || 'none';
     let self = wx.getStorageSync('ysself') || '0';
     let currentType = wx.getStorageSync('ystype') || '全部';

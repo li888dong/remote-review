@@ -8,7 +8,6 @@ Page({
     role: ''
   },
   onLoad: function () {
-    console.log('enter center page')
     let that = this;
     // 未登录跳转回登陆页
     if (!wx.getStorageSync('sessid')) {
@@ -16,29 +15,20 @@ Page({
         url: '../login/login'
       })
     } else {
-      if (this.data.role == 'bianji') {
-        wx.setStorage({
-          key: 'role',
-          data: 'bianji',
-        });
+      this.setData({
+        is_bianji: wx.getStorageSync('is_bianji'),
+        role: wx.getStorageSync('role'),
+      })
+      if (wx.getStorageSync('is_bianji')==1) {
         // 编辑角色的用户信息地址
         let url = 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=userlist';
         this.fetchUserInfo(url)
       } else {
-        wx.setStorage({
-          key: 'role',
-          data: 'jizhe',
-        });
         // 记者角色用户信息接口地址
         let url = 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=userlist';
         this.fetchUserInfo(url)
       }
     }
-    this.setData({
-      is_bianji: wx.getStorageSync('is_bianji'),
-      role: wx.getStorageSync('role') || 'jizhe',
-      realname:wx.getStorageSync('realname')
-    })
   },
   fetchUserInfo: function (url) {
     let that = this;
@@ -54,21 +44,28 @@ Page({
         if (response.data.status == 1) {
           console.log('获取用户信息列表', response.data.data);
           that.setData({
-            userInfo: response.data.data
+            userInfo:response.data.data
           })
-          if(response.data.data.realname){
-            wx.setStorage({
-              key: 'realname',
-              data: response.data.data.realname,
-            })
-          }
-        } else {
+          
+        } else if (response.data.status == -1){
           wx.showModal({
-            title: response.data.info,
-            content: '',
+            title: '',
+            content: response.data.info,
             showCancel: false,
             complete: function () {
               return false;
+            }
+          });
+        } else if (response.data.status == -2){
+          wx.showModal({
+            title: '',
+            content: '登录过期，请重新登录',
+            showCancel: false,
+            complete: function () {
+              wx.clearStorage();
+              wx.redirectTo({
+                url: '../login/login'
+              })
             }
           });
         }
@@ -115,28 +112,33 @@ Page({
     });
   },
   switch2bianji(e) {
+    let that = this;
     if (e.detail.value) {
-      wx.setStorage({
-        key: 'role',
-        data: 'bianji',
-      });
-      this.setData({
-        role:'bianji'
-      })
       // 编辑角色的用户信息地址
       let url = 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=userlist';
-      this.fetchUserInfo(url)
-    } else {
       wx.setStorage({
-        key: 'role',
-        data: 'jizhe',
+        key: 'is_bianji',
+        data: '1',
+        success:function(){
+          that.setData({
+            is_bianji:1
+          })
+          that.fetchUserInfo(url)
+        }
       });
-      this.setData({
-        role:'jizhe'
-      })
+    } else {
       // 记者角色用户信息接口地址
       let url = 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=userlist';
-      this.fetchUserInfo(url)
+      wx.setStorage({
+        key: 'is_bianji',
+        data: '0',
+        success:function(){
+          that.setData({
+            is_bianji: 0
+          })
+          that.fetchUserInfo(url)
+        }
+      });    
     }
   },
 });

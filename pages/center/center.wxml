@@ -3,16 +3,16 @@
 <view class="center-page">
   <view class="userinfo">
     <open-data class="userinfo-avatar" type="userAvatarUrl"></open-data>
-    <view class="name">{{realname}}</view>
+    <view class="name">{{userInfo.realname}}</view>
     <view class="bianji-switch">
-      记者<switch bindchange="switch2bianji" checked="{{role == 'bianji'}}" wx:if="{{is_bianji == 1}}">编辑</switch>
+      记者<switch bindchange="switch2bianji" checked="{{is_bianji == 1}}" wx:if="{{role == '1'}}">编辑</switch>
     </view>
     
   </view>
   <view class="search-area">
     <navigator class="search" url="../search/search">搜索</navigator>
   </view>
-  <view class="user-stat" wx:if="{{role == 'jizhe'}}">
+  <view class="user-stat" wx:if="{{is_bianji == 0}}">
     <view class="section-title">我的发稿</view>
     <view class="user-figure">
       总发稿：
@@ -32,11 +32,11 @@
     <view class="user-figure">
       已转审：<text>{{userInfo.shengao.yizhuanshen}}</text> 条
     </view>
-    <view class="user-figure" wx:if="{{role == 'jizhe'}}">
+    <view class="user-figure" wx:if="{{is_bianji == 0}}">
       已驳回：<text>{{userInfo.shengao.yibohui}}</text> 条
     </view>
   </view>
-  <view class="link-area" wx:if="{{role == 'jizhe'}}">
+  <view class="link-area" wx:if="{{is_bianji == 0}}">
     <navigator url="../trash/trash" class="link">
       已删除稿件: <text>{{userInfo.shanchu}}</text>条
     </navigator>
