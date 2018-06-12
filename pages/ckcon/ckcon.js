@@ -14,7 +14,7 @@ Page({
     // 驳回理由前面的小圆点
     lineLength: 0,
     // 驳回信息
-    reject_reason:[],
+    reject_reason: [],
     // 转审人员列表
     sucheckers: [],
     // 选定转审人员id
@@ -35,7 +35,7 @@ Page({
     audioarea: false,
     newsScore: 1
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     // 获取工作流数据
     app.getWorkFlowData(options.id, this);
     // 获取驳回数据
@@ -47,110 +47,107 @@ Page({
       content: app.getNewsById(options.id, 'shenhezhong')
     });
   },
-  
 
-  openOp: function (e) {
+
+  openOp: function(e) {
     let opid = e.target.dataset.opid;
     this.setData({
       optionopen: opid
     })
-    if(opid == 3){
+    if (opid == 3) {
       this.getSu()
     }
   },
-  closeOp: function () {
+  closeOp: function() {
     this.setData({
       optionopen: 0
     })
   },
-  setReject: function (e) {
+  setReject: function(e) {
     this.setData({
       rejectreason: e.detail.value
     })
   },
-  setGradeReason: function (e) {
+  setGradeReason: function(e) {
     this.setData({
       grade_message: e.detail.value
     })
   },
-  rejectNews: function (e) {
+  rejectNews: function(e) {
     let that = this;
     if (this.data.rejectreason == '') {
       wx.showModal({
         title: '请填写驳回理由',
         content: '',
         showCancel: false,
-        complete: function (res) {
+        complete: function(res) {
           return false;
         }
       })
     } else {
-      wx.showModal({
-        title: '确认驳回',
-        content: '您确定要驳回这篇稿件吗？',
-        success: function (res) {
-          if (res.confirm) {
-            wx.showLoading();
-            wx.request({
-              url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_bohui',
-              method: 'post',
-              header: { "content-type": "application/x-www-form-urlencoded" },
-              data: {
-                sessid: wx.getStorageSync('sessid'),
-                bohui_id: that.data.cid,
-                content: that.data.rejectreason.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, ""),
-              },
-              success: function (res) {
-                wx.hideLoading();
-                if (res.data.status == 1) {
-                  wx.showModal({
-                    title: '驳回成功',
-                    showCancel: false,
-                    content: '',
-                    complete: function (res) {
-                      wx.navigateBack({
-                        delta: 1
-                      })
-                    }
-                  })
-                } else if (res.data.status == '-2') {
-                  wx.clearStorageSync();
-                  wx.showModal({
-                    title: '登录过期，请重新登录',
-                    showCancel: false,
-                    content: '',
-                    complete: res => {
-                      wx.redirectTo({
-                        url: '../login/login'
-                      })
-                    }
-                  })
 
-                }
-              },
-              fail: function (res) {
-                wx.hideLoading();
-                wx.showModal({
-                  title: '网络状况差，请稍后再试',
-                  showCancel: false,
-                  content: '',
-                  complete: function (res) {
-
-                  }
-                });
-
+      wx.showLoading();
+      wx.request({
+        url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_bohui',
+        method: 'post',
+        header: {
+          "content-type": "application/x-www-form-urlencoded"
+        },
+        data: {
+          sessid: wx.getStorageSync('sessid'),
+          bohui_id: that.data.cid,
+          content: that.data.rejectreason.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "")
+        },
+        success: function(res) {
+          wx.hideLoading();
+          if (res.data.status == 1) {
+            wx.showModal({
+              title: '驳回成功',
+              showCancel: false,
+              content: '',
+              complete: function(res) {
+                wx.navigateBack({
+                  delta: 1
+                })
               }
             })
-          } else {
-            return false;
+          } else if (res.data.status == '-1') {
+            wx.showModal({
+              title: '',
+              showCancel: false,
+              content: res.data.info
+            })
+          } else if (res.data.status == '-2') {
+            wx.clearStorageSync();
+            wx.showModal({
+              title: '登录过期，请重新登录',
+              showCancel: false,
+              content: '',
+              complete: res => {
+                wx.redirectTo({
+                  url: '../login/login'
+                })
+              }
+            })
           }
-        }
-      });
+        },
+        fail: function(res) {
+          wx.hideLoading();
+          wx.showModal({
+            title: '网络状况差，请稍后再试',
+            showCancel: false,
+            content: '',
+            complete: function(res) {
 
+            }
+          });
+
+        }
+      })
     }
 
   },
-  changeSelection: function (e) {
+  changeSelection: function(e) {
     let tmp = e.detail.value;
     this.setData({
       mainindex: tmp
@@ -163,7 +160,7 @@ Page({
       currentCate: this.data.categories[tmp].catid
     })
   },
-  setCate: function (e) {
+  setCate: function(e) {
     let tmp = e.detail.value;
     this.setData({
       subindex: tmp
@@ -182,12 +179,14 @@ Page({
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_zhuanshen_users',
       method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
+      header: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
       data: {
         sessid: wx.getStorageSync('sessid'),
-        newsid:that.data.cid
+        newsid: that.data.cid
       },
-      success: function (res) {
+      success: function(res) {
         console.log('转审人员列表', res.data)
 
         if (res.data.status == 1) {
@@ -196,7 +195,7 @@ Page({
             sucheck: res.data.data[that.data.suindex].userid,
             tocheckname: res.data.data[that.data.suindex].realname
           });
-        }else if(res.data.status == -1){
+        } else if (res.data.status == -1) {
           wx.showModal({
             title: '',
             content: res.data.info,
@@ -219,7 +218,7 @@ Page({
       }
     });
   },
-  setSu: function (e) {
+  setSu: function(e) {
     let tmp = e.detail.value;
     this.setData({
       suindex: tmp,
@@ -228,79 +227,72 @@ Page({
     });
   },
   // 通过审核
-  confirmNews: function (e) {
+  confirmNews: function(e) {
 
     let that = this;
-
-    wx.showModal({
-      title: '确认通过',
-      content: '您确定要通过这篇稿件吗？',
-      success: function (res) {
-        if (res.confirm) {
-          wx.showLoading();
-          wx.request({
-            url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_pass",
-            method: 'post',
-            header: { "content-type": "application/x-www-form-urlencoded" },
-            data: {
-              sessid: wx.getStorageSync('sessid'),
-              id: that.data.cid,
-              steps: that.data.content.steps,
-              type: that.data.content.type
-            },
-            success: function (res) {
-              wx.hideLoading();
-              if (res.data.status == 1) {
-                wx.showModal({
-                  title: '已通过',
-                  showCancel: false,
-                  content: '',
-                  complete: function (res) {
-                    wx.navigateBack({
-                      delta: 1
-                    })
-                  }
-                })
-              } else if (res.data.status == '-2') {
-                wx.clearStorageSync();
-                wx.showModal({
-                  title: '登录过期，请重新登录',
-                  showCancel: false,
-                  content: '',
-                  complete: res => {
-                    wx.redirectTo({
-                      url: '../login/login'
-                    })
-                  }
-                })
-
-              }
-            },
-            fail: function (res) {
-              wx.hideLoading();
-              wx.showModal({
-                title: '网络状况差，请稍后再试',
-                showCancel: false,
-                content: '',
-                complete: function (res) {
-
-                }
-              });
-
+    wx.showLoading();
+    wx.request({
+      url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_pass",
+      method: 'post',
+      header: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
+      data: {
+        sessid: wx.getStorageSync('sessid'),
+        id: that.data.cid,
+        steps: that.data.content.steps,
+        type: that.data.content.type
+      },
+      success: function(res) {
+        wx.hideLoading();
+        if (res.data.status == 1) {
+          wx.showModal({
+            title: '已通过',
+            showCancel: false,
+            content: '',
+            complete: function(res) {
+              wx.navigateBack({
+                delta: 1
+              })
             }
           })
-        } else {
-          return false;
+        } else if (res.data.status == -1) {
+          wx.showModal({
+            title: '',
+            showCancel: false,
+            content: res.data.info
+          })
+        } else if (res.data.status == '-2') {
+          wx.clearStorageSync();
+          wx.showModal({
+            title: '登录过期，请重新登录',
+            showCancel: false,
+            content: '',
+            complete: res => {
+              wx.redirectTo({
+                url: '../login/login'
+              })
+            }
+          })
+
         }
+      },
+      fail: function(res) {
+        wx.hideLoading();
+        wx.showModal({
+          title: '网络状况差，请稍后再试',
+          showCancel: false,
+          content: '',
+          complete: function(res) {
+
+          }
+        });
+
       }
-
-    });
-
-
-
+    })
   },
   // 转审
-  forwardNews: function (e) {
+  forwardNews: function(e) {
 
     let that = this;
 
@@ -309,81 +301,75 @@ Page({
         title: '请选择总编辑',
         content: '',
         showCancel: false,
-        complete: function (res) {
+        complete: function(res) {
           return false;
         }
       })
     } else {
-
-      wx.showModal({
-        title: '确认转审',
-        content: '您确定要转审这篇稿件吗？',
-        success: function (res) {
-          if (res.confirm) {
-            wx.showLoading({
-              title: '转审中...',
-            })
-            wx.request({
-              url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_zhuanshen",
-              method: 'post',
-              header: { "content-type": "application/x-www-form-urlencoded" },
-              data: {
-                sessid: wx.getStorageSync('sessid'),
-                zhuanshen_id: that.data.cid,
-                tocheckid: that.data.sucheck,
-                tocheckname: that.data.tocheckname
-              },
-              success: function (res) {
-                wx.hideLoading();
-                if (res.data.status == 1) {
-                  wx.showModal({
-                    title: '已转审',
-                    showCancel: false,
-                    content: '',
-                    complete: function (res) {
-                      wx.navigateBack({
-                        delta: 1
-                      })
-                    }
-                  })
-                } else if (res.data.status == '-2') {
-                  wx.clearStorageSync();
-                  wx.showModal({
-                    title: '登录过期，请重新登录',
-                    showCancel: false,
-                    content: '',
-                    complete: res => {
-                      wx.redirectTo({
-                        url: '../login/login'
-                      })
-                    }
-                  })
-
-                }
-              },
-              fail: function (res) {
-                wx.hideLoading();
-                wx.showModal({
-                  title: '网络状况差，请稍后再试',
-                  showCancel: false,
-                  content: '',
-                  complete: function (res) {
-
-                  }
-                });
-
+      wx.showLoading();
+      wx.request({
+        url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_zhuanshen",
+        method: 'post',
+        header: {
+          "content-type": "application/x-www-form-urlencoded"
+        },
+        data: {
+          sessid: wx.getStorageSync('sessid'),
+          zhuanshen_id: that.data.cid,
+          tocheckid: that.data.sucheck,
+          tocheckname: that.data.tocheckname
+        },
+        success: function(res) {
+          wx.hideLoading();
+          if (res.data.status == 1) {
+            wx.showModal({
+              title: '已转审',
+              showCancel: false,
+              content: '',
+              complete: function(res) {
+                wx.navigateBack({
+                  delta: 1
+                })
               }
             })
-          } else {
-            return false;
-          }
-        }
-      });
+          } else if (res.data.status == -1) {
+            wx.showModal({
+              title: '',
+              showCancel: false,
+              content: res.data.info
+            })
+          } else if (res.data.status == '-2') {
+            wx.clearStorageSync();
+            wx.showModal({
+              title: '登录过期，请重新登录',
+              showCancel: false,
+              content: '',
+              complete: res => {
+                wx.redirectTo({
+                  url: '../login/login'
+                })
+              }
+            })
 
+          }
+        },
+        fail: function(res) {
+          wx.hideLoading();
+          wx.showModal({
+            title: '网络状况差，请稍后再试',
+            showCancel: false,
+            content: '',
+            complete: function(res) {
+
+            }
+          });
+
+        }
+      })
     }
 
   },
-  suNews: function (e) {
+  suNews: function(e) {
     let that = this;
 
     if (this.data.is_special && (this.data.currentCate == '' || this.data.currentCate == 0)) {
@@ -400,12 +386,14 @@ Page({
     wx.showModal({
       title: '确认通过',
       content: '您确定要通过这篇稿件吗？',
-      success: function (res) {
+      success: function(res) {
         if (res.confirm) {
           wx.request({
             url: "https://www.hnsjb.cn/ycfgwx_api.php?op=remotepost_wx_3&param=pass",
             method: 'post',
-            header: { "content-type": "application/x-www-form-urlencoded" },
+            header: {
+              "content-type": "application/x-www-form-urlencoded"
+            },
             data: {
               sessid: wx.getStorageSync('sessid'),
               id: that.data.cid,
@@ -415,13 +403,13 @@ Page({
               to_specialcat: that.data.selectedType,
               is_special: is_special
             },
-            success: function (res) {
+            success: function(res) {
               if (res.data.status == 1) {
                 wx.showModal({
                   title: '已通过',
                   showCancel: false,
                   content: '',
-                  complete: function (res) {
+                  complete: function(res) {
                     wx.navigateBack({
                       delta: 1
                     })
@@ -442,12 +430,12 @@ Page({
 
               }
             },
-            fail: function (res) {
+            fail: function(res) {
               wx.showModal({
                 title: '网络状况差，请稍后再试',
                 showCancel: false,
                 content: '',
-                complete: function (res) {
+                complete: function(res) {
                   that.setData({
                     'disable': false
                   });
@@ -465,16 +453,95 @@ Page({
       }
     });
   },
-  editNews: function () {
+  editNews: function() {
     wx.navigateTo({
       url: '../edit/edit?id=' + this.data.cid + '&type=shenhe'
     })
   },
 
-  setScore: function (e) {
+  setScore: function(e) {
     console.log(e.target.dataset.score);
     this.setData({
       'newsScore': e.target.dataset.score
+    })
+  },
+  // 文章是否已更新
+  is_update(e) {
+    let that = this;
+    let fn;
+    if (e.target.dataset.disableid == 1) {
+      fn = this.rejectNews;
+    } else if (e.target.dataset.disableid == 2) {
+      fn = this.confirmNews;
+    } else if (e.target.dataset.disableid == 3) {
+      fn = this.forwardNews;
+    }
+    wx.request({
+      url: "https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=is_update",
+      method: 'post',
+      header: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
+      data: {
+        sessid: wx.getStorageSync('sessid'),
+        id: that.data.cid,
+        updatetime: that.data.content.updatetime
+      },
+      success: function(res) {
+        wx.hideLoading();
+        if (res.data.status == 1) {
+          wx.showModal({
+            title: '',
+            showCancel: false,
+            content: '该文章已被他人操作',
+            complete: function() {
+              wx.navigateBack({
+                delta: 1
+              })
+            }
+          })
+
+        } else if (res.data.status == 0) {
+          console.log('已更新');
+          fn();
+        } else if (res.data.status == '-2') {
+          wx.clearStorageSync();
+          wx.showModal({
+            title: '登录过期，请重新登录',
+            showCancel: false,
+            content: '',
+            complete: res => {
+              wx.redirectTo({
+                url: '../login/login'
+              })
+            }
+          })
+
+        } else {
+          wx.showModal({
+            title: '',
+            showCancel: false,
+            content: '网络错误请尝试刷新',
+            complete: function() {
+              wx.navigateBack({
+                delta: 1
+              })
+            }
+          })
+        }
+      },
+      fail: function(res) {
+        wx.hideLoading();
+        wx.showModal({
+          title: '网络状况差，请稍后再试',
+          showCancel: false,
+          content: '',
+          complete: function(res) {
+
+          }
+        });
+
+      }
     })
   }
 

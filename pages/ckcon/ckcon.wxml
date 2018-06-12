@@ -43,14 +43,14 @@
     </view>
 
     <view class="btn-container">
-      <button type="warn" bindtap="rejectNews" data-disableid="1">确认驳回</button>
+      <button type="warn" bindtap="is_update" data-disableid="1">确认驳回</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
     
   </view>
   <view class="content-option" wx:elif="{{optionopen == 2}}">
     <view class="btn-container">
-      <button type="warn" bindtap="confirmNews" data-disableid="2">确认通过</button>
+      <button type="warn" bindtap="is_update" data-disableid="2">确认通过</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
   </view>
@@ -62,7 +62,7 @@
     </picker>
 
     <view class="btn-container">
-      <button type="warn" bindtap="forwardNews" data-disableid="3">确认转审</button>
+      <button type="warn" bindtap="is_update" data-disableid="3">确认转审</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
   </view>

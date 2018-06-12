@@ -3,8 +3,6 @@ var app = getApp();
 Page({
   data: {
     content: '',
-    // 驳回信息
-    reject_reason: [],
     // 转审人员列表
     sucheckers: [],
     // 选定转审人员id
@@ -485,5 +483,84 @@ Page({
       return 'src="' + newDomain + capture
     });
     return newStr
+  },
+  // 文章是否已更新
+  is_update(e) {
+    let that = this;
+    let fn;
+    if (e.target.dataset.disableid == 1){
+      fn = this.confirmZhuanyi;
+    }else if (e.target.dataset.disableid == 2) {
+      fn = this.confirmNews;
+    } else if (e.target.dataset.disableid == 3) {
+      fn = this.forwardNews;
+    }
+    wx.request({
+      url: "https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=is_update",
+      method: 'post',
+      header: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
+      data: {
+        sessid: wx.getStorageSync('sessid'),
+        id: that.data.newsId,
+        updatetime: that.data.content.updatetime
+      },
+      success: function (res) {
+        wx.hideLoading();
+        if (res.data.status == 1) {
+          wx.showModal({
+            title: '',
+            showCancel: false,
+            content: '该文章已被他人操作',
+            complete: function () {
+              wx.navigateBack({
+                delta: 1
+              })
+            }
+          })
+
+        } else if (res.data.status == 0) {
+          console.log('已更新');
+          fn();
+        } else if (res.data.status == '-2') {
+          wx.clearStorageSync();
+          wx.showModal({
+            title: '登录过期，请重新登录',
+            showCancel: false,
+            content: '',
+            complete: res => {
+              wx.redirectTo({
+                url: '../login/login'
+              })
+            }
+          })
+
+        } else {
+          wx.showModal({
+            title: '',
+            showCancel: false,
+            content: '网络错误请尝试刷新',
+            complete: function () {
+              wx.navigateBack({
+                delta: 1
+              })
+            }
+          })
+        }
+      },
+      fail: function (res) {
+        wx.hideLoading();
+        wx.showModal({
+          title: '网络状况差，请稍后再试',
+          showCancel: false,
+          content: '',
+          complete: function (res) {
+
+          }
+        });
+
+      }
+    })
   }
 })
