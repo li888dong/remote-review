@@ -81,7 +81,8 @@ Page({
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
-        sessid: app.globalData.sessid
+        sessid: app.globalData.sessid,
+        userid: app.globalData.userInfo.userid
       },
       success: function (response) {
         wx.hideLoading();
