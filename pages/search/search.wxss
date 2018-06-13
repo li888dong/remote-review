@@ -31,33 +31,57 @@ input {
   width: 100rpx;
   line-height: 85rpx;
 }
-
 .news-item {
-  padding: 30rpx 32rpx 0;
+    padding: 0 32rpx;
 }
 
+.grey-item {
+    filter: grayscale(1);
+    opacity: 0.5;
+}
 .news-item-hover {
-  background: #e3e3e3;
+    background: #e3e3e3;
+}
+.news-item.forbid-item .news-title {
+    opacity: 0.5;
+}
+.news-title {
+    color: #4a4a4a;
+    font-size: 40rpx;
+    line-height: 1.4;
 }
 
-.news-title {
-  color: #4a4a4a;
-  font-size: 40rpx;
-  line-height: 1.4;
+.news-inner {
+    padding-top: 30rpx;
+    padding-bottom: 10rpx;
+    border-bottom: 1rpx solid #e3e3e3;
+}
+
+.reject.news-item .news-inner {
+    padding-left: 80rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/warn.png") left center no-repeat;
+    background-size: 40rpx 40rpx;
+}
+
+.forward.news-item .news-inner {
+    padding-left: 80rpx;
+    background: url("https://www.hnsjb.cn/static/img/wxapp/daiban.png") left center no-repeat;
+    background-size: 40rpx 40rpx;
 }
 
 .news-info {
-  color: #b9b9b9;
-  font-size: 28rpx;
-  margin-top: 26rpx;
-  border-bottom: 1rpx solid #e3e3e3;
-  padding-bottom: 30rpx;
+    color: #b9b9b9;
+    font-size: 28rpx;
+  
 }
 
-.news-time, .news-author {
-  display: inline-block;
+.news-time, 
+.news-author,
+.news-copyfrom,
+.news-catname {
+    display: inline-block;
 }
 
-.news-author {
-  margin-left: 30rpx;
+.news-copyfrom,.news-catname {
+    margin-left: 30rpx;
 }

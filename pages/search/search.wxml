@@ -7,7 +7,7 @@
 
 
 <view class="list">
-  <view class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{results}}" bindtap="gotoNews" data-status="0" data-newsid="{{item.id}}">
+  <view wx:if="{{is_bianji == 0}}" class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{results}}" bindtap="gotoNews" data-status="0" data-newsid="{{item.id}}">
     <view class="news-inner">
       <text class="news-title">{{item.title}}</text>
       <view class="news-info">
@@ -16,7 +16,23 @@
       </view>
     </view>
   </view>
-
+  <view wx:if="{{is_bianji == 1}}" class="news-item" hover="true" hover-class="news-item-hover" wx:for="{{results}}" bindtap="gotoNews" data-status="0" data-newsid="{{item.id}}">
+    <view class="news-inner">
+          <text class="news-title">{{item.title}}</text>
+          
+          <view class="news-info">
+          
+            <view class="news-author">{{item.realname}}</view>
+            <view class="news-copyfrom">{{item.copyfrom}}</view>
+            <view class="news-catname">{{item.catname}}</view>
+          </view>
+          <view class="news-info">
+            <view class="news-time">{{item.inputtime}}</view>
+            
+          </view>
+        </view>
+  </view>
+  
 </view>
 <view wx:if="{{results.length == 0}}" class="empty-item">
   暂无结果

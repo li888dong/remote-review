@@ -36,16 +36,9 @@ App({
                   data: response.data.data.sessid,
                   success: function () {
                     that.globalData.sessid = response.data.data.sessid;
-                    wx.showModal({
-                      title: response.data.info,
-                      content: '',
-                      showCancel: false,
-                      complete: function (res) {
-                        wx.redirectTo({
-                          url: '../login/login'
-                        })
-                      }
-                    });
+                    wx.redirectTo({
+                      url: '../login/login'
+                    })
                   }
                 })
               } else if (response.data.status == -1) {

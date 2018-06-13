@@ -5,11 +5,20 @@ Page({
   data: {
     page: 1,
     num: 100,
-    results: []
+    results: [],
+    is_bianji:0
   },
   onLoad: function () {
     // new app.WeToast();
-
+    if(wx.getStorageSync('is_bianji')==1){
+      this.setData({
+        is_bianji:1
+      })
+    }else{
+      this.setData({
+        is_bianji: 0
+      })
+    }
   },
 
   backCenter: function () {
@@ -24,12 +33,14 @@ Page({
       wx.showLoading({
         title: '搜索中'
       })
-      // that.wetoast.toast({
-      //     title: '搜索中',
-      //     duration:0
-      // });
+      let url = '';
+      if(wx.getStorageSync('is_bianji')==1){
+        url = 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=sousuo_list'
+      }else{
+        url = 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=sousuo_list'
+      }
       wx.request({
-        url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=sousuo_list', //仅为示例，并非真实的接口地址
+        url: url, 
         method: 'post',
         header: { "content-type": "application/x-www-form-urlencoded" },
         data: {
@@ -71,9 +82,16 @@ Page({
 
   },
   gotoNews: function (e) {
-    wx.navigateTo({
-      url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid+'&from=search'
-    })
+    if(wx.getStorageSync('is_bianji') == 1){
+      wx.navigateTo({
+        url: '../newscontent/newscontent?id=' + e.currentTarget.dataset.newsid + '&from=search'
+      })
+    }else{
+      wx.navigateTo({
+        url: '../vcon/vcon?id=' + e.currentTarget.dataset.newsid + '&from=search'
+      })
+    }
+    
 
 
   }
