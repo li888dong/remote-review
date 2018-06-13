@@ -25,6 +25,18 @@ page {
     line-height: 100rpx;
     color: #9b9b9b;
 }
+.fix-iphonex-button {
+    bottom:68rpx!important;
+}
+.fix-iphonex-button::after {
+    content: ' ';
+    position: fixed;
+    bottom: 0!important;
+    height: 68rpx!important;
+    width: 100%;
+    background: #fff;
+}
+
 .bottom-area .hover-active,.hover-active {
     color: #3098e5;
     background-color: rgba(0, 0, 0, 0.1);

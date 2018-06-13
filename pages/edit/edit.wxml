@@ -19,7 +19,7 @@
   <!-- 正文输入框 -->
   <view class="prop-container content-container">
     <view class="input">正文:
-      <switch  wx:if="{{type!='shenhe'}}" class="fr" bindchange='switchModel' checked>{{model == 'text'?'纯文本':'图文模式'}}</switch>
+      <text class="insert-btn fr" bindtap='insertImg'>插图</text>
     </view>
     <!-- 图文内容 -->
     <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">
@@ -50,40 +50,9 @@
       </view>
       <!-- 文本内容 -->
       <!-- 模拟器上没有确认按钮 手机上用bindconfirm  模拟器用bindblur -->
-      <textarea wx:if="{{model=='text'&&type!=''}}" placeholder="输入文字内容" cursor-spacing='10' class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
-      <textarea wx:if="{{model=='withImg'&&item.type == 'text'&&type!=''}}" placeholder="输入文字内容" cursor-spacing='10' class="content-input input-withImg" maxlength="-1" auto-height bindconfirm="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
+      <textarea wx:if="{{model=='text'&&type!=''}}" placeholder="输入文字内容" cursor-spacing='10' class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
+      <textarea wx:if="{{model=='withImg'&&item.type == 'text'&&type!=''}}" placeholder="输入文字内容" cursor-spacing='10' class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
     </view>
     <!-- 图文内容结束 -->
   </view>
 </view>
-<!-- 新闻来源 -->
-<!-- <view class="prop-container">
-    <textarea class="input" value="{{content.copyfrom}}" placeholder="新闻来源" data-prop="copyfrom" bindconfirm="setProp" bindblur="setProp"></textarea>
-  </view> -->
-
-<!-- <view class="prop-container">
-    <view class="switch-container">
-      <view class="switch-label">
-        是否发布到专题
-      </view>
-      <switch bindchange="setSpecial" />
-    </view>
-
-  </view> -->
-<!-- <view class="prop-container" wx:if="{{is_special}}">
-  <picker bindchange="getSpecialTypes" range="{{specials}}" value="{{specialIndex}}" range-key="sname">
-    <view class="picker">专题：{{specials[specialIndex].sname}}</view>
-  </picker>
-</view>
-
-<view class="prop-container" wx:if="{{is_special && types.length > 0}}">
-  <picker bindchange="setSpecialType" range="{{types}}" value="{{typeIndex}}" range-key="scname">
-    <view class="picker">选择栏目：{{types[typeIndex].scname}}</view>
-  </picker>
-</view> -->
-
-<!-- <import src="../../src/wetoast.wxml"/> -->
-
-<!-- <template is="wetoast" data="{{...__wetoast__}}"/> -->
-
-<!-- </view> -->

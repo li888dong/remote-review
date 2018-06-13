@@ -2,6 +2,8 @@
 let app = getApp();
 Page({
   data: {
+    isIpx: app.globalData.isIpx ? true : false,
+
     page: 1,
     num: 20,
     final_data: [],

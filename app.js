@@ -2,9 +2,17 @@
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
-    let logs = wx.getStorageSync('logs') || [];
-    logs.unshift(Date.now());
-    wx.setStorageSync('logs', logs.slice(0, 50));
+    let that = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        console.log('手机型号',res.model);
+        if (res.model.trim() == 'iPhone X'){
+          that.globalData.isIpx = true
+        }else{
+          that.globalData.isIpx = false
+        }
+      }
+    })
     this.globalData.userInfo = wx.getStorageSync('userInfo');
     if (!wx.getStorageSync('sessid')) {
       this.getSessionId();
@@ -171,7 +179,8 @@ App({
     sessid: null,
     mobile: '',
     nickname: '',
-    avatarUrl: ''
+    avatarUrl: '',
+    isIpx:false
   },
   // WeToast
 });

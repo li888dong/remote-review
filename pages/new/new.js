@@ -9,7 +9,7 @@ Page({
     content: {
       title: '',
       content: [{
-        "type": "add",
+        "type": "text",
         "value": ""
       }],
       copyfrom: '河南手机报'
@@ -513,41 +513,14 @@ Page({
       this.setData(data);
     }
   },
-  setSpecial(e) {
-    // console.log(e.detail.value);
-    this.setData({
-      is_special: e.detail.value
-    })
-  },
-  getSpecialTypes(e) {
-    let cid = e.detail.value;
-    let that = this;
-
-    this.setData({
-      specialIndex: cid
+  insertImg(){
+    let content = this.data.content;
+    content.content.push({
+      type:'add',
+      value:''
     });
     this.setData({
-      selectedSpecial: that.data.specials[cid].cid
-    });
-    this.setData({
-      types: that.data.specials[cid].category
-    });
-    this.setData({
-      selectedType: 0
-    });
-    this.setData({
-      typeIndex: -1
-    })
-  },
-
-  setSpecialType(e) {
-    let tid = e.detail.value;
-    this.setData({
-      typeIndex: tid
-    });
-    let that = this;
-    this.setData({
-      selectedType: that.data.types[tid].scid
+      content:content
     })
   }
 });

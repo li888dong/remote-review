@@ -188,9 +188,13 @@ button.submit::after {
     display: none;
 }
 .insert-btn {
+    display: inline-block;
+    width: 70rpx;
     background: url("https://www.hnsjb.cn/static/img/wxapp/insert-new.png") center center no-repeat;
     background-size: 42rpx 42rpx;
-    background-position-x: 70rpx;
+    background-position-x: 0;
+    vertical-align: top;
+    padding-left: 50rpx;
 }
 
 .submit-btn {

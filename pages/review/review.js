@@ -2,6 +2,7 @@
 let app = getApp();
 Page({
   data: {
+    isIpx: app.globalData.isIpx ? true : false,
 
     bohui_data: [],
     daishen_data: [],

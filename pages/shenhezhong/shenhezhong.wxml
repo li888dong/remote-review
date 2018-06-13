@@ -26,7 +26,7 @@
     该类别下暂无内容
   </view>
 </view>
-<view class="bottom-area">
+<view class="bottom-area {{isIpx?'fix-iphonex-button':''}}">
   <navigator hover-class="hover-active" url="../center/center">
     <view class="r-btn center-btn"></view>
     个人中心

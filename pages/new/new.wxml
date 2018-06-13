@@ -19,7 +19,7 @@
   <!-- 正文输入框 -->
   <view class="prop-container content-container">
     <view class="input">正文:
-      <switch class="fr" bindchange='switchModel' checked>{{model == 'text'?'纯文本':'图文模式'}}</switch>
+      <text class="insert-btn fr" bindtap='insertImg'>插图</text>
     </view>
     <!-- 图文内容 -->
     <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">

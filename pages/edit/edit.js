@@ -38,7 +38,7 @@ Page({
   // 初始化新建稿件页  判断暂存状态和取值
   initEditData(options) {
     this.setData({
-      type: options.type||'',
+      type: options.type || '',
       cid: options.id
     })
     if (this.data.type == 'caogao' || this.data.type == 'bohui') {
@@ -50,7 +50,7 @@ Page({
       this.setData({
         content: tempArr
       });
-    }else {
+    } else {
       var tempArr = app.getNewsById(this.data.cid, 'shenhezhong');
       tempArr.content.push({
         "type": "add",
@@ -62,7 +62,7 @@ Page({
     }
 
   },
-  
+
   // 图片上传，成功后将图片地址存入content
   uploadImg: function (e) {
     let cidx = e.target.dataset.cidx;
@@ -214,7 +214,7 @@ Page({
       })
       return
     }
-    
+
     let tempArr;
     if (this.data.model == 'text') {
       tempArr = [{
@@ -272,14 +272,14 @@ Page({
       formId: e.detail.formId
     }
 
-    if(this.data.type == 'caogao'){
+    if (this.data.type == 'caogao') {
       reqData.caogao_id = this.data.cid;
-    }else if(this.data.type == 'bohui'){
+    } else if (this.data.type == 'bohui') {
       reqData.bohui_id = this.data.cid
-    }else if(this.data.type == 'shenhe'){
+    } else if (this.data.type == 'shenhe') {
       reqData.shenhe_id = this.data.cid
     }
-    
+
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=' + url,
       method: 'post',
@@ -345,7 +345,7 @@ Page({
         "type": "text",
         "value": e.detail.value
       };
-      tempArr.splice(cidx-1, 1, textdata);
+      tempArr.splice(cidx - 1, 1, textdata);
       this.setContent(tempArr);
     } else {
       let tempArr = this.data.content.content;
@@ -354,7 +354,7 @@ Page({
         "type": "text",
         "value": e.detail.value
       };
-      tempArr.splice(cidx , 1, textdata);
+      tempArr.splice(cidx, 1, textdata);
       this.setContent(tempArr);
     }
   },
@@ -529,5 +529,15 @@ Page({
       data['content.content[' + tempCArr[j].id + '].value'] = tempCArr[j].strA + tempCArr[j].strB; // key 可以是任何字符串
       this.setData(data);
     }
+  },
+  insertImg() {
+    let content = this.data.content;
+    content.content.push({
+      type: 'add',
+      value: ''
+    });
+    this.setData({
+      content: content
+    })
   }
 });
