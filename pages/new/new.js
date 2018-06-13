@@ -28,7 +28,7 @@ Page({
     specialIndex: -1,
     typeIndex: -1
   },
-  onLoad: function (options) {
+  onLoad: function(options) {
     // 页面初始化 options为页面跳转所带来的参数
     // new app.WeToast();
     // this.fetchSpecialList()
@@ -38,8 +38,8 @@ Page({
   // 初始化新建稿件页  判断暂存状态和取值
   initEditData(options) {
     this.setData({
-      type: options.type||'',
-      cid: options.id
+      type: options.type || '',
+      cid: options.id || ''
     })
     if (this.data.type == 'caogao') {
       this.setData({
@@ -49,7 +49,7 @@ Page({
 
   },
   // 图片上传，成功后将图片地址存入content
-  uploadImg: function (e) {
+  uploadImg: function(e) {
     let cidx = e.target.dataset.cidx;
     let that = this;
     let tempArr = this.data.content.content;
@@ -61,7 +61,7 @@ Page({
       count: 1, // 默认9
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
       sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
+      success: function(res) {
         // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
         let tempFilePaths = res.tempFilePaths;
         wx.showLoading({
@@ -74,7 +74,7 @@ Page({
           formData: {
             'user': 'test'
           },
-          success: function (res) {
+          success: function(res) {
             wx.hideLoading();
             let data = JSON.parse(res.data);
             console.log('图片上传', data)
@@ -93,19 +93,19 @@ Page({
                 title: data.info,
                 showCancel: false,
                 content: '',
-                complete: function () {
+                complete: function() {
                   return false
                 }
               });
             }
           },
-          fail: function (res) {
+          fail: function(res) {
             wx.hideLoading();
             wx.showModal({
               title: '网络状况差，请稍后再试',
               showCancel: false,
               content: '',
-              complete: function (res) {
+              complete: function(res) {
                 return false
               }
             });
@@ -116,7 +116,7 @@ Page({
     })
   },
   // 视频上传，成功后将视频地址存入content
-  uploadVd: function (e) {
+  uploadVd: function(e) {
     let cidx = e.target.dataset.cidx;
     let that = this;
     let tempArr = this.data.content.content;
@@ -124,7 +124,7 @@ Page({
       sourceType: ['album', 'camera'], // album 从相册选视频，camera 使用相机拍摄
       maxDuration: 60, // 拍摄视频最长拍摄时间，单位秒。最长支持60秒
       camera: ['back'],
-      success: function (res) {
+      success: function(res) {
         let tempFilePath = res.tempFilePath;
         wx.showLoading({
           'title': '视频上传中'
@@ -136,7 +136,7 @@ Page({
           formData: {
             'user': 'test'
           },
-          success: function (res) {
+          success: function(res) {
             wx.hideLoading();
             console.log('视频上传', res);
             let data = JSON.parse(res.data);
@@ -155,19 +155,19 @@ Page({
                 title: data.info,
                 showCancel: false,
                 content: '',
-                complete: function () {
+                complete: function() {
                   return false
                 }
               });
             }
           },
-          fail: function (res) {
+          fail: function(res) {
             wx.hideLoading();
             wx.showModal({
               title: '网络状况差，请稍后再试',
               showCancel: false,
               content: '',
-              complete: function () {
+              complete: function() {
                 return false
               }
             });
@@ -177,7 +177,7 @@ Page({
     })
   },
   // 文章暂存和提交
-  getContent: function (e) {
+  getContent: function(e) {
     let that = this,
       url,
       loadingTitle;
@@ -199,35 +199,18 @@ Page({
       })
       return
     }
-    
+
     let tempArr;
-    if (this.data.model == 'text') {
-      tempArr = [{
-        type: 'text',
-        value: ''
-      }];
 
-      for (let i = 0; i < content.content.length; i++) {
-        if (content.content[i].type == 'text') {
-          content.content[i].value = content.content[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
-          tempArr[0].value += content.content[i].value.trim();
-        }
-      }
-    } else {
-      tempArr = [];
-      // 删去type=add的项 和值为空的项
-      for (let i = 0; i < content.content.length; i++) {
-        if (content.content[i].type != 'add' && content.content[i].value.trim()) {
-          content.content[i].value = content.content[i].value.trim();
-          tempArr.push(content.content[i])
-        }
+    tempArr = [];
+    // 删去type=add的项 和值为空的项
+    for (let i = 0; i < content.content.length; i++) {
+      if (content.content[i].type != 'add' && content.content[i].value.trim()) {
+        content.content[i].value = content.content[i].value.trim();
+        tempArr.push(content.content[i])
       }
     }
-    let is_special = 0;
 
-    if (this.data.is_special) {
-      is_special = 1;
-    }
     // 检查上传文章是否为空
     if (!tempArr[0].value) {
       wx.showModal({
@@ -254,7 +237,7 @@ Page({
       content: JSON.stringify(tempArr),
       sessid: app.globalData.sessid,
       type: this.data.type,
-      formId:e.detail.formId
+      formId: e.detail.formId
     }
 
     if (this.data.type == 'caogao') {
@@ -266,16 +249,18 @@ Page({
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=' + url,
       method: 'post',
-      header: { "content-type": "application/x-www-form-urlencoded" },
+      header: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
       data: reqData,
-      success: function (res) {
+      success: function(res) {
         wx.hideLoading()
         if (res.data.status == '1') {
           wx.showModal({
             title: loadingTitle + '成功',
             showCancel: false,
             content: '',
-            complete: function (res) {
+            complete: function(res) {
               wx.navigateBack({
                 delta: 1
               })
@@ -292,7 +277,7 @@ Page({
           wx.showModal({
             title: '登录过期，请重新登录',
             showCancel: false,
-            complete: function () {
+            complete: function() {
               wx.redirectTo({
                 url: '../login/login',
               })
@@ -307,7 +292,7 @@ Page({
           })
         }
       },
-      fail: function (res) {
+      fail: function(res) {
         wx.hideLoading()
         wx.showModal({
           title: '网络状况差，请稍后再试',
@@ -318,68 +303,44 @@ Page({
       }
     });
   },
-  // 确认文本框
-  confirmText(e) {
-    console.log(e)
-    if (this.data.model == 'text') {
-      let tempArr = this.data.content.content;
-      let cidx = e.target.dataset.cidx;
-      let textdata = {
-        "type": "text",
-        "value": e.detail.value
-      };
-      tempArr.splice(cidx, 0, textdata);
-      this.setContent(tempArr);
-    } else {
-      let tempArr = this.data.content.content;
-      let cidx = e.target.dataset.cidx;
-      let textdata = {
-        "type": "text",
-        "value": e.detail.value
-      };
-      tempArr.splice(cidx + 1, 0, textdata);
-      this.setContent(tempArr);
-    }
-  },
-
-  setText: function (e) {
+  setText: function(e) {
     let cidx = e.target.dataset.cidx;
     let data = {};
-    data['content.content[' + cidx + '].text'] = e.detail.value;
+    data['content.content[' + cidx + '].value'] = e.detail.value; // key 可以是任何字符串
     this.setData(data);
     this.sepText(cidx);
   },
-  setTitle: function (e) {
+  setTitle: function(e) {
     let cidx = e.target.dataset.cidx;
     let data = {};
     data['content.content[' + cidx + '].title'] = e.detail.value; // key 可以是任何字符串
     this.setData(data);
   },
-  showFuns: function (e) {
+  showFuns: function(e) {
     let cidx = e.target.dataset.cidx;
     let data = {};
     data['content.content[' + cidx + '].show'] = !this.data.content.content[cidx].show; // key 可以是任何字符串
     this.setData(data);
   },
-  setProp: function (e) {
+  setProp: function(e) {
     let prop = e.target.dataset.prop;
     let data = {};
     data['content.' + prop] = e.detail.value; // todo 再检查
     this.setData(data);
   },
-  clrMedia: function (e) {
+  clrMedia: function(e) {
     let cidx = e.target.dataset.cidx;
     let data = {};
     data['content.content[' + cidx + '].value'] = "";
     this.setData(data);
   },
-  delMedia: function (e) {
+  delMedia: function(e) {
     let that = this;
 
     wx.showModal({
       title: '确认删除',
       content: '您确定要删除这块内容吗？',
-      success: function (res) {
+      success: function(res) {
         if (res.confirm) {
           let cidx = e.target.dataset.cidx;
           let tempArr = that.data.content.content;
@@ -402,13 +363,25 @@ Page({
       }
     });
   },
-  switchModel(e) {
-    this.setData({
-      model: !e.detail.value ? 'text' : 'withImg'
-    });
-    console.log(this.data.model)
+  getArray: function(e) {
+    console.log(111)
+    
+    let dataArr = [];
+    let addObj = {
+      "type": "add",
+      "show": false
+    };
+    for (let i = 0; i < this.data.content.content.length; i++) {
+      if (this.data.content.content[i].type != 'add') {
+        dataArr.push(this.data.content.content[i]);
+        dataArr.push(addObj);
+      }
+    }
+    // let tempStr = this.data.content.content[0].value;
+    this.setContent(dataArr);
+
   },
-  sepText: function (idx) {
+  sepText: function(idx) {
     let dataArr = this.data.content.content;
     if (idx != 0 && idx != dataArr.length - 1) {
       let tempA = dataArr.slice(0, idx);
@@ -513,14 +486,4 @@ Page({
       this.setData(data);
     }
   },
-  insertImg(){
-    let content = this.data.content;
-    content.content.push({
-      type:'add',
-      value:''
-    });
-    this.setData({
-      content:content
-    })
-  }
 });

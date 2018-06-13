@@ -216,32 +216,14 @@ Page({
     }
 
     let tempArr;
-    if (this.data.model == 'text') {
-      tempArr = [{
-        type: 'text',
-        value: ''
-      }];
 
-      for (let i = 0; i < content.content.length; i++) {
-        if (content.content[i].type == 'text') {
-          content.content[i].value = content.content[i].value.replace(/\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g, "");
-          tempArr[0].value += content.content[i].value.trim();
-        }
+    tempArr = [];
+    // 删去type=add的项
+    for (let i = 0; i < content.content.length; i++) {
+      if (content.content[i].type != 'add' && content.content[i].value.trim()) {
+        content.content[i].value = content.content[i].value.trim();
+        tempArr.push(content.content[i])
       }
-    } else {
-      tempArr = [];
-      // 删去type=add的项
-      for (let i = 0; i < content.content.length; i++) {
-        if (content.content[i].type != 'add' && content.content[i].value.trim()) {
-          content.content[i].value = content.content[i].value.trim();
-          tempArr.push(content.content[i])
-        }
-      }
-    }
-    let is_special = 0;
-
-    if (this.data.is_special) {
-      is_special = 1;
     }
     // 检查上传文章是否为空
     if (!tempArr[0].value) {
@@ -338,25 +320,16 @@ Page({
   // 确认文本框
   confirmText(e) {
     console.log(e)
-    if (this.data.model == 'text') {
-      let tempArr = this.data.content.content;
-      let cidx = e.target.dataset.cidx;
-      let textdata = {
-        "type": "text",
-        "value": e.detail.value
-      };
-      tempArr.splice(cidx - 1, 1, textdata);
-      this.setContent(tempArr);
-    } else {
-      let tempArr = this.data.content.content;
-      let cidx = e.target.dataset.cidx;
-      let textdata = {
-        "type": "text",
-        "value": e.detail.value
-      };
-      tempArr.splice(cidx, 1, textdata);
-      this.setContent(tempArr);
-    }
+
+    let tempArr = this.data.content.content;
+    let cidx = e.target.dataset.cidx;
+    let textdata = {
+      "type": "text",
+      "value": e.detail.value
+    };
+    tempArr.splice(cidx, 1, textdata);
+    this.setContent(tempArr);
+
   },
 
   setText: function (e) {
@@ -419,11 +392,21 @@ Page({
       }
     });
   },
-  switchModel(e) {
-    this.setData({
-      model: !e.detail.value ? 'text' : 'withImg'
-    });
-    console.log(this.data.model)
+  getArray: function (e) {
+    let dataArr = [];
+    let addObj = {
+      "type": "add",
+      "show": false
+    };
+    for (let i = 0; i < this.data.content.content.length; i++) {
+      if (this.data.content.content[i].type != 'add' && this.data.content.content[i].value.trim()) {
+        dataArr.push(this.data.content.content[i]);
+        dataArr.push(addObj);
+      }
+    }
+    // let tempStr = this.data.content.content[0].value;
+    this.setContent(dataArr);
+
   },
   sepText: function (idx) {
     let dataArr = this.data.content.content;
@@ -530,14 +513,4 @@ Page({
       this.setData(data);
     }
   },
-  insertImg() {
-    let content = this.data.content;
-    content.content.push({
-      type: 'add',
-      value: ''
-    });
-    this.setData({
-      content: content
-    })
-  }
 });

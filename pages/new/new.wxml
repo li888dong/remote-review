@@ -19,41 +19,31 @@
   <!-- 正文输入框 -->
   <view class="prop-container content-container">
     <view class="input">正文:
-      <text class="insert-btn fr" bindtap='insertImg'>插图</text>
+      <text class="insert-btn fr" bindtap='getArray'>插图</text>
     </view>
     <!-- 图文内容 -->
     <view class="content-content" wx:for="{{content.content}}" wx:for-index="idx" wx:key="item">
-
-      <!-- 已插入图片 -->
-      <view wx:if="{{item.type == 'image'&&model == 'withImg'}}" class="content-media">
+      <view wx:if="{{item.type == 'text'}}">
+        <textarea auto-height placeholder="输入文字内容" class="content-input" maxlength="-1" data-cidx="{{idx}}" bindconfirm="setText" value="{{item.value}}" />
+      </view>
+      <view wx:elif="{{item.type == 'image'}}" class="content-media">
         <image style="width: 155rpx; height: 155rpx; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
         <textarea class="media-title" bindblur="setTitle" data-cidx="{{idx}}" placeholder="请输入图片标题" value="{{item.title}}"></textarea>
         <view class="media-del" hover="true" hover-class="media-del-hover" bindtap="delMedia" data-cidx="{{idx}}"></view>
       </view>
-      <!-- 已插入图片结束 -->
-      <!-- 已插入视频 -->
-      <view wx:elif="{{item.type == 'video'&&model == 'withImg'}}" class="content-media">
+      <view wx:elif="{{item.type == 'video'}}" class="content-media">
         <video style="width:155rpx;height:155rpx;" objectFit="contain" src="{{item.value}}"></video>
         <textarea class="media-title" bindblur="setTitle" data-cidx="{{idx}}" placeholder="请输入视频标题" value="{{item.title}}"></textarea>
         <view class="media-del" bindtap="delMedia" data-cidx="{{idx}}"></view>
       </view>
-      <!-- 已插入视频结束 -->
-      <!-- 未插入视频图片 -->
-      <view wx:elif="{{item.type == 'add'&&model == 'withImg'}}" class="content-media-add">
+      <view wx:elif="{{item.type == 'add'}}" class="content-media-add">
         <view class="{{item.show ? 'add-btn add-rotate' : 'add-btn' }}" hover="true" hover-class="add-hover" bindtap="showFuns" data-cidx="{{idx}}">
         </view>
         <view class="media-add-area" wx:if="{{item.show}}">
           <view class="img-add" hover="true" hover-class="media-hover" bindtap="uploadImg" data-cidx="{{idx}}"></view>
           <view class="video-add" hover="true" hover-class="media-hover" bindtap="uploadVd" data-cidx="{{idx}}"></view>
         </view>
-        <!-- 未插入视频图片结束 -->
       </view>
-      <!-- 文本内容 -->
-      <!-- 模拟器上没有确认按钮 手机上用bindconfirm  模拟器用bindblur -->
-      <!-- //type 判断暂存情况(新建|草稿|驳回) -->
-      <textarea wx:if="{{model=='text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
-      <textarea wx:if="{{model=='withImg'&&item.type == 'text'&&type!=''}}" placeholder="输入文字内容" class="content-input input-withImg" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" value="{{item.value}}" />
-      <textarea wx:if="{{type==''}}" placeholder="输入文字内容" class="content-input input-withImg edit-success" maxlength="-1" auto-height bindblur="confirmText" data-cidx="{{idx}}" />
     </view>
     <!-- 图文内容结束 -->
   </view>
