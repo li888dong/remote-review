@@ -68,10 +68,6 @@ Page({
     let cidx = e.target.dataset.cidx;
     let that = this;
     let tempArr = this.data.content.content;
-    let addObj = {
-      "type": "add",
-      "show": false
-    };
     wx.chooseImage({
       count: 1, // 默认9
       sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
@@ -101,8 +97,7 @@ Page({
               };
               tempArr.splice(cidx, 0, imagedata);
               that.setContent(tempArr);
-              data['content.content[' + (cidx + 1) + '].show'] = false;
-              that.setData(data);
+              
             } else {
               wx.showModal({
                 title: data.info,
@@ -335,7 +330,7 @@ Page({
   setText: function (e) {
     let cidx = e.target.dataset.cidx;
     let data = {};
-    data['content.content[' + cidx + '].text'] = e.detail.value;
+    data['content.content[' + cidx + '].value'] = e.detail.value;
     this.setData(data);
     this.sepText(cidx);
   },
@@ -400,8 +395,8 @@ Page({
     };
     for (let i = 0; i < this.data.content.content.length; i++) {
       if (this.data.content.content[i].type != 'add' && this.data.content.content[i].value.trim()) {
+        dataArr.push(addObj);        
         dataArr.push(this.data.content.content[i]);
-        dataArr.push(addObj);
       }
     }
     // let tempStr = this.data.content.content[0].value;
@@ -418,6 +413,8 @@ Page({
       tempStr = tempStr.replace(/(\n)+/g, '\n');
       let tempRarr = [];
       let tempArr = tempStr.split('\n');
+      console.log('***', tempStr)
+      
       for (let j = 0; j < tempArr.length; j++) {
         let tempObj = [];
         if (j == tempArr.length - 1 && dataArr[idx + 1].type == 'add') {
@@ -502,6 +499,9 @@ Page({
           'strA': tempArr[i].value.substr(0, 140),
           'strB': tempArr[i].value.substr(140, tempArr[i].value.length)
         })
+      }
+      if (tempArr[i].type === 'add'){
+        tempArr[i].show = false
       }
     }
     this.setData({

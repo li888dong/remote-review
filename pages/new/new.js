@@ -364,8 +364,6 @@ Page({
     });
   },
   getArray: function(e) {
-    console.log(111)
-    
     let dataArr = [];
     let addObj = {
       "type": "add",
@@ -373,8 +371,8 @@ Page({
     };
     for (let i = 0; i < this.data.content.content.length; i++) {
       if (this.data.content.content[i].type != 'add') {
+        dataArr.push(addObj);        
         dataArr.push(this.data.content.content[i]);
-        dataArr.push(addObj);
       }
     }
     // let tempStr = this.data.content.content[0].value;
