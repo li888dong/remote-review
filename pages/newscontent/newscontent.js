@@ -480,7 +480,11 @@ Page({
     }
     var newDomain = domain.match(/^http(s)?:\/\/(.*?)\//)[0];
     var newStr = str.replace(/src=['"]([^'"]+)/gi, function (match, capture) {
-      return 'src="' + newDomain + capture
+      if(/^http/.test(capture)){
+        return 'src="' + capture
+      }else{
+        return 'src="' + newDomain + capture
+      }
     });
     return newStr
   },

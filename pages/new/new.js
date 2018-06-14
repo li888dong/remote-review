@@ -474,6 +474,9 @@ Page({
           'strB': tempArr[i].value.substr(140, tempArr[i].value.length)
         })
       }
+      if (tempArr[i].type === 'add') {
+        tempArr[i].show = false
+      }
     }
     this.setData({
       'content.content': tempArr
