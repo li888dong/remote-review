@@ -47,7 +47,7 @@ Page({
     // 图片地址处理
     var str = this.addImgDomain(content.url, content.content);
     // &nbsp处理
-    str = str.replace(/&nbsp/g,' ')
+    str = str.replace(/&nbsp/g, ' ')
     var article = `${str}`;
 
     WxParse.wxParse('article', 'html', article, that, 5);
@@ -479,14 +479,14 @@ Page({
   },
   // 拼接图片的地址
   addImgDomain(domain, str) {
-    if(!domain){
+    if (!domain) {
       return str
     }
     var newDomain = domain.match(/^http(s)?:\/\/(.*?)\//)[0];
     var newStr = str.replace(/src=['"]([^'"]+)/gi, function (match, capture) {
-      if(/^http/.test(capture)){
+      if (/^http/.test(capture)) {
         return 'src="' + capture
-      }else{
+      } else {
         return 'src="' + newDomain + capture
       }
     });
@@ -496,9 +496,9 @@ Page({
   is_update(e) {
     let that = this;
     let fn;
-    if (e.target.dataset.disableid == 1){
+    if (e.target.dataset.disableid == 1) {
       fn = this.confirmZhuanyi;
-    }else if (e.target.dataset.disableid == 2) {
+    } else if (e.target.dataset.disableid == 2) {
       fn = this.confirmNews;
     } else if (e.target.dataset.disableid == 3) {
       fn = this.forwardNews;

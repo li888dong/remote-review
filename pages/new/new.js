@@ -374,6 +374,13 @@ Page({
         dataArr.push(addObj);
         dataArr.push(this.data.content.content[i]);
       }
+      if (i == this.data.content.content.length - 1) {
+        dataArr.push(addObj);
+        dataArr.push({
+          type: 'text',
+          value: ''
+        })
+      }
     }
     // let tempStr = this.data.content.content[0].value;
     this.setContent(dataArr);
