@@ -97,7 +97,7 @@ Page({
               };
               tempArr.splice(cidx, 0, imagedata);
               that.setContent(tempArr);
-              
+
             } else {
               wx.showModal({
                 title: data.info,
@@ -395,7 +395,7 @@ Page({
     };
     for (let i = 0; i < this.data.content.content.length; i++) {
       if (this.data.content.content[i].type != 'add' && this.data.content.content[i].value.trim()) {
-        dataArr.push(addObj);        
+        dataArr.push(addObj);
         dataArr.push(this.data.content.content[i]);
       }
     }
@@ -414,7 +414,7 @@ Page({
       let tempRarr = [];
       let tempArr = tempStr.split('\n');
       console.log('***', tempStr)
-      
+
       for (let j = 0; j < tempArr.length; j++) {
         let tempObj = [];
         if (j == tempArr.length - 1 && dataArr[idx + 1].type == 'add') {
@@ -500,7 +500,7 @@ Page({
           'strB': tempArr[i].value.substr(140, tempArr[i].value.length)
         })
       }
-      if (tempArr[i].type === 'add'){
+      if (tempArr[i].type === 'add') {
         tempArr[i].show = false
       }
     }

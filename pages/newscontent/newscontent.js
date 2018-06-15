@@ -44,11 +44,15 @@ Page({
     });
     this.zhuanyiStatus();
     this.getWorkFlow();
-    // this.addImgDomain(content.url, content.content);
-    var article = `${this.addImgDomain(content.url, content.content)}`;
+    // 图片地址处理
+    var str = this.addImgDomain(content.url, content.content);
+    // &nbsp处理
+    str = str.replace(/&nbsp/g,' ')
+    var article = `${str}`;
 
     WxParse.wxParse('article', 'html', article, that, 5);
   },
+  // 存缓存列表中获取文章数据
   getNewsById(id, type) {
     let contents = wx.getStorageSync(type);
     let content = null;

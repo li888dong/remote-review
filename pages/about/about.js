@@ -14,91 +14,76 @@ Page({
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/enter.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/进入小程序.mp4"
               },
+              
               {
                   type:'text',
-                  value:"2.进入小程序"
+                  value:"2.新建稿件"
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/reenter.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/新建稿件.mp4"
               },
               {
                   type:'text',
-                  value:"3.记者发稿"
+                  value:"3.创建无图文章"
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/reporter.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/建立无图文章.mp4"
               },
               {
                   type:'text',
-                  value:"4.编辑稿件"
+                  value:"4.创建单图文章"
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/edit.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/单图文章.mp4"
               },
               {
                   type:'text',
-                  value:"5.复制内容到文章正文"
+                  value:"5.创建多图文章"
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/paste.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/多图文章.mp4"
+              },
+              {
+                type: 'text',
+                value: "6.删除图片或视频"
+              },
+              {
+                type: 'video',
+                value: "https://www.hnsjb.cn/video/weapp-guide/delete-img.mp4"
+              },
+              {
+                type: 'text',
+                value: "7.删除文章"
+              },
+              {
+                type: 'video',
+                value: "https://www.hnsjb.cn/video/weapp-guide/delete-post.mp4"
               },
               {
                   type:'text',
-                  value:"6.删除图片或视频"
+                  value:"8.文章通过驳回转审"
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/delete-img.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/文章通过驳回转审.mp4"
               },
               {
                   type:'text',
-                  value:"7.删除稿件"
+                  value:"9.搜索"
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/delete-post.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/搜索.mp4"
               },
               {
                   type:'text',
-                  value:"8.驳回稿件"
-              },
-              {
-                  type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/reject.mp4"
-              },
-              {
-                  type:'text',
-                  value:"9.通过稿件"
-              },
-              {
-                  type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/pass.mp4"
-              },
-              {
-                  type:'text',
-                  value:"10.转审稿件"
-              },
-              {
-                  type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/forward.mp4"
-              },
-              {
-                  type:'text',
-                  value:"11.列表页说明"
-              },
-              {
-                  type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/list.mp4"
-              },
-              {
-                  type:'text',
-                  value:"12.修改密码"
+                  value:"10.修改密码"
               },
               {
                   type:'video',

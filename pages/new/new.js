@@ -306,14 +306,14 @@ Page({
   setText: function(e) {
     let cidx = e.target.dataset.cidx;
     let data = {};
-    data['content.content[' + cidx + '].value'] = e.detail.value; // key 可以是任何字符串
+    data['content.content[' + cidx + '].value'] = e.detail.value;
     this.setData(data);
     this.sepText(cidx);
   },
   setTitle: function(e) {
     let cidx = e.target.dataset.cidx;
     let data = {};
-    data['content.content[' + cidx + '].title'] = e.detail.value; // key 可以是任何字符串
+    data['content.content[' + cidx + '].title'] = e.detail.value;
     this.setData(data);
   },
   showFuns: function(e) {
@@ -325,7 +325,7 @@ Page({
   setProp: function(e) {
     let prop = e.target.dataset.prop;
     let data = {};
-    data['content.' + prop] = e.detail.value; // todo 再检查
+    data['content.' + prop] = e.detail.value;
     this.setData(data);
   },
   clrMedia: function(e) {
@@ -371,7 +371,7 @@ Page({
     };
     for (let i = 0; i < this.data.content.content.length; i++) {
       if (this.data.content.content[i].type != 'add') {
-        dataArr.push(addObj);        
+        dataArr.push(addObj);
         dataArr.push(this.data.content.content[i]);
       }
     }
@@ -386,6 +386,7 @@ Page({
       let tempB = dataArr.slice(idx + 1);
       let resultArr = [];
       let tempStr = dataArr[idx].value;
+      // 通过每个换行符\n将输入的字符川替换成数组，以便在数组间插入图片
       tempStr = tempStr.replace(/(\n)+/g, '\n');
       let tempRarr = [];
       let tempArr = tempStr.split('\n');
