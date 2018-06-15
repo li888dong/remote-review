@@ -144,15 +144,9 @@ Page({
       success: function (res) {
         console.log('转移栏目', res);
         if (res.data.status == 1) {
-          wx.showModal({
-            title: '',
-            content: res.data.info,
-            complete: function () {
-              that.setData({
-                zhuanyiStatus: true,
-                zhuanyiList: []
-              })
-            }
+          that.setData({
+            zhuanyiStatus: true,
+            zhuanyiList: []
           })
         } else if (res.data.status == -1) {
           wx.showModal({
@@ -252,15 +246,8 @@ Page({
       success: function (res) {
         wx.hideLoading();
         if (res.data.status == 1) {
-          wx.showModal({
-            title: '已通过',
-            showCancel: false,
-            content: '',
-            complete: function (res) {
-              wx.navigateBack({
-                delta: 1
-              })
-            }
+          wx.navigateBack({
+            delta: 1
           })
         } else if (res.data.status == -1) {
           wx.showModal({
@@ -317,72 +304,54 @@ Page({
         }
       })
     } else {
-
-      wx.showModal({
-        title: '确认转审',
-        content: '您确定要转审这篇稿件吗？',
+      wx.showLoading({
+        title: '转审中...',
+      })
+      wx.request({
+        url: "https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=news_zhuanshen",
+        method: 'post',
+        header: { "content-type": "application/x-www-form-urlencoded" },
+        data: {
+          sessid: wx.getStorageSync('sessid'),
+          zhuanshen_id: that.data.newsId,
+          tocheckid: that.data.sucheck,
+          tocheckname: that.data.tocheckname
+        },
         success: function (res) {
-          if (res.confirm) {
-            wx.showLoading({
-              title: '转审中...',
+          wx.hideLoading();
+          if (res.data.status == 1) {
+            wx.navigateBack({
+              delta: 1
             })
-            wx.request({
-              url: "https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=news_zhuanshen",
-              method: 'post',
-              header: { "content-type": "application/x-www-form-urlencoded" },
-              data: {
-                sessid: wx.getStorageSync('sessid'),
-                zhuanshen_id: that.data.newsId,
-                tocheckid: that.data.sucheck,
-                tocheckname: that.data.tocheckname
-              },
-              success: function (res) {
-                wx.hideLoading();
-                if (res.data.status == 1) {
-                  wx.showModal({
-                    title: '已转审',
-                    showCancel: false,
-                    content: '',
-                    complete: function (res) {
-                      wx.navigateBack({
-                        delta: 1
-                      })
-                    }
-                  })
-                } else if (res.data.status == '-2') {
-                  wx.clearStorageSync();
-                  wx.showModal({
-                    title: '登录过期，请重新登录',
-                    showCancel: false,
-                    content: '',
-                    complete: res => {
-                      wx.redirectTo({
-                        url: '../login/login'
-                      })
-                    }
-                  })
-
-                }
-              },
-              fail: function (res) {
-                wx.hideLoading();
-                wx.showModal({
-                  title: '网络状况差，请稍后再试',
-                  showCancel: false,
-                  content: '',
-                  complete: function (res) {
-
-                  }
-                });
-
+          } else if (res.data.status == '-2') {
+            wx.clearStorageSync();
+            wx.showModal({
+              title: '登录过期，请重新登录',
+              showCancel: false,
+              content: '',
+              complete: res => {
+                wx.redirectTo({
+                  url: '../login/login'
+                })
               }
             })
-          } else {
-            return false;
-          }
-        }
-      });
 
+          }
+        },
+        fail: function (res) {
+          wx.hideLoading();
+          wx.showModal({
+            title: '网络状况差，请稍后再试',
+            showCancel: false,
+            content: '',
+            complete: function (res) {
+
+            }
+          });
+
+        }
+      })
+    
     }
 
   },
@@ -453,7 +422,7 @@ Page({
         if (res.data.status == 1) {
           wx.showModal({
             title: '',
-            content: '文章已驳回素材库',
+            content: '驳回成功',
             complete:function(){
               wx.navigateBack({
                 delta: 1

@@ -73,6 +73,7 @@ Page({
       grade_message: e.detail.value
     })
   },
+  // 驳回
   rejectNews: function(e) {
     let that = this;
     if (this.data.rejectreason == '') {
@@ -101,15 +102,8 @@ Page({
         success: function(res) {
           wx.hideLoading();
           if (res.data.status == 1) {
-            wx.showModal({
-              title: '驳回成功',
-              showCancel: false,
-              content: '',
-              complete: function(res) {
-                wx.navigateBack({
-                  delta: 1
-                })
-              }
+            wx.navigateBack({
+              delta: 1
             })
           } else if (res.data.status == '-1') {
             wx.showModal({
@@ -246,15 +240,8 @@ Page({
       success: function(res) {
         wx.hideLoading();
         if (res.data.status == 1) {
-          wx.showModal({
-            title: '已通过',
-            showCancel: false,
-            content: '',
-            complete: function(res) {
-              wx.navigateBack({
-                delta: 1
-              })
-            }
+          wx.navigateBack({
+            delta: 1
           })
         } else if (res.data.status == -1) {
           wx.showModal({
@@ -322,15 +309,8 @@ Page({
         success: function(res) {
           wx.hideLoading();
           if (res.data.status == 1) {
-            wx.showModal({
-              title: '已转审',
-              showCancel: false,
-              content: '',
-              complete: function(res) {
-                wx.navigateBack({
-                  delta: 1
-                })
-              }
+            wx.navigateBack({
+              delta: 1
             })
           } else if (res.data.status == -1) {
             wx.showModal({
