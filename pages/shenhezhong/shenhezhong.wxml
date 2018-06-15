@@ -1,10 +1,10 @@
 <view class='top-area'>
-  <view class='top-btn active'>审核中</view>
-  <view class='top-btn' bindtap='gotoYishenhe'>已完成</view>
+  <view class='top-btn {{currentPage=="shenhezhong"?"active":""}}' bindtap='switchPage'>审核中</view>
+  <view class='top-btn {{currentPage=="shenhezhong"?"":"active"}}' bindtap='switchPage'>已完成</view>
 </view>
 
 <view class="list">
-  <block wx:for="{{shenhezhong}}" wx:key="{{item.time}}">
+  <block wx:for="{{dataList}}" wx:key="{{item.time}}">
       <view class="{{item.type == 'daishen'?'forward news-item ':item.type == 'zhuanshen'?'forward news-item ':'forbid-item news-item'}}" hover="true" hover-class="news-item-hover" data-forbid="{{item.forbidden}}" bindtap="gotoNews" data-newsid="{{item.id}}">
         <view class="news-inner">
           <text class="news-title">{{item.title}}</text>
@@ -12,8 +12,8 @@
           <view class="news-info">
           
             <view class="news-author">{{item.realname}}</view>
-            <view class="news-copyfrom">{{item.copyfrom}}</view>
-            <view class="news-catname">{{item.catname}}</view>
+            <view class="news-copyfrom">({{item.copyfrom}})</view>
+            <view class="news-catname">——{{item.catname}}</view>
           </view>
           <view class="news-info">
             <view class="news-time">{{item.inputtime}}</view>
@@ -31,7 +31,7 @@
     <view class="r-btn center-btn"></view>
     个人中心
   </navigator>
-  <view hover-class="hover-active" class="bottom-view" hover="true" bindtap="showFilter">
+  <view hover-class="hover-active" class="bottom-view" hover="true" bindtap="showFilter" wx:if="{{currentPage == 'shenhezhong'}}">
     <view class="r-btn filter-btn"></view>
     {{currentType}}
   </view>

@@ -265,6 +265,57 @@ Page({
       success: function (res) {
         wx.hideLoading()
         if (res.data.status == '1') {
+          if(that.data.type == 'shenhe'){
+            wx.request({
+              url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=index&param=bs_content_display',
+              method: 'post',
+              header: { "content-type": "application/x-www-form-urlencoded" },
+              data: {
+                sessid: app.globalData.sessid,
+                id: that.data.cid
+              },
+              success:function(res){
+                if(res.data.status == 1){
+                  let shenhezhongList = wx.getStorageSync('shenhezhong');
+                  shenhezhongList = shenhezhongList.map(item => {
+                    if (item.id == res.data.data.id) {
+                      item = res.data.data
+                    }
+                    return item
+                  })
+                  wx.setStorage({
+                    key: 'shenhezhong',
+                    data: shenhezhongList,
+                    complete: function () {
+                      wx.redirectTo({
+                        url: '../ckcon/ckcon?id=' + res.data.data.id,
+                      })
+                    }
+                  })
+                }else if(res.data.status == -1){
+                  wx.showModal({
+                    title: '',
+                    showCancel: false,
+                    content: res.data.info
+                  })
+                } else if (res.data.status == '-2') {
+                  wx.clearStorageSync();
+                  wx.showModal({
+                    title: '登录过期，请重新登录',
+                    showCancel: false,
+                    complete: function () {
+                      wx.redirectTo({
+                        url: '../login/login',
+                      })
+                    }
+                  })
+
+                }
+                
+              }
+            })
+            return
+          }
           wx.showModal({
             title: loadingTitle + '成功',
             showCancel: false,

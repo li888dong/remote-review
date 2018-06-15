@@ -26,7 +26,7 @@ page {
   color: #4a4a4a;
 }
 .top-btn.active{
-  color: #051b96;
+  color: #276ea6;
   position: relative;
 }
 .top-btn.active::after{
@@ -36,7 +36,7 @@ page {
   left: 50%;
   transform: translateX(-50%);
   bottom: 0;
-  border-bottom: 3rpx solid #051b96;
+  border-bottom: 7rpx solid #0f67ae;
 }
 .list-page {
     margin-top: 0;

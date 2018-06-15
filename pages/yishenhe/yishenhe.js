@@ -79,7 +79,7 @@ Page({
       title: '加载中...',
     });
     wx.request({
-      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=yiwancheng_list', //仅为示例，并非真实的接口地址
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=yiwancheng_list',
       method: 'post',
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {

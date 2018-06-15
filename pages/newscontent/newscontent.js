@@ -436,6 +436,53 @@ Page({
       tocheckname: this.data.sucheckers[tmp].realname
     });
   },
+  // 驳回
+  bohui(){
+    let that = this;
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=news_bohui',
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        sessid: wx.getStorageSync('sessid'),
+        id:that.data.newsId
+      },
+      success: function (res) {
+        console.log('驳回结果', res.data)
+
+        if (res.data.status == 1) {
+          wx.showModal({
+            title: '',
+            content: '文章已驳回素材库',
+            complete:function(){
+              wx.navigateBack({
+                delta: 1
+              })
+            }
+          })
+        } else if (res.data.status == -1) {
+          wx.showModal({
+            title: '',
+            content: res.data.info,
+          })
+        } else if (res.data.status == -2) {
+          wx.clearStorageSync();
+          wx.showModal({
+            title: '登录过期，请重新登录',
+            showCancel: false,
+            content: '',
+            complete: res => {
+              wx.redirectTo({
+                url: '../login/login'
+              })
+            }
+          })
+
+        }
+
+      }
+    });
+  },
   // 获取工作流
   getWorkFlow() {
     let that = this;
@@ -502,6 +549,8 @@ Page({
       fn = this.confirmNews;
     } else if (e.target.dataset.disableid == 3) {
       fn = this.forwardNews;
+    } else if (e.target.dataset.disableid == 4){
+      fn = this.bohui;
     }
     wx.request({
       url: "https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=is_update",
