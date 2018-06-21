@@ -14,7 +14,7 @@ Page({
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/进入小程序.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/bs_enter.mp4"
               },
               
               {
@@ -23,7 +23,7 @@ Page({
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/新建稿件.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/bs_new.mp4"
               },
               {
                   type:'text',
@@ -31,7 +31,7 @@ Page({
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/建立无图文章.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/bs_new_no.mp4"
               },
               {
                   type:'text',
@@ -39,7 +39,7 @@ Page({
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/单图文章.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/bs_new_single.mp4"
               },
               {
                   type:'text',
@@ -47,7 +47,7 @@ Page({
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/多图文章.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/bs_new_mulite.mp4"
               },
               {
                 type: 'text',
@@ -71,7 +71,7 @@ Page({
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/文章通过驳回转审.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/bs_new_reject.mp4"
               },
               {
                   type:'text',
@@ -79,7 +79,7 @@ Page({
               },
               {
                   type:'video',
-                  value:"https://www.hnsjb.cn/video/weapp-guide/搜索.mp4"
+                  value:"https://www.hnsjb.cn/video/weapp-guide/bs_new_search.mp4"
               },
               {
                   type:'text',

@@ -45,6 +45,10 @@ Page({
         url: '../craft/craft',
       })
     }
+    // 滚动到页面顶部
+    wx.pageScrollTo({
+      scrollTop: 0
+    }) 
     this.getNews();
     let pagestatus = wx.getStorageSync('pagestatus') || 'none';
     let self = wx.getStorageSync('pageself') || '0';

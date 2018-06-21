@@ -13,7 +13,7 @@
   <!-- 顶部按钮结束 -->
   <!-- 文章标题输入框 -->
   <view class="prop-container">
-    <textarea class="input" placeholder="文章标题" maxlength="-1" data-prop="title" bindblur="setProp" bindblur="setProp" value="{{content.title}}" />
+    <textarea class="input" placeholder="文章标题" maxlength="-1" data-prop="title" bindconfirm="setProp" bindblur="setProp" value="{{content.title}}" />
   </view>
   <!-- 标题输入框结束 -->
   <!-- 正文输入框 -->

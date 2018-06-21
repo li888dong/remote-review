@@ -29,20 +29,8 @@ Page({
     // 页面渲染完成
   },
   onShow: function () {
-    // 页面显示
-    if (!wx.getStorageSync('sessid')) {
-      wx.redirectTo({
-        url: '../login/login'
-      });
-      return false;
-    }
-    // 编辑角色隐藏tab条，用自定义替代
-    if (wx.getStorageSync('is_bianji') == 1) {
-      wx.redirectTo({
-        url: '../shenhezhong/shenhezhong',
-      })
-      return
-    }
+    app.beforeRender();
+    
     this.getNews();
     let pagestatus = wx.getStorageSync('pagestatus') || 'none';
     let self = wx.getStorageSync('pageself') || '0';

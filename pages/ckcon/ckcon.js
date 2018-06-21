@@ -102,8 +102,8 @@ Page({
         success: function(res) {
           wx.hideLoading();
           if (res.data.status == 1) {
-            wx.navigateBack({
-              delta: 1
+            wx.switchTab({
+              url: '../review/review',
             })
           } else if (res.data.status == '-1') {
             wx.showModal({
@@ -240,8 +240,8 @@ Page({
       success: function(res) {
         wx.hideLoading();
         if (res.data.status == 1) {
-          wx.navigateBack({
-            delta: 1
+          wx.switchTab({
+            url: '../review/review',
           })
         } else if (res.data.status == -1) {
           wx.showModal({
@@ -309,8 +309,8 @@ Page({
         success: function(res) {
           wx.hideLoading();
           if (res.data.status == 1) {
-            wx.navigateBack({
-              delta: 1
+            wx.switchTab({
+              url: '../review/review',
             })
           } else if (res.data.status == -1) {
             wx.showModal({

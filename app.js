@@ -172,6 +172,27 @@ App({
       }
     })
   },
+  // 初始化每个页面前
+  beforeRender(){
+    // 页面显示
+    if (!wx.getStorageSync('sessid')) {
+      wx.redirectTo({
+        url: '../login/login'
+      });
+      return false;
+    }
+    // 编辑角色隐藏tab条，用自定义替代
+    if (wx.getStorageSync('is_bianji') == 1) {
+      wx.redirectTo({
+        url: '../shenhezhong/shenhezhong',
+      })
+      return
+    }
+    // 滚动到页面顶部
+    wx.pageScrollTo({
+      scrollTop: 0
+    }) 
+  },
   //全局数据
   globalData: {
     baseUrl: 'https://rmtapi.hnsjb.cn/',

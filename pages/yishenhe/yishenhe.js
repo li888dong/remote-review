@@ -41,6 +41,10 @@ Page({
         url: '../craft/craft',
       })
     }
+    // 滚动到页面顶部
+    wx.pageScrollTo({
+      scrollTop: 0
+    }) 
     let pagestatus = wx.getStorageSync('ysstatus') || 'none';
     let self = wx.getStorageSync('ysself') || '0';
     let currentType = wx.getStorageSync('ystype') || '全部';
