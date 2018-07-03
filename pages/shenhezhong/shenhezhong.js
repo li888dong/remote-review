@@ -156,7 +156,7 @@ Page({
         data: {
           sessid: wx.getStorageSync('sessid'),
           page: that.data.page,
-          num: that.data.num
+          num: that.data.pageSize
         },
         success: function (res) {
           wx.stopPullDownRefresh();

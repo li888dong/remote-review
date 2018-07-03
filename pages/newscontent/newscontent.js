@@ -22,7 +22,7 @@ Page({
     // 转移栏目
     zhuanyiStatus: false,
     zhuanyiList: [],
-    zhuanyiIndex: 0,
+    zhuanyiIndex: '',
     zhuanyiId: '',
     newsId: '',
 
@@ -74,7 +74,8 @@ Page({
   },
   closeOp: function () {
     this.setData({
-      optionopen: 0
+      optionopen: 0,
+      zhuanyiList:[]
     })
   },
   // 获取所有的栏目列表
@@ -131,6 +132,14 @@ Page({
   },
   // 确认转移栏目
   confirmZhuanyi() {
+    if(!this.data.zhuanyiId){
+      wx.showModal({
+        title: '',
+        content: '请选择栏目',
+        showCancel:false
+      })
+      return
+    }
     let that = this;
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=news_switch_catid',
