@@ -15,8 +15,8 @@
 </view>
 
 <view wx:if="{{content.type != 'yicaozuo'}}">
+  <button wx:if="{{!caiyongStatus}}" type='primary' class="zhuanyi-btn" bindtap='caiyong'>采用</button>
   <button wx:if="{{!zhuanyiStatus}}" type='primary' class="zhuanyi-btn" bindtap='zhuanyilanmu'>转移栏目</button>
-
   <view wx:else class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}">
     <button wx:if="{{content.type == 'daishen'&&content.steps >1}}" type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="bohui" data-disableid="4">驳回</button>
     <button wx:if="{{content.type == 'daishen'||content.steps<99}}" type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="2">通过</button>

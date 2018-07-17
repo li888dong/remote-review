@@ -24,6 +24,10 @@ Page({
     zhuanyiList: [],
     zhuanyiIndex: '',
     zhuanyiId: '',
+    // 采用
+    caiyongStatus: false,
+    caiyongIds: [],
+
     newsId: '',
 
     // 工作流
@@ -31,6 +35,7 @@ Page({
   },
   onLoad: function (options) {
     var that = this;
+    // 从缓存中获取对应id的新闻内容
     var content;
     if (options.status == 99) {
       content = this.getNewsById(options.id, 'yishenhe');
@@ -42,7 +47,11 @@ Page({
       newsId: options.id,
       content: content
     });
+    // 转移状态
     this.zhuanyiStatus();
+    // 采用状态
+    this.caiyongStatus()
+    // 工作流
     this.getWorkFlow();
     // 图片地址处理
     var str = this.addImgDomain(content.url, content.content);
@@ -76,6 +85,85 @@ Page({
     this.setData({
       optionopen: 0,
       zhuanyiList:[]
+    })
+  },
+  // 稿件是否被采用  本地读取
+  caiyongStatus() {
+    let that = this;
+    wx.getStorage({
+      key: 'caiyongIds',
+      success: function(res) {
+        if(res.data.includes(that.data.content.bs_content_id)){
+          that.setData({
+            caiyongStatus:true
+          })
+        } else{
+          that.setData({
+            caiyongStatus: false
+          })
+        }
+      },
+    })
+  },  
+  // 采用稿件
+  caiyong() {
+    let that = this;
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=caiyong',
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        sessid: app.globalData.sessid,
+        bs_content_id: that.data.content.bs_content_id
+      },
+      success: function (res) {
+        console.log('采用', res);
+        if (res.data.status == 1) {
+          wx.showModal({
+            title: '',
+            content: res.data.info
+          });
+          let data = wx.getStorageSync('caiyongIds');
+          if(data){
+            data.push(that.data.content.bs_content_id);
+            that.setData({
+              caiyongIds: data
+            });
+          }else{
+            that.setData({
+              caiyongIds: [that.data.content.bs_content_id]
+            });
+          }
+          
+          wx.setStorageSync('caiyongIds', that.data.caiyongIds);
+          that.caiyongStatus();
+          
+        } else if (res.data.status == -1) {
+          wx.showModal({
+            title: '',
+            content: res.data.info
+          })
+        } else if (res.data.status == -2) {
+          wx.clearStorageSync();
+          wx.showModal({
+            title: '',
+            content: '登录过期,请重新登录',
+            success: function () {
+              wx.redirectTo({
+                url: '../login/login',
+              })
+            }
+          })
+        } else {
+          wx.showModal({
+            title: '',
+            content: '网络错误，请尝试刷新'
+          })
+        }
+      },
+      fail: function (err) {
+        console.log('转移错误', err)
+      }
     })
   },
   // 获取所有的栏目列表
