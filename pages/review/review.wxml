@@ -19,12 +19,12 @@
     <view class="r-btn new-btn"></view>
     新建稿件
   </navigator>
-  <navigator hover-class="hover-active" url="../center/center">
-    <view class="r-btn center-btn"></view>
-    个人中心
-  </navigator>
   <view hover-class="hover-active" class="bottom-view" hover="true" bindtap="showFilter">
     <view class="r-btn filter-btn"></view>
     {{currentType}}
   </view>
+  <navigator hover-class="hover-active" url="../center/center">
+    <view class="r-btn center-btn"></view>
+    个人中心
+  </navigator>
 </view>
