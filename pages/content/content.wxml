@@ -1,4 +1,5 @@
 <view>
+  <!-- 内容页顶部的操作按钮 -->
   <view class="bottom-area">
     <view class="edit edit-btn" hover="true" hover-class="hover-active" bindtap="editNews">
       编辑
@@ -12,7 +13,8 @@
       删除
     </view>
   </view>
-  
+
+  <!-- 如果被驳回过 显示驳回理由 -->
   <view class="content-reason" wx:if="{{reject_reason.length>0}}">
     <view wx:for="{{reject_reason}}" class="reason-item" wx:for-index="{{index}}">
       <view class="reason-content">
@@ -24,7 +26,10 @@
       </view>
     </view>
   </view>
+
+  <!-- 文章内容 -->
   <view class="content-area">
+    <!-- 标题 作者 时间 -->
     <view>
       <text class="content-title">{{content.title}}</text>
     </view>
@@ -32,15 +37,19 @@
       <text>{{content.inputtime}}</text>
       <text>{{content.realname}}</text>
     </view>
+
     <view class="content-content">
       <view wx:for="{{content.content}}">
+        <!-- 文本内容直接显示 -->
         <view wx:if="{{item.type == 'text'}}">
           <text>{{item.value}}</text>
         </view>
+        <!-- 图片内容显示图片 -->
         <view class="media-view" wx:elif="{{item.type == 'image'}}">
           <image wx:if="{{item.value != ''}}" style="width: 200px; height: 200px; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
           <text class="media-desc">{{item.title}}</text>
         </view>
+        <!-- 视频内容显示视频 -->
         <view wx:elif="{{item.type == 'video'}}">
           <video wx:if="{{item.value != ''}}" objectFit="contain" src="{{item.value}}"></video>
           <text class="media-desc">{{item.title}}</text>
@@ -48,10 +57,7 @@
       </view>
     </view>
 
-    <view class="content-info" wx:if="{{is_special}}">
-      <text>本文发布于{{specialName}}专题下的{{specialType}}</text>
-    </view>
-
+  <!-- 显示工作流 -->
   </view>
   <view class="padding">
     <view class="flow">
