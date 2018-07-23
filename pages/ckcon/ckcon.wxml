@@ -1,44 +1,57 @@
 <view class="{{recording ? 'recording' : '' }}">
+  <!-- 待审核显示可编辑按钮 -->
   <view class="bottom-area" wx:if="{{content.type == 'daishen'}}">
     <view class="edit" hover="true" hover-class="hover-active" bindtap="editNews">
       <view class="r-btn edit-btn"></view>
       编辑
     </view>
   </view>
- 
+
   <view class="content-area">
+    <!-- 文章标题 -->
     <view>
       <text class="content-title">{{content.title}}</text>
     </view>
+    <!-- 作者和日期 -->
     <view class="content-info">
       <text>{{content.inputtime}}</text>
       <text>{{content.realname}}</text>
     </view>
 
+    <!-- 文章内容 -->
     <view class="content-content">
       <view wx:for="{{content.content}}">
+        <!-- 文本类型直接显示文章内容 -->
         <view wx:if="{{item.type == 'text'}}">
           <text>{{item.value}}</text>
         </view>
+        <!-- 图片类型显示图片 -->
         <view class="media-view" wx:elif="{{item.type == 'image'}}">
           <image wx:if="{{item.value != ''}}" style="width: 200px; height: 200px; background-color: #eeeeee;" mode="aspectFit" src="{{item.value}}"></image>
           <text class="media-desc">{{item.title}}</text>
         </view>
+        <!-- 视频类型显示视频 -->
         <view wx:elif="{{item.type == 'video'}}">
           <video wx:if="{{item.value != ''}}" objectFit="contain" src="{{item.value}}"></video>
           <text class="media-desc">{{item.title}}</text>
         </view>
+
       </view>
     </view>
   </view>
+  <!-- 文章下方的操作按钮 -->
   <view class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}">
+    <!-- 待审或者转审显示 驳回 通过 按钮 -->
     <button wx:if="{{content.type=='daishen'||content.type=='zhuanshen'}}" type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="1">驳回</button>
     <button wx:if="{{content.type=='daishen'||content.type=='zhuanshen'}}" type="primary" class="{{optionopen == 2 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="2">通过</button>
+    <!-- 待审显示转审按钮 -->
     <button wx:if="{{content.type=='daishen'}}" type="default" class="{{optionopen == 3 ? 'current-btn':'default-btn'}}" bindtap="openOp" data-opid="3">转审</button>
   </view>
 
+  <!-- 点击操作按钮后下方显示的可操作项 一一对应 驳回，通过，转审-->
   <view class="content-option" wx:if="{{optionopen == 1}}">
-    <view class="reject-input-area" wx:if="{{!audioarea}}">
+    <!-- 输入驳回理由 -->
+    <view class="reject-input-area">
       <textarea class="reject-reason" placeholder="驳回理由" maxlength="-1" bindblur="setReject" value="" />
     </view>
 
@@ -46,15 +59,19 @@
       <button type="warn" bindtap="is_update" data-disableid="1">确认驳回</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
-    
   </view>
+
+  <!-- 确认通过稿件 -->
   <view class="content-option" wx:elif="{{optionopen == 2}}">
     <view class="btn-container">
       <button type="warn" bindtap="is_update" data-disableid="2">确认通过</button>
       <button type="default" bindtap="closeOp">取消</button>
     </view>
   </view>
+
+  <!-- 转审稿件 -->
   <view class="content-option" wx:elif="{{optionopen == 3}}">
+    <!-- 在下方显示可选转审编辑人员 -->
     <picker bindchange="setSu" value="{{suindex}}" range-key="realname" range="{{sucheckers}}">
       <view class="picker">
         选择总编辑：{{sucheckers[suindex].realname}}
@@ -67,8 +84,8 @@
     </view>
   </view>
 
-
- <view class="content-reason" wx:if="{{reject_reason.length>0}}">
+  <!-- 显示驳回理由 -->
+  <view class="content-reason" wx:if="{{reject_reason.length>0}}">
     <view wx:for="{{reject_reason}}" class="reason-item" wx:for-index="{{index}}">
       <view class="reason-content">
         {{item.comment}}
@@ -79,6 +96,8 @@
       </view>
     </view>
   </view>
+
+  <!-- 工作流 -->
   <view class="padding">
     <view class="flow">
       <view class="line-left" style="height:{{lineLength}}rpx"></view>

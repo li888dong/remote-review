@@ -32,7 +32,6 @@ Page({
     suindex: 0,
     currentVoice: ['', ''],
     currentRecord: '',
-    audioarea: false,
     newsScore: 1
   },
   onLoad: function(options) {

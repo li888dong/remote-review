@@ -27,9 +27,9 @@ page {
 .reason-content.reason-withaudio {
     margin-top: 30rpx;
 }
-.reason-item:first-child .reason-content {
+/* .reason-item:first-child .reason-content {
     color: #0a0a0a;
-}
+} */
 
 .reason-info {
     margin-top: 21rpx;
