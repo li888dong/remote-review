@@ -27,7 +27,22 @@ Page({
     // 采用
     caiyongStatus: false,
     caiyongIds: [],
-
+    caiyongTargets:[
+      {
+        key:'客户端',
+        value:'客户端'
+      },
+      {
+        key: '微信',
+        value: '微信'
+      },
+      {
+        key: '手机报',
+        value: '手机报'
+      },
+    ],
+    caiyongTargetsIndex: 0,
+    caiyongPicker:false,
     newsId: '',
 
     // 工作流
@@ -104,9 +119,79 @@ Page({
         }
       },
     })
-  },  
+  },
+  showCaiyongPicker(){
+    let that = this;
+    this.setData({
+      caiyongPicker: true
+    });
+    wx.request({
+      url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=caiyong_info',
+      method: 'post',
+      header: { "content-type": "application/x-www-form-urlencoded" },
+      data: {
+        sessid: app.globalData.sessid,
+        news_id: that.data.newsId
+      },
+      success: function (res) {
+        console.log('采用信息', res);
+        if (res.data.status == 1) {
+          let tempArr = [];
+          res.data.data.map(item=>{
+            tempArr.push(item.type)
+          });
+          if(tempArr.indexOf('客户端') > -1){
+            that.setData({
+              'caiyongTargets[0].value':'客户端（已采）'
+            })
+          }
+          if (tempArr.indexOf('微信') > -1) {
+            that.setData({
+              'caiyongTargets[1].value': '微信（已采）'
+            })
+          }
+          if (tempArr.indexOf('手机报') > -1) {
+            that.setData({
+              'caiyongTargets[2].value': '手机报（已采）'
+            })
+          }
+          
+            
+        } else if (res.data.status == -1) {
+          wx.showModal({
+            title: '',
+            content: res.data.info
+          })
+        } else if (res.data.status == -2) {
+          wx.clearStorageSync();
+          wx.showModal({
+            title: '',
+            content: '登录过期,请重新登录',
+            success: function () {
+              wx.redirectTo({
+                url: '../login/login',
+              })
+            }
+          })
+        } else {
+          wx.showModal({
+            title: '',
+            content: '网络错误，请尝试刷新'
+          })
+        }
+      },
+      fail: function (err) {
+        console.log('转移错误', err)
+      }
+    })
+  },
+  hideCaiyongPicker() {
+    this.setData({
+      caiyongPicker: false
+    })
+  },
   // 采用稿件
-  caiyong() {
+  caiyong(e) {
     let that = this;
     wx.request({
       url: 'https://rmtapi.hnsjb.cn/bs_api.php?op=news_index&param=caiyong',
@@ -114,7 +199,8 @@ Page({
       header: { "content-type": "application/x-www-form-urlencoded" },
       data: {
         sessid: app.globalData.sessid,
-        bs_content_id: that.data.content.bs_content_id
+        news_id: that.data.newsId,
+        type: that.data.caiyongTargets[e.detail.value].key
       },
       success: function (res) {
         console.log('采用', res);
@@ -160,6 +246,7 @@ Page({
             content: '网络错误，请尝试刷新'
           })
         }
+        that.hideCaiyongPicker();
       },
       fail: function (err) {
         console.log('转移错误', err)

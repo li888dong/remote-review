@@ -15,7 +15,15 @@
 </view>
 
 <view wx:if="{{content.type != 'yicaozuo'}}">
-  <button wx:if="{{!caiyongStatus}}" type='primary' class="zhuanyi-btn" bindtap='caiyong'>采用</button>
+  <button type='primary' class="zhuanyi-btn" bindtap='showCaiyongPicker'>采用</button>
+  <!-- 选择采用对象 -->
+  <view class="content-option">
+    <picker bindchange="caiyong" value="{{caiyongTargets[caiyongTargetsIndex].value}}" range-key="value" range="{{caiyongTargets}}" wx:if="{{caiyongPicker}}">
+      <view class="picker">
+        选择采用对象：{{caiyongTargets[caiyongTargetsIndex].value}}
+      </view>
+    </picker>
+  </view>
   <button wx:if="{{!zhuanyiStatus}}" type='primary' class="zhuanyi-btn" bindtap='zhuanyilanmu'>转移栏目</button>
   <view wx:else class="{{optionopen == 0 ? 'content-options':'content-options opened-options'}}">
     <button wx:if="{{content.type == 'daishen'&&content.steps >1}}" type="default" class="{{optionopen == 1 ? 'current-btn':'default-btn'}}" bindtap="bohui" data-disableid="4">驳回</button>
@@ -43,7 +51,6 @@
       <button type="default" bindtap="closeOp">取消</button>
     </view>
   </view>
-
   <!-- 选择栏目 -->
   <view class="content-option" wx:if="{{zhuanyiList.length>0}}">
     <picker bindchange="setZhuanyi" value="{{zhuanyiIndex}}" range-key="catname" range="{{zhuanyiList}}">
